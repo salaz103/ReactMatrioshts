@@ -23,6 +23,7 @@ module.exports={
             ]
         }]
     },
+    node: { fs: 'empty' },
     //ESTO SIRVE PARA MAPEAR, SI EN ALGÚN MOMENTO 
     //SE TIENE UN ERROR Y COMO EL ARCHIVO QUE ESTA 
     //"EXPUESTO" ES BUNDLE.JS, CON ESTE MAPEO SE PUEDE

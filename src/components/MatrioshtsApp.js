@@ -2,9 +2,10 @@ import React from 'react';
 import AceEditor from 'react-ace';
 import Action from './Action';
 import Header from './Header';
+import Traducir from '../analizadores/matrioshts';
 import "ace-builds/src-noconflict/mode-typescript";
 import "ace-builds/src-noconflict/theme-tomorrow_night_blue";
-import "ace-builds/src-noconflict/ext-language_tools"
+import "ace-builds/src-noconflict/ext-language_tools";
 
 export default class MatrioshtsApp extends React.Component {
   state = {
@@ -19,7 +20,8 @@ export default class MatrioshtsApp extends React.Component {
   };
 
   traducir=()=>{
-      console.log(this.state.valor);
+      //console.log(this.state.valor);
+      Traducir.parse(this.state.valor);
   }
 
   ejecutar=()=>{
