@@ -3,7 +3,7 @@ import AceEditor from 'react-ace';
 import Action from './Action';
 import Header from './Header';
 import "ace-builds/src-noconflict/mode-typescript";
-import "ace-builds/src-noconflict/theme-twilight";
+import "ace-builds/src-noconflict/theme-tomorrow_night_blue";
 import "ace-builds/src-noconflict/ext-language_tools"
 
 export default class MatrioshtsApp extends React.Component {
@@ -34,10 +34,13 @@ export default class MatrioshtsApp extends React.Component {
         <div className='container'>
         <AceEditor
             onChange={this.onChange}
+            width='650px'
             mode="typescript"
-            theme="twilight"
-            name="UNIQUE_ID_OF_DIV"
+            theme="tomorrow_night_blue"
+            name="editor"
+            fontSize='20px'
         />
+        <div className='inline-buttons'>
         <Action
             action={this.traducir}
             nombre='Traducir'
@@ -46,6 +49,7 @@ export default class MatrioshtsApp extends React.Component {
             action={this.ejecutar}
             nombre= 'Ejecutar'
         />
+        </div>
         </div>
       </div>
     );

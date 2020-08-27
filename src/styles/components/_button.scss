@@ -11,6 +11,24 @@
   width: 100%;
 }
 
+.action-buttons {
+  background: $sky;
+  border: none;
+  border-bottom: .6rem solid darken($off-white, 10%);
+  color: white;
+  font-weight: bold;
+  font-size: $l-size;
+  margin-bottom: $m-size;
+  padding: 1.5rem;
+  width: 100%;
+}
+
+.inline-buttons {
+  display: flex;
+  flex-direction: row;
+  padding: $m-size;
+}
+
 .big-button:disabled {
   opacity: .5;
 }
@@ -23,7 +41,7 @@
 
 // Button
 .button {
-  background: $purple;
+  background: $blue;
   border: none;
   border-bottom: .3rem solid darken($purple, 10%);
   color: white;

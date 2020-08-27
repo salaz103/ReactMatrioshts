@@ -3,7 +3,7 @@ import React from 'react';
 const Action = (props) => (
   <div>
     <button
-      className="big-button"
+      className="action-buttons"
       onClick={props.action}
     >
       {props.nombre}
