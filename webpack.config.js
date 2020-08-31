@@ -30,6 +30,9 @@ module.exports={
     //VER DONDE ESTA ORIGINALMENTE EL ERROR
     devtool:'cheap-module-eval-source-map',
     devServer:{
-        contentBase: path.join(__dirname,'public')
+        contentBase: path.join(__dirname,'public'),
+         //ESTA PROPIEDAD LE DICE AL DEV-SERVER QUE TODAS LAS PAGINAS LAS REDIRECCIONE
+        //AL INDEX.HTML, ES DECIR QUE LAS PAGINAS SERAN PROPORCIONADAS DEL LADO DEL CLIENTE
+        historyApiFallback: true
     }
 };

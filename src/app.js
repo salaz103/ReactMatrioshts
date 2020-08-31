@@ -1,11 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MatrioshtsApp from './components/MatrioshtsApp';
+import {Provider} from 'react-redux';
+import AppRouter from './routers/AppRouter';
+import configStore from './store/configStore';
+import {agregarCodigo} from './actions/ts';
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 
+const almacen= configStore();
 
+// console.log(almacen.getState());
+// almacen.dispatch(agregarCodigo('prueba'));
+// console.log(almacen.getState());
 
-ReactDOM.render(<MatrioshtsApp/>,document.getElementById('app'));
+const jsx= (
+    <Provider store={almacen}>
+        <AppRouter/>
+    </Provider>
+);
+ReactDOM.render(jsx,document.getElementById('app'));
 
 

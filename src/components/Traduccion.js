@@ -1,19 +1,18 @@
 import React from 'react';
 import AceEditor from 'react-ace';
 import Action from './Action';
-import Header from './Header';
 import Traducir from '../analizadores/matrioshts';
+import {connect} from 'react-redux';
+import {agregarCodigo} from '../actions/ts';
 import "ace-builds/src-noconflict/mode-typescript";
 import "ace-builds/src-noconflict/theme-tomorrow_night_blue";
 import "ace-builds/src-noconflict/ext-language_tools";
 import nodobase from '../arbolBase/nodobase';
 
 
-
-export default class MatrioshtsApp extends React.Component {
+class Traduccion extends React.Component {
   state = {
     valor: " ",
-    selectedOption: undefined
   };
 
   onChange= (newvalue)=>{
@@ -41,8 +40,10 @@ export default class MatrioshtsApp extends React.Component {
       let ast;
       ast = Traducir.parse(this.state.valor);
       console.log(ast);
+      this.props.agregarCodigo(this.state.valor);
       // console.log("Recorriendo el arbol:");
       // this.recorrerAST(ast);
+      //this.setState(this.state.valor);
       
 
   }
@@ -55,13 +56,11 @@ export default class MatrioshtsApp extends React.Component {
 
     return (
       <div>
-      <Header title='ReactMatrioshTS- 201213181'/>
-      
-
         <div className='container'>
         <AceEditor
             onChange={this.onChange}
-            width='650px'
+            width='750px'
+            height='400px'
             mode="typescript"
             theme="tomorrow_night_blue"
             name="editor"
@@ -82,3 +81,8 @@ export default class MatrioshtsApp extends React.Component {
     );
   }
 }
+
+
+export default connect(null,{agregarCodigo})(Traduccion)
+
+
