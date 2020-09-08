@@ -1,4 +1,4 @@
-export const agregarCodigo=(codigo='')=>({
+export const agregarCodigo=(codigografo='')=>({
     type:'CODIGO_EJECUCION',
-    codigo
+    codigografo
 });

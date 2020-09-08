@@ -11,6 +11,7 @@
 //////TIPO DE DATO
 ///PRIMERO LAS PALABRAS RESERVADAS
 "string"              return 'RSTRING';
+"function"            return 'RFUNCTION';
 "number"              return 'RNUMBER';
 "boolean"             return 'RBOOLEAN';
 "void"                return 'RVOID';
@@ -20,6 +21,8 @@
 "return"              return 'RRETURN';
 "let"                 return 'RLET';
 "const"               return 'RCONST';
+"{"                   return 'RLLAVEA';
+"}"                   return 'RLLAVEC';
 "("                   return 'PARABRE';
 ")"                   return 'PARCIERRA';
 "."                   return 'PUNTO';
@@ -36,7 +39,7 @@
 /lex
 
 %{
-const nodobase= require('../arbolBase/nodobase');
+const nodobase= require('../arbolBase/nodobase').nodobase;
 
 %}
 /* operator associations and precedence */
@@ -47,19 +50,21 @@ const nodobase= require('../arbolBase/nodobase');
 %% /* language grammar */
 
 
-s : lista EOF {return $1;}               
+s : lista EOF {  console.log($1); return $1; }               
   ;
 
-lista : lista instruccion {$$= new nodobase({tipo:'LISTA',descendientes:[$1,$2],posicion:yylineno});}
-      | instruccion {$$=$1}
+lista : lista instruccion {$1.push($2); $$=$1;}
+      | instruccion {$$=[$1]}
       ;
 
-instruccion: declaracionlet
+instruccion: declaracionlet {$$=$1}
             |declaracionconst
             | imprimir {$$=$1;}
+            | declararfuncion
             ;
 
-declaracionlet: RLET IDENTIFICADOR DOSPUNTOS tipodato IGUAL expresion PUNTOCOMA
+declaracionlet: RLET IDENTIFICADOR DOSPUNTOS tipodato IGUAL expresion PUNTOCOMA 
+                {$$= nodobase.nuevonodo('DECLARACION',[$1,$2,$3,$4,$5,$6,$7],yylineno);}
           |  RLET IDENTIFICADOR IGUAL expresion PUNTOCOMA
           |  RLET IDENTIFICADOR DOSPUNTOS tipodato PUNTOCOMA
           |  RLET IDENTIFICADOR PUNTOCOMA
@@ -68,15 +73,19 @@ declaracionconst: RCONST IDENTIFICADOR DOSPUNTOS tipodato IGUAL expresion PUNTOC
                |  RCONST IDENTIFICADOR IGUAL expresion PUNTOCOMA
                ;
 
-tipodato:  RSTRING
-          |RNUMBER
-          |RBOOLEAN
-          |RVOID
+declararfuncion: RFUNCTION IDENTIFICADOR PARABRE PARCIERRA RLLAVEA lista RLLAVEC
+                 {$$= nodobase.nuevonodo('FUNCION',[$1,$2,$3,$4,$5,$6,$7],yylineno);};
+
+
+tipodato:  RSTRING {$$= nodobase.nuevonodo('STRING',[$1],yylineno);}
+          |RNUMBER {$$= nodobase.nuevonodo('NUMBER',[$1],yylineno);}
+          |RBOOLEAN {$$= nodobase.nuevonodo('BOOLEAN',[$1],yylineno);}
+          |RVOID   {$$= nodobase.nuevonodo('VOID',[$1],yylineno);}
           ;
 
-imprimir  : RCONSOLE PUNTO RLOG PARABRE expresion PARCIERRA PUNTOCOMA 
-            {$$= new nodobase({tipo:'IMPRIMIR',descendientes:[$1,$2,$3,$4,$5,$6,$7],posicion:yylineno}); console.log($$)} ;
+imprimir  : RCONSOLE PUNTO RLOG PARABRE expresion PARCIERRA PUNTOCOMA
+            {$$= nodobase.nuevonodo('IMPRIMIR',[$1,$2,$3,$4,$5,$6,$7],yylineno);} ;
 
-expresion : NUM {console.log($1);}
-          | CADENACOMILLADOBLE {$$=new nodobase({tipo:'CADENA',descendientes:[$1],posicion:yylineno}); console.log($$);}
+expresion : NUM {$$= nodobase.nuevonodo('NUMERO',[Number($1)],yylineno); }
+          | CADENACOMILLADOBLE {$$= nodobase.nuevonodo('CADENA',[$1],yylineno);}
           ;

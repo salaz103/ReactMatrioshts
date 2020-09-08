@@ -1,5 +1,5 @@
 const codigoReducerDefaultState={
-    codigo:'',
+    codigografo:'digraph G{}',
     s:'date'
 };
 
@@ -8,7 +8,7 @@ const expensesReducer=(state=codigoReducerDefaultState,action)=>{
         case 'CODIGO_EJECUCION':
             return {
                 ...state,
-                codigo:action.codigo
+                codigografo:action.codigografo
             }
         default:
             return state;

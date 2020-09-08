@@ -13,6 +13,7 @@ import nodobase from '../arbolBase/nodobase';
 class Traduccion extends React.Component {
   state = {
     valor: " ",
+    codigofinal:"",
   };
 
   onChange= (newvalue)=>{
@@ -21,31 +22,42 @@ class Traduccion extends React.Component {
     }))
   };
 
-  recorrerAST=(ast)=>{
-    for (const propiedad in ast) {
-      if(ast[propiedad] instanceof Array){
-        this.recorrerAST(ast[propiedad]);
-        continue;
-      }else if(ast[propiedad] instanceof nodobase){
-        this.recorrerAST(ast[propiedad]);
-        continue;
+
+
+//FUNCION QUE SOLO DESANIDA EL CODIGO
+ desanidar=(ast)=>{
+
+  ast.forEach(nodo => {
+    if(nodo.tipo){
+      if(nodo.tipo!='FUNCION'){
+        this.desanidar(nodo.hijos)
+      }else{
+        //SI ES UNA FUNCION, TENEMOS QUE IR DESANIDANDO
+
       }
-      console.log(ast[propiedad]);
+    }else{
+      if(nodo.tipo){
+       this.desanidar(nodo)
+      }else{
+        console.log(nodo)
+      }
     }
-  }
+  });
+
+ }
+
+
 
 
   traducir=()=>{
       //console.log(this.state.valor);
       let ast;
       ast = Traducir.parse(this.state.valor);
-      console.log(ast);
-      this.props.agregarCodigo(this.state.valor);
-      // console.log("Recorriendo el arbol:");
-      // this.recorrerAST(ast);
+      //console.log(ast);
+      //this.props.agregarCodigo(this.state.valor);
+       console.log("Recorriendo el arbol:");
+       this.desanidar(ast);
       //this.setState(this.state.valor);
-      
-
   }
 
   ejecutar=()=>{

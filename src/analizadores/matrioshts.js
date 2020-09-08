@@ -72,42 +72,63 @@
   }
 */
 var matrioshts = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,7],$V1=[1,8],$V2=[1,9],$V3=[5,10,17,22],$V4=[1,22],$V5=[1,23],$V6=[1,24],$V7=[1,25],$V8=[1,27],$V9=[1,28],$Va=[14,16],$Vb=[16,26];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,8],$V1=[1,9],$V2=[1,11],$V3=[1,10],$V4=[5,11,18,19,23,28],$V5=[1,26],$V6=[1,27],$V7=[1,28],$V8=[1,29],$V9=[1,31],$Va=[1,32],$Vb=[15,17],$Vc=[17,21];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"s":3,"lista":4,"EOF":5,"instruccion":6,"declaracionlet":7,"declaracionconst":8,"imprimir":9,"RLET":10,"IDENTIFICADOR":11,"DOSPUNTOS":12,"tipodato":13,"IGUAL":14,"expresion":15,"PUNTOCOMA":16,"RCONST":17,"RSTRING":18,"RNUMBER":19,"RBOOLEAN":20,"RVOID":21,"RCONSOLE":22,"PUNTO":23,"RLOG":24,"PARABRE":25,"PARCIERRA":26,"NUM":27,"CADENACOMILLADOBLE":28,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",10:"RLET",11:"IDENTIFICADOR",12:"DOSPUNTOS",14:"IGUAL",16:"PUNTOCOMA",17:"RCONST",18:"RSTRING",19:"RNUMBER",20:"RBOOLEAN",21:"RVOID",22:"RCONSOLE",23:"PUNTO",24:"RLOG",25:"PARABRE",26:"PARCIERRA",27:"NUM",28:"CADENACOMILLADOBLE"},
-productions_: [0,[3,2],[4,2],[4,1],[6,1],[6,1],[6,1],[7,7],[7,5],[7,5],[7,3],[8,7],[8,5],[13,1],[13,1],[13,1],[13,1],[9,7],[15,1],[15,1]],
+symbols_: {"error":2,"s":3,"lista":4,"EOF":5,"instruccion":6,"declaracionlet":7,"declaracionconst":8,"imprimir":9,"declararfuncion":10,"RLET":11,"IDENTIFICADOR":12,"DOSPUNTOS":13,"tipodato":14,"IGUAL":15,"expresion":16,"PUNTOCOMA":17,"RCONST":18,"RFUNCTION":19,"PARABRE":20,"PARCIERRA":21,"RLLAVEA":22,"RLLAVEC":23,"RSTRING":24,"RNUMBER":25,"RBOOLEAN":26,"RVOID":27,"RCONSOLE":28,"PUNTO":29,"RLOG":30,"NUM":31,"CADENACOMILLADOBLE":32,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",11:"RLET",12:"IDENTIFICADOR",13:"DOSPUNTOS",15:"IGUAL",17:"PUNTOCOMA",18:"RCONST",19:"RFUNCTION",20:"PARABRE",21:"PARCIERRA",22:"RLLAVEA",23:"RLLAVEC",24:"RSTRING",25:"RNUMBER",26:"RBOOLEAN",27:"RVOID",28:"RCONSOLE",29:"PUNTO",30:"RLOG",31:"NUM",32:"CADENACOMILLADOBLE"},
+productions_: [0,[3,2],[4,2],[4,1],[6,1],[6,1],[6,1],[6,1],[7,7],[7,5],[7,5],[7,3],[8,7],[8,5],[10,7],[14,1],[14,1],[14,1],[14,1],[9,7],[16,1],[16,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
 var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
-return $$[$0-1];
+  console.log($$[$0-1]); return $$[$0-1]; 
 break;
 case 2:
-this.$= new nodobase({tipo:'LISTA',descendientes:[$$[$0-1],$$[$0]],posicion:yylineno});
+$$[$0-1].push($$[$0]); this.$=$$[$0-1];
 break;
 case 3:
+this.$=[$$[$0]]
+break;
+case 4:
 this.$=$$[$0]
 break;
 case 6:
 this.$=$$[$0];
 break;
+case 8:
+this.$= nodobase.nuevonodo('DECLARACION',[$$[$0-6],$$[$0-5],$$[$0-4],$$[$0-3],$$[$0-2],$$[$0-1],$$[$0]],yylineno);
+break;
+case 14:
+this.$= nodobase.nuevonodo('FUNCION',[$$[$0-6],$$[$0-5],$$[$0-4],$$[$0-3],$$[$0-2],$$[$0-1],$$[$0]],yylineno);
+break;
+case 15:
+this.$= nodobase.nuevonodo('STRING',[$$[$0]],yylineno);
+break;
+case 16:
+this.$= nodobase.nuevonodo('NUMBER',[$$[$0]],yylineno);
+break;
 case 17:
-this.$= new nodobase({tipo:'IMPRIMIR',descendientes:[$$[$0-6],$$[$0-5],$$[$0-4],$$[$0-3],$$[$0-2],$$[$0-1],$$[$0]],posicion:yylineno}); console.log(this.$)
+this.$= nodobase.nuevonodo('BOOLEAN',[$$[$0]],yylineno);
 break;
 case 18:
-console.log($$[$0]);
+this.$= nodobase.nuevonodo('VOID',[$$[$0]],yylineno);
 break;
 case 19:
-this.$=new nodobase({tipo:'CADENA',descendientes:[$$[$0]],posicion:yylineno}); console.log(this.$);
+this.$= nodobase.nuevonodo('IMPRIMIR',[$$[$0-6],$$[$0-5],$$[$0-4],$$[$0-3],$$[$0-2],$$[$0-1],$$[$0]],yylineno);
+break;
+case 20:
+this.$= nodobase.nuevonodo('NUMERO',[Number($$[$0])],yylineno); 
+break;
+case 21:
+this.$= nodobase.nuevonodo('CADENA',[$$[$0]],yylineno);
 break;
 }
 },
-table: [{3:1,4:2,6:3,7:4,8:5,9:6,10:$V0,17:$V1,22:$V2},{1:[3]},{5:[1,10],6:11,7:4,8:5,9:6,10:$V0,17:$V1,22:$V2},o($V3,[2,3]),o($V3,[2,4]),o($V3,[2,5]),o($V3,[2,6]),{11:[1,12]},{11:[1,13]},{23:[1,14]},{1:[2,1]},o($V3,[2,2]),{12:[1,15],14:[1,16],16:[1,17]},{12:[1,18],14:[1,19]},{24:[1,20]},{13:21,18:$V4,19:$V5,20:$V6,21:$V7},{15:26,27:$V8,28:$V9},o($V3,[2,10]),{13:29,18:$V4,19:$V5,20:$V6,21:$V7},{15:30,27:$V8,28:$V9},{25:[1,31]},{14:[1,32],16:[1,33]},o($Va,[2,13]),o($Va,[2,14]),o($Va,[2,15]),o($Va,[2,16]),{16:[1,34]},o($Vb,[2,18]),o($Vb,[2,19]),{14:[1,35]},{16:[1,36]},{15:37,27:$V8,28:$V9},{15:38,27:$V8,28:$V9},o($V3,[2,9]),o($V3,[2,8]),{15:39,27:$V8,28:$V9},o($V3,[2,12]),{26:[1,40]},{16:[1,41]},{16:[1,42]},{16:[1,43]},o($V3,[2,7]),o($V3,[2,11]),o($V3,[2,17])],
-defaultActions: {10:[2,1]},
+table: [{3:1,4:2,6:3,7:4,8:5,9:6,10:7,11:$V0,18:$V1,19:$V2,28:$V3},{1:[3]},{5:[1,12],6:13,7:4,8:5,9:6,10:7,11:$V0,18:$V1,19:$V2,28:$V3},o($V4,[2,3]),o($V4,[2,4]),o($V4,[2,5]),o($V4,[2,6]),o($V4,[2,7]),{12:[1,14]},{12:[1,15]},{29:[1,16]},{12:[1,17]},{1:[2,1]},o($V4,[2,2]),{13:[1,18],15:[1,19],17:[1,20]},{13:[1,21],15:[1,22]},{30:[1,23]},{20:[1,24]},{14:25,24:$V5,25:$V6,26:$V7,27:$V8},{16:30,31:$V9,32:$Va},o($V4,[2,11]),{14:33,24:$V5,25:$V6,26:$V7,27:$V8},{16:34,31:$V9,32:$Va},{20:[1,35]},{21:[1,36]},{15:[1,37],17:[1,38]},o($Vb,[2,15]),o($Vb,[2,16]),o($Vb,[2,17]),o($Vb,[2,18]),{17:[1,39]},o($Vc,[2,20]),o($Vc,[2,21]),{15:[1,40]},{17:[1,41]},{16:42,31:$V9,32:$Va},{22:[1,43]},{16:44,31:$V9,32:$Va},o($V4,[2,10]),o($V4,[2,9]),{16:45,31:$V9,32:$Va},o($V4,[2,13]),{21:[1,46]},{4:47,6:3,7:4,8:5,9:6,10:7,11:$V0,18:$V1,19:$V2,28:$V3},{17:[1,48]},{17:[1,49]},{17:[1,50]},{6:13,7:4,8:5,9:6,10:7,11:$V0,18:$V1,19:$V2,23:[1,51],28:$V3},o($V4,[2,8]),o($V4,[2,12]),o($V4,[2,19]),o($V4,[2,14])],
+defaultActions: {12:[2,1]},
 parseError: function parseError (str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -255,7 +276,7 @@ parse: function parse(input) {
     return true;
 }};
 
-const nodobase= require('../arbolBase/nodobase');
+const nodobase= require('../arbolBase/nodobase').nodobase;
 
 /* generated by jison-lex 0.3.4 */
 var lexer = (function(){
@@ -587,54 +608,60 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:/* skip whitespace */
 break;
-case 1:return 18;
+case 1:return 24;
 break;
 case 2:return 19;
 break;
-case 3:return 20;
+case 3:return 25;
 break;
-case 4:return 21;
+case 4:return 26;
 break;
-case 5:return 'RARRAY';
+case 5:return 27;
 break;
-case 6:return 22;
+case 6:return 'RARRAY';
 break;
-case 7:return 24;
+case 7:return 28;
 break;
-case 8:return 'RRETURN';
+case 8:return 30;
 break;
-case 9:return 10;
+case 9:return 'RRETURN';
 break;
-case 10:return 17;
+case 10:return 11;
 break;
-case 11:return 25;
+case 11:return 18;
 break;
-case 12:return 26;
+case 12:return 22;
 break;
 case 13:return 23;
 break;
-case 14:return 12;
+case 14:return 20;
 break;
-case 15:return 'COMA';
+case 15:return 21;
 break;
-case 16:return 16;
+case 16:return 29;
 break;
-case 17:return 14;
+case 17:return 13;
 break;
-case 18:return 5;
+case 18:return 'COMA';
 break;
-case 19: yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 28; 
+case 19:return 17;
 break;
-case 20:return 27;
+case 20:return 15;
 break;
-case 21:return 11;
+case 21:return 5;
 break;
-case 22:console.log(yy_.yytext);
+case 22: yy_.yytext = yy_.yytext.substr(1,yy_.yyleng-2); return 32; 
+break;
+case 23:return 31;
+break;
+case 24:return 12;
+break;
+case 25:console.log(yy_.yytext);
 break;
 }
 },
-rules: [/^(?:\s+)/,/^(?:string)/,/^(?:number)/,/^(?:boolean)/,/^(?:void)/,/^(?:\[\])/,/^(?:console)/,/^(?:log)/,/^(?:return)/,/^(?:let)/,/^(?:const)/,/^(?:\()/,/^(?:\))/,/^(?:\.)/,/^(?::)/,/^(?:,)/,/^(?:;)/,/^(?:=)/,/^(?:$)/,/^(?:"[^\"]*")/,/^(?:[0-9]+(\.[0-9]+)?\b)/,/^(?:([a-zA-Z])[a-zA-Z0-9_]*)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22],"inclusive":true}}
+rules: [/^(?:\s+)/,/^(?:string)/,/^(?:function)/,/^(?:number)/,/^(?:boolean)/,/^(?:void)/,/^(?:\[\])/,/^(?:console)/,/^(?:log)/,/^(?:return)/,/^(?:let)/,/^(?:const)/,/^(?:\{)/,/^(?:\})/,/^(?:\()/,/^(?:\))/,/^(?:\.)/,/^(?::)/,/^(?:,)/,/^(?:;)/,/^(?:=)/,/^(?:$)/,/^(?:"[^\"]*")/,/^(?:[0-9]+(\.[0-9]+)?\b)/,/^(?:([a-zA-Z])[a-zA-Z0-9_]*)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25],"inclusive":true}}
 });
 return lexer;
 })();

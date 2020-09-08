@@ -1,17 +1,16 @@
 import React from 'react';
 import {connect} from 'react-redux';
-
+import {Graphviz} from 'graphviz-react';
 
 const ReporteAST= (props)=>(
     <div>
-        <h1>CODIGO {props.codigo.codigo}</h1>
-        <h1>{props.codigo.length}</h1>
+        <Graphviz dot={props.codigografo.codigografo}/>
     </div>
 );
 
 const mapStatetoProps= (state)=>{
     return{
-        codigo: state.codigo,
+      codigografo: state.codigografo,
     };
 };
 
