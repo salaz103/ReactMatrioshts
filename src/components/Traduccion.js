@@ -22,24 +22,25 @@ class Traduccion extends React.Component {
     }))
   };
 
-  instrucciones=(hijos)=>{
+  busquedaInstrucciones=(hijos)=>{
     for (let i = 0; i < hijos.length; i++) {
       if(hijos[i]instanceof(Array)){
+        //AQUI ESTAMOS REGRESANDO UN ARREGLO DE OBJETOS [{},{}]
         return hijos[i];
       }
     }
   };
 
-  traeFunciones=(instrucciones)=>{
+  /*traeFunciones=(instrucciones)=>{
     for (let i = 0; i < instrucciones.length; i++) {
       if(instrucciones[i].tipo=='FUNCION'){
         return true;
       }
     }
     return false;
-  }
+  }*/
 
-  recorriendoFunciones=(hijos)=>{
+  /*recorriendoFunciones=(hijos)=>{
     ///TENGO QUE RECIBIR SOLO LOS HIJOS
     for (let i = 0; i < hijos.length; i++) {
       if(hijos[i]instanceof(Array)){
@@ -61,9 +62,9 @@ class Traduccion extends React.Component {
       }
       
     }
-   }
+   }*/
 
-  buscandoFunciones=(nombrePadre,nodoPadre,instruccionesPadre)=>{
+  /*buscandoFunciones=(nombrePadre,nodoPadre,instruccionesPadre)=>{
     let existeFunciones= this.traeFunciones(instruccionesPadre);
     if(existeFunciones){
       //recorrer las instrucciones en busqueda de funciones y enviar a este mismo metodo solo las funciones
@@ -73,11 +74,21 @@ class Traduccion extends React.Component {
       console.log(nodoPadre.hijos);
       this.recorriendoFunciones(nodoPadre.hijos);
     }
+  }*/
 
-
+  busquedaFunciones=(instrucciones)=>{
+    //ESTAMOS RECIBIENDO UN ARREGLO DE OBJETOS - [{},{}] SERIAN LAS INSTRUCCIONES DE UNA FUNCION
+    for (let i = 0; i < instrucciones.length; i++) {
+      if(instrucciones[i].tipo=='FUNCION'){
+        //SI ES UNA FUNCION REGRESAMOS TRUE
+        return true;
+      }
+    }
+    //SI REGRESAMOS FALSE ES POR QUE NO VIENEN FUNCIONES EN LAS INSTRUCCIONES
+    return false;
   }
 
-  desanidarFunciones=(nodo)=>{
+  /*desanidarFunciones=(nodo)=>{
     console.log("NODO PADRE- HIJOS");
     console.log(nodo.hijos);
     const nodoinstrucciones= this.instrucciones(nodo.hijos);
@@ -85,8 +96,72 @@ class Traduccion extends React.Component {
     this.buscandoFunciones(nombrePadre,nodo,nodoinstrucciones);
 
     return("desanidando");
-  };
+  };*/
 
+  lecturaFunciones=(nodoPadre)=>{
+    //AQUI ESTOY RECIBIENDO UN NODO {FUNCION,HIJOS,POS}
+    const hijos= nodoPadre.hijos;
+    for (let i = 0; i < hijos.length; i++) {
+      
+      if(hijos[i]instanceof (Array)){
+        //SIGNIFICA QUE AQUI ESTOY LEYENDO LAS INSTRUCCIONES DE LA FUNCION
+        const instrucciones= hijos[i];
+        for (let a = 0; a < instrucciones.length; a++) {
+          this.lecturaFunciones(instrucciones[a]);
+        }
+      }else{
+        //SE LEEN LOS HIJOS QUE NO SON UN ARRAY, ES DECIR QUE NO TRAEN HERMANOS
+        if(hijos[i]instanceof(Object)){
+          //SI SOLO VIENE UN OBJETO ES DECIR QUE ES UNA HOJA, PUEDE SER UN ID, NUMERO, CADENA
+          console.log(String(hijos[i].hijos))
+        }else{
+          //ESTA LECTURA ES DE LOS HIJOS DEL PADRE, ES DECIR RFUNCTION, NOMBRE, ETC.
+          console.log(hijos[i]);
+        }
+        
+      }
+      
+    }
+
+  }
+
+  cambioDeNombre=(nombrePadre,nodoFuncion)=>{
+    const nuevoNombre= nombrePadre+"_"+nodoFuncion.hijos[1];
+    nodoFuncion.hijos[1]= nuevoNombre;
+    return nodoFuncion;
+  }
+
+  inicioBusqueda=(nodoPadre)=>{ //ESTE NODO PADRE ES UN OBJETO {TIPO,HIJOS,POS}
+    const instruccionesActuales= this.busquedaInstrucciones(nodoPadre.hijos); //AQUI ESTAMOS ENVIANDO UN ARREGLO [$1,$2]
+    //AHORA YA TENEMOS EL ARREGLO DE OBJETOS, QUE SON LAS INSTRUCCIONES [{},{}]
+    //TENEMOS QUE VERIFICAR SI EN ESTAS INSTRUCCIONES VIENE UNA FUNCION
+    const vieneFuncion= this.busquedaFunciones(instruccionesActuales);
+    if(vieneFuncion){
+      //SI VIENE UNA FUNCION ENTONCES TENEMOS QUE IMPRIMIR ANTES ESA FUNCION Y CAMBIAR SU NOMBRE
+      //TENDRIA QUE RECORRER LAS INSTRUCCIONES POR QUE PUEDE QUE VENGA MAS DE UNA FUNCION
+      const nombrePadre= nodoPadre.hijos[1];
+      
+      for (let i = 0; i < instruccionesActuales.length; i++) {
+        if(instruccionesActuales[i].tipo=='FUNCION'){
+            const nuevoNodoFuncion= this.cambioDeNombre(nombrePadre,instruccionesActuales[i]);
+            this.inicioBusqueda(nuevoNodoFuncion);
+        }
+        
+      } 
+      
+    }else{
+      //SI NO VIENE FUNCION, PODEMOS IMPRIMIR ESTA FUNCION DE FORMA NORMAL
+      //LO QUE VOY A ENVIAR AQUI ES UN OBJETO {FUNCION,HIJOS,POS}
+      //ESTA LECTURA SIGNIFICA QUE EN LAS INSTRUCCIONES NO VIENEN FUNCIONES, ES EL CASO MINIMO
+      //nodoPadre.hijos[1]="nuevoNombre";
+      this.lecturaFunciones(nodoPadre);
+    }
+
+    //HABRIA QUE QUITAR EL ELSE Y POR DEFAULT IMPRIMIR LA FUNCION PADRE PERO SIN LAS INSTRUCCIONES FUNCION
+    
+
+    
+  }
   
 
 //FUNCION QUE SOLO DESANIDA EL CODIGO
@@ -107,8 +182,9 @@ class Traduccion extends React.Component {
         this.desanidar(nodo.hijos)
       }else{
         //SI ES UNA FUNCION, TENEMOS QUE IR DESANIDANDO
-        let recolectorFunciones = this.desanidarFunciones(nodo);
-        console.log(recolectorFunciones);
+        // let recolectorFunciones = this.desanidarFunciones(nodo);
+        // console.log(recolectorFunciones);
+        this.inicioBusqueda(nodo);
       }
 
       }else{
