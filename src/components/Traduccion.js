@@ -22,27 +22,83 @@ class Traduccion extends React.Component {
     }))
   };
 
+  instrucciones=(hijos)=>{
+    for (let i = 0; i < hijos.length; i++) {
+      if(hijos[i]instanceof(Array)){
+        return hijos[i];
+      }
+    }
+  };
 
+  traeFunciones=(instrucciones)=>{
+    for (let i = 0; i < instrucciones.length; i++) {
+      if(instrucciones[i].tipo=='FUNCION'){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  recorriendoFunciones=(nodo)=>{
+    console.log(nodo);
+    ///TENGO QUE RECIBIR SOLO LOS HIJOS
+   }
+
+  buscandoFunciones=(nombrePadre,nodoPadre,instruccionesPadre)=>{
+    let existeFunciones= this.traeFunciones(instruccionesPadre);
+    if(existeFunciones){
+      //recorrer las instrucciones en busqueda de funciones y enviar a este mismo metodo solo las funciones
+    }else{
+      //RECORRO EL NODO PADRE A EXCEPCION DE LAS FUNCIONES QUE TRAE
+      console.log("NODO PADRE- HIJOS");
+      console.log(nodoPadre.hijos);
+      this.recorriendoFunciones(nodoPadre);
+    }
+
+
+  }
+
+  desanidarFunciones=(nodo)=>{
+    console.log("NODO PADRE- HIJOS");
+    console.log(nodo.hijos);
+    const nodoinstrucciones= this.instrucciones(nodo.hijos);
+    const nombrePadre= nodo.hijos[1];
+    this.buscandoFunciones(nombrePadre,nodo,nodoinstrucciones);
+
+    return("desanidando");
+  };
+
+  
 
 //FUNCION QUE SOLO DESANIDA EL CODIGO
  desanidar=(ast)=>{
 
+  let recolector;
+
   ast.forEach(nodo => {
     if(nodo.tipo){
-      if(nodo.tipo!='FUNCION'){
+      //SI EL NODO TIENE UN TIPO, ES DECIR QUE TRAE HIJOS
+      if(nodo.tipo=="CADENA"){
+        //SI ES UNA CADENA, SOLO ES PARA PONERLE LAS COMILLAS ANTES
+        console.log('"');
+        this.desanidar(nodo.hijos);
+        console.log('"');
+      }else if(nodo.tipo!='FUNCION'){
+        //SI ES OTRA COSA QUE NO SEA UNA FUNCION SE MANDAN A LEER LOS HIJOS
         this.desanidar(nodo.hijos)
       }else{
         //SI ES UNA FUNCION, TENEMOS QUE IR DESANIDANDO
+        let recolectorFunciones = this.desanidarFunciones(nodo);
+        console.log(recolectorFunciones);
+      }
 
-      }
-    }else{
-      if(nodo.tipo){
-       this.desanidar(nodo)
       }else{
+        // AQUI ES LA LECTURA DE SOLO LOS HIJOS, SOLO LAS HOJAS
         console.log(nodo)
-      }
     }
   });
+
+  //AL TERMINAR DE RECOLECTAR Y DESANIDAR LAS FUNCIONES SE TIENE QUE MANDAR EL CODIGO AL ESTADO
 
  }
 
