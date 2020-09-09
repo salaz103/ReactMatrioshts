@@ -39,9 +39,28 @@ class Traduccion extends React.Component {
     return false;
   }
 
-  recorriendoFunciones=(nodo)=>{
-    console.log(nodo);
+  recorriendoFunciones=(hijos)=>{
     ///TENGO QUE RECIBIR SOLO LOS HIJOS
+    for (let i = 0; i < hijos.length; i++) {
+      if(hijos[i]instanceof(Array)){
+        for (let a = 0; a < hijos[i].length; a++) {
+          //console.log(hijos[i][a].hijos);
+          this.recorriendoFunciones(hijos[i][a].hijos);
+        }
+      }else if(hijos[i]instanceof(Object)){
+        //ESTE ELSE ES PARA LEER LAS HOJAS
+        if(hijos[i].tipo=='CADENA'){
+          console.log('"');
+          console.log(hijos[i].hijos[0]);
+          console.log('"');
+        }else{
+        console.log(hijos[i].hijos[0]);
+        }
+      }else{
+        console.log(hijos[i]);
+      }
+      
+    }
    }
 
   buscandoFunciones=(nombrePadre,nodoPadre,instruccionesPadre)=>{
@@ -52,7 +71,7 @@ class Traduccion extends React.Component {
       //RECORRO EL NODO PADRE A EXCEPCION DE LAS FUNCIONES QUE TRAE
       console.log("NODO PADRE- HIJOS");
       console.log(nodoPadre.hijos);
-      this.recorriendoFunciones(nodoPadre);
+      this.recorriendoFunciones(nodoPadre.hijos);
     }
 
 
