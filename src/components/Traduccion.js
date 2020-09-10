@@ -125,6 +125,32 @@ class Traduccion extends React.Component {
 
   }
 
+  lecturaPadre=(nodoPadre)=>{
+    //AQUI ESTOY RECIBIENDO UN NODO {TIPO,HIJOS,POS}
+    const hijos= nodoPadre.hijos;
+    for (let i = 0; i < hijos.length; i++) {
+      
+      if(hijos[i]instanceof (Array)){
+        //SI EL HIJO QUE ESTOY LEYENDO ES UN ARRAY, SIGNIFICA QUE SON LAS INSTRUCCIONES DE LA FUNCION
+        const instrucciones= hijos[i];
+        for (let a = 0; a < instrucciones.length; a++) {
+          if(instrucciones[a].tipo!='FUNCION'){
+              this.lecturaPadre(instrucciones[a]);
+          }
+        }
+      }else{
+        //SE LEEN LOS HIJOS QUE NO SON UN ARRAY, ES DECIR QUE NO TRAEN HERMANOS
+        if(hijos[i]instanceof(Object)){
+          //SI SOLO VIENE UN OBJETO ES DECIR QUE ES UNA HOJA, PUEDE SER UN ID, NUMERO, CADENA
+          console.log(String(hijos[i].hijos))
+        }else{
+          //ESTA LECTURA ES DE LOS HIJOS DEL PADRE, ES DECIR RFUNCTION, NOMBRE, ETC.
+          console.log(hijos[i]);
+        }
+      }
+    }
+  }
+
   cambioDeNombre=(nombrePadre,nodoFuncion)=>{
     const nuevoNombre= nombrePadre+"_"+nodoFuncion.hijos[1];
     nodoFuncion.hijos[1]= nuevoNombre;
@@ -146,8 +172,12 @@ class Traduccion extends React.Component {
             const nuevoNodoFuncion= this.cambioDeNombre(nombrePadre,instruccionesActuales[i]);
             this.inicioBusqueda(nuevoNodoFuncion);
         }
-        
       } 
+
+      //YA TERMINE DE RECOLECTAR TODAS LAS FUNCIONES AHORA ME TOCA RECORRER LA FUNCION PADRE PERO
+      //EN SUS INSTRUCCIONES DEBO RECORRER TODO A EXCEPCION DE LAS FUNCIONES
+      this.lecturaPadre(nodoPadre);
+
       
     }else{
       //SI NO VIENE FUNCION, PODEMOS IMPRIMIR ESTA FUNCION DE FORMA NORMAL
@@ -156,10 +186,6 @@ class Traduccion extends React.Component {
       //nodoPadre.hijos[1]="nuevoNombre";
       this.lecturaFunciones(nodoPadre);
     }
-
-    //HABRIA QUE QUITAR EL ELSE Y POR DEFAULT IMPRIMIR LA FUNCION PADRE PERO SIN LAS INSTRUCCIONES FUNCION
-    
-
     
   }
   
