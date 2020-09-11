@@ -32,10 +32,7 @@
 //DECLARACION DE VARIABLES
 "let"                 return 'RLET';
 "const"               return 'RCONST';
-//OPERACIONES LOGICAS
-"AND"                 return 'RAND';
-"OR"                  return 'ROR';
-"NOT"                 return 'RNOT';
+
 //ESTRUCTURAS DE CONTROL
 "if"                  return 'RIF';
 "else"                return 'RELSE';
@@ -64,6 +61,10 @@
 "<="                  return 'RMENORIGUALQUE';
 "=="                  return 'RIGUALQUE';
 "!="                  return 'RDIFERENTEQUE';
+//OPERACIONES LOGICAS
+"&&"                 return 'RAND';
+"||"                  return 'ROR';
+"!"                 return 'RNOT';
 
 //OPERADOR TERNARIO
 "?"                   return 'RINTERROGACION';
@@ -164,8 +165,11 @@ asignacion: IDENTIFICADOR RIGUAL expresion RPUNTOCOMA
             ;
 
 instruccionif: RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC
-             | RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC RELSE RLLAVEA lista RLLAVEC;
+             | RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC instruccionelse;
 
+instruccionelse: RELSE instruccionif
+                | RELSE RLLAVEA lista RLLAVEC
+                ;
 
 instruccionswitch: RSWITCH RPARA expresion RPARC RLLAVEA casos RLLAVEC;
 
@@ -191,6 +195,7 @@ declararfuncion: RFUNCTION IDENTIFICADOR RPARA RPARC RLLAVEA lista RLLAVEC
                  {$$= nodobase.nuevonodo('FUNCION',[$1,$2,$3,$4,$5,$6,$7],yylineno);}
                //FUNCION CON TIPO DE DATO
                | RFUNCTION IDENTIFICADOR RPARA parametros RPARC RDOSPUNTOS tipodato RLLAVEA lista RLLAVEC
+               {$$= nodobase.nuevonodo('FUNCION',[$1,$2,$3,$4,$5,$6,$7,$8,$9,$10],yylineno);}
                //FUNCION SIN TIPO DE DATO
                | RFUNCTION IDENTIFICADOR RPARA parametros RPARC  RLLAVEA lista RLLAVEC
                  ;
