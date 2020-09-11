@@ -1,12 +1,13 @@
 import React from 'react';
 import AceEditor from 'react-ace';
 import Action from './Action';
+import Traducir from '../analizadores/matrioshts';
 import {connect} from 'react-redux';
 import {agregarCodigo} from '../actions/ts';
 import "ace-builds/src-noconflict/mode-typescript";
 import "ace-builds/src-noconflict/theme-tomorrow_night_blue";
 import "ace-builds/src-noconflict/ext-language_tools";
-import a from './ArchivosTS/Desanidar';
+import lectorAST from './ArchivosTS/Desanidar';
 
 class Traduccion2 extends React.Component {
   state = {
@@ -22,8 +23,13 @@ class Traduccion2 extends React.Component {
 
 
   traducir=()=>{
-      let b= a();
-      console.log("Leyendo desde un archivo TS: "+ b);
+      //console.log(this.state.valor);
+      let ast;
+      ast = Traducir.parse(this.state.valor);
+      //this.props.agregarCodigo(this.state.valor);
+      //console.log("Recorriendo el arbol:");
+      lectorAST(ast);
+      //this.setState(this.state.valor);
   }
 
   ejecutar=()=>{

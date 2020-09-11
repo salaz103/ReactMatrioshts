@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
-function a() {
-    return "hola";
+function lectorAST(ast) {
+    console.log("LEYENDO DESDE TS");
+    console.log(ast);
 }
-exports["default"] = a;
+exports["default"] = lectorAST;

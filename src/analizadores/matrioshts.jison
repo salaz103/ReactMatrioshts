@@ -6,11 +6,16 @@
 
 %%
 ///COMENTARIOS SIMPLES, MULTIPLE LINEA Y ESPACIOS EN BLANCO
-\s+											
-"//".*										
-[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]			
+\s+											// se ignoran espacios en blanco
+"//".*										// comentario simple línea
+[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]			// comentario multiple líneas		
 
 
+
+//SENTENCIAS DE TRANSFERENCIA
+"break"               return 'RBREAK';
+"continue"            return 'RCONTINUE';
+"return"              return 'RRETURN';
 //////TIPO DE DATO
 "string"              return 'RSTRING';
 "number"              return 'RNUMBER';
@@ -19,15 +24,30 @@
 "false"               return 'RFALSE';
 "void"                return 'RVOID';
 "Array"               return 'RARRAY';
-"["                   return 'RCORCHETEA';
-"]"                   return 'RCORCHETEC';
-"{"                   return 'RLLAVEA';
-"}"                   return 'RLLAVEC';
-"("                   return 'RPARA';
-")"                   return 'RPARC';
+//FUNCIONES
+"graficar_ts"         return 'RGRAFICAR';
+"function"            return 'RFUNCTION';
+"console"             return 'RCONSOLE';
+"log"                 return 'RLOG';
 //DECLARACION DE VARIABLES
 "let"                 return 'RLET';
 "const"               return 'RCONST';
+//OPERACIONES LOGICAS
+"AND"                 return 'RAND';
+"OR"                  return 'ROR';
+"NOT"                 return 'RNOT';
+//ESTRUCTURAS DE CONTROL
+"if"                  return 'RIF';
+"else"                return 'RELSE';
+"while"               return 'RWHILE';
+"do"                  return 'RDO';
+"switch"              return 'RSWITCH';
+"case"                return 'RCASE';
+"default"             return 'RDEFAULT';
+"for"                 return 'RFOR';
+"in"                  return 'RIN';
+"of"                  return 'ROF';  
+
 //OPERACIONES ARITMETICAS
 "+"                   return 'RMAS';
 "-"                   return 'RMENOS';
@@ -44,42 +64,28 @@
 "<="                  return 'RMENORIGUALQUE';
 "=="                  return 'RIGUALQUE';
 "!="                  return 'RDIFERENTEQUE';
-//OPERACIONES LOGICAS
-"AND"                 return 'RAND';
-"OR"                  return 'ROR';
-"NOT"                 return 'RNOT';
+
 //OPERADOR TERNARIO
 "?"                   return 'RINTERROGACION';
 ":"                   return 'RDOSPUNTOS';
-//ESTRUCTURAS DE CONTROL
-"if"                  return 'RIF';
-"else"                return 'RELSE';
-"while"               return 'RWHILE';
-"do"                  return 'RDO';
-"switch"              return 'RSWITCH';
-"case"                return 'RCASE';
-"default"             return 'RDEFAULT';
-"for"                 return 'RFOR';
-"in"                  return 'RIN';
-"of"                  return 'ROF';  
-//SENTENCIAS DE TRANSFERENCIA
-"break"               return 'RBREAK';
-"continue"            return 'RCONTINUE';
-"return"              return 'RRETURN';
-//FUNCIONES
-"graficar_ts"         return 'RGRAFICAR';
-"function"            return 'RFUNCTION';
-"console"             return 'RCONSOLE';
-"log"                 return 'RLOG';
+
+
 "."                   return 'RPUNTO';
 ","                   return 'RCOMA';
 ";"                   return 'RPUNTOCOMA';
 "="                   return 'RIGUAL';
 
+"["                   return 'RCORCHETEA';
+"]"                   return 'RCORCHETEC';
+"{"                   return 'RLLAVEA';
+"}"                   return 'RLLAVEC';
+"("                   return 'RPARA';
+")"                   return 'RPARC';
+
 "'"[^\"]*"'"          { yytext = yytext.substr(1,yyleng-2); return 'CADENACOMILLASIMPLE'; }
 \"[^\"]*\"            { yytext = yytext.substr(1,yyleng-2); return 'CADENACOMILLADOBLE'; }
-[0-9]+("."[0-9]+)?\b  return 'NUM';
-([a-zA-Z])[a-zA-Z0-9_]* return 'IDENTIFICADOR';
+[0-9]+("."[0-9]+)?\b          return 'NUM';
+([a-zA-Z])[a-zA-Z0-9_]*       return 'IDENTIFICADOR';
 
 <<EOF>>               return 'EOF';
 .					{ console.error('Error Lexico: ' + yytext + ', en la linea: ' + yylloc.first_line + ', en la columna: ' + yylloc.first_column); }
@@ -163,7 +169,7 @@ caso: RCASE expresion RDOSPUNTOS lista RBREAK RPUNTOCOMA
 instruccionfor: RFOR RPARA IDENTIFICADOR RIGUAL expresion RPUNTOCOMA expresion RPUNTOCOMA IDENTIFICADOR RMASMAS RPARC 
                 RLLAVEA  lista RLLAVEC; 
 
-declararfuncion: RFUNCTION IDENTIFICADOR PARABRE PARCIERRA RLLAVEA lista RLLAVEC
+declararfuncion: RFUNCTION IDENTIFICADOR RPARA RPARC RLLAVEA lista RLLAVEC
                  {$$= nodobase.nuevonodo('FUNCION',[$1,$2,$3,$4,$5,$6,$7],yylineno);};
 
 
@@ -173,7 +179,7 @@ tipodato:  RSTRING {$$= nodobase.nuevonodo('STRING',[$1],yylineno);}
           |RVOID   {$$= nodobase.nuevonodo('VOID',[$1],yylineno);}
           ;
 
-imprimir  : RCONSOLE PUNTO RLOG PARABRE expresion PARCIERRA PUNTOCOMA
+imprimir  : RCONSOLE RPUNTO RLOG RPARA expresion RPARC RPUNTOCOMA
             {$$= nodobase.nuevonodo('IMPRIMIR',[$1,$2,$3,$4,$5,$6,$7],yylineno);} ;
 
 
