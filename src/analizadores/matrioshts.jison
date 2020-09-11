@@ -53,8 +53,8 @@ const nodobase= require('../arbolBase/nodobase').nodobase;
 s : lista EOF {  console.log($1); return $1; }               
   ;
 
-lista : lista instruccion {$1.push($2); $$=$1;}
-      | instruccion {$$=[$1]}
+lista : lista instruccion { $1.hijos.push($2); $$=$1;  /*$1.push($2); $$=$1;*/}
+      | instruccion {$$=nodobase.nuevonodo('INSTRUCCIONES',[$1],yylineno);  /*$$=[$1]*/}
       ;
 
 instruccion: declaracionlet {$$=$1}

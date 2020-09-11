@@ -87,10 +87,10 @@ case 1:
   console.log($$[$0-1]); return $$[$0-1]; 
 break;
 case 2:
-$$[$0-1].push($$[$0]); this.$=$$[$0-1];
+ $$[$0-1].hijos.push($$[$0]); this.$=$$[$0-1];  /*$$[$0-1].push($$[$0]); this.$=$$[$0-1];*/
 break;
 case 3:
-this.$=[$$[$0]]
+this.$=nodobase.nuevonodo('INSTRUCCIONES',[$$[$0]],yylineno);  /*this.$=[$$[$0]]*/
 break;
 case 4:
 this.$=$$[$0]
