@@ -7,7 +7,7 @@ import {agregarCodigo} from '../actions/ts';
 import "ace-builds/src-noconflict/mode-typescript";
 import "ace-builds/src-noconflict/theme-tomorrow_night_blue";
 import "ace-builds/src-noconflict/ext-language_tools";
-import lectorAST from './ArchivosTS/Desanidar';
+import {desanidar} from './ArchivosTS/Desanidar';
 
 class Traduccion2 extends React.Component {
   state = {
@@ -28,7 +28,7 @@ class Traduccion2 extends React.Component {
       ast = Traducir.parse(this.state.valor);
       //this.props.agregarCodigo(this.state.valor);
       //console.log("Recorriendo el arbol:");
-      lectorAST(ast);
+      desanidar(ast);
       //this.setState(this.state.valor);
   }
 

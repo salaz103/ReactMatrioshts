@@ -1,8 +1,11 @@
 import nodobase from '../../arbolBase/nodobase.js';
 
-function lectorAST(ast:nodobase){
-    console.log("LEYENDO DESDE TS");
+function desanidar(ast:nodobase){
+    //PRIMERO RECIBIMOS LA RAIZ DEL AST
+    console.log("LEYENDO EL AST DESDE TS: ")
     console.log(ast);
+
+
 }
 
-export default lectorAST;
+export {desanidar};

@@ -1,7 +1,8 @@
 "use strict";
 exports.__esModule = true;
-function lectorAST(ast) {
-    console.log("LEYENDO DESDE TS");
+function desanidar(ast) {
+    //PRIMERO RECIBIMOS LA RAIZ DEL AST
+    console.log("LEYENDO EL AST DESDE TS: ");
     console.log(ast);
 }
-exports["default"] = lectorAST;
+exports.desanidar = desanidar;
