@@ -1,10 +1,13 @@
 {
+  "homepage": "http://salaz103.github.io/ReactMatrioshts",
   "name": "reactmatrioshts",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Luis Salazar",
   "license": "MIT",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d public",
     "serve": "live-server public/",
     "build": "webpack-cli",
     "dev-server": "webpack-dev-server"
@@ -42,6 +45,7 @@
   "devDependencies": {
     "eslint": "^6.6.0",
     "eslint-config-defaults": "^9.0.0",
+    "gh-pages": "^3.1.0",
     "webpack": "^4.41.2"
   }
 }
