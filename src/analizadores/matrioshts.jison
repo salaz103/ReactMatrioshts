@@ -122,8 +122,10 @@ const nodobase= require('../arbolBase/nodobase').nodobase;
 s : lista EOF { return $1; }               
   ;
 
+
+//DESANIDADO
 lista : lista instruccion { $1.hijos.push($2); $$=$1;  /*$1.push($2); $$=$1;*/}
-      | instruccion {$$=nodobase.nuevonodo('INSTRUCCIONES',[$1],yylineno);  /*$$=[$1]*/}
+      | instruccion {$$=nodobase.nuevonodo('INSTRUCCIONES',[$1],yylineno);  /*$$=[$1]*/} 
       ;
 
 instruccion: declaraciones {$$=$1}
@@ -220,8 +222,10 @@ tipodato:  RSTRING {$$= nodobase.nuevonodo('STRING',[$1],yylineno);}
           |RVOID   {$$= nodobase.nuevonodo('VOID',[$1],yylineno);}
           ;
 
+
+//DESANIDADO
 imprimir  : RCONSOLE RPUNTO RLOG RPARA expresion RPARC RPUNTOCOMA
-            {$$= nodobase.nuevonodo('IMPRIMIR',[$1,$2,$3,$4,$5,$6,$7],yylineno);} ;
+            {$$= nodobase.nuevonodo('IMPRIMIR',[$1,$2,$3,$4,$5,$6,$7],yylineno);} ;  
 
 instruccionreturn: RRETURN RPUNTOCOMA {$$= nodobase.nuevonodo('RETURN_SOLO',[$1,$2],yylineno);}
                   |RRETURN expresion RPUNTOCOMA {$$= nodobase.nuevonodo('RETURN_EXP',[$1,$2,$3],yylineno);}
@@ -259,8 +263,8 @@ expresion:
           |NUM                    {$$= nodobase.nuevonodo('NUMERO',[$1],yylineno);}
           |RTRUE                  {$$= nodobase.nuevonodo('TRUE',[$1],yylineno);}
           |RFALSE                 {$$= nodobase.nuevonodo('FALSE',[$1],yylineno);}
-          |CADENACOMILLADOBLE  {$$= nodobase.nuevonodo('COMILLA_DOBLE',[$1],yylineno);}
-          |CADENACOMILLASIMPLE {$$= nodobase.nuevonodo('COMILLA_SIMPLE',[$1],yylineno);}
+          |CADENACOMILLADOBLE  {$$= nodobase.nuevonodo('COMILLA_DOBLE',[$1],yylineno);} //LISTO
+          |CADENACOMILLASIMPLE {$$= nodobase.nuevonodo('COMILLA_SIMPLE',[$1],yylineno);} //LISTO
           |IDENTIFICADOR       {$$= nodobase.nuevonodo('IDENTIFICADOR',[$1],yylineno);}
           //LLAMADA A FUNCIONES 
           | IDENTIFICADOR RPARA listaexpresiones RPARC 
