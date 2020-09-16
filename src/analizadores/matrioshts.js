@@ -101,8 +101,8 @@ break;
 case 17:
 this.$=nodobase.nuevonodo('DECLARACION_VARIABLE',[$$[$0-2],$$[$0-1],$$[$0]],yylineno);
 break;
-case 18: case 45:
-$$[$0-2].hijos.push($$[$0-1]); this.$=$$[$0-2];
+case 18:
+$$[$0-2].hijos.push($$[$0]); this.$=$$[$0-2];
 break;
 case 19:
 this.$=nodobase.nuevonodo('LISTA_VARIABLES',[$$[$0]],yylineno);
@@ -157,6 +157,9 @@ this.$= nodobase.nuevonodo('FUNCION',[$$[$0-7],$$[$0-6],$$[$0-5],$$[$0-4],$$[$0-
 break;
 case 44:
 this.$= nodobase.nuevonodo('FUNCION',[$$[$0-8],$$[$0-7],$$[$0-6],$$[$0-5],$$[$0-4],$$[$0-3],$$[$0-2],$$[$0-1],$$[$0]],yylineno);
+break;
+case 45:
+$$[$0-2].hijos.push($$[$0-1]); this.$=$$[$0-2];
 break;
 case 46:
 this.$=nodobase.nuevonodo('LISTA_PARAMETROS',[$$[$0]],yylineno);

@@ -83,7 +83,7 @@
 "("                   return 'RPARA';
 ")"                   return 'RPARC';
 
-"'"[^\"]*"'"          { yytext = yytext.substr(1,yyleng-2); return 'CADENACOMILLASIMPLE'; }
+\'[^\"]*\'          { yytext = yytext.substr(1,yyleng-2); return 'CADENACOMILLASIMPLE'; }
 \"[^\"]*\"            { yytext = yytext.substr(1,yyleng-2); return 'CADENACOMILLADOBLE'; }
 [0-9]+("."[0-9]+)?\b          return 'NUM';
 ([a-zA-Z])[a-zA-Z0-9_]*       return 'IDENTIFICADOR';
@@ -128,13 +128,13 @@ lista : lista instruccion { $1.hijos.push($2); $$=$1;  /*$1.push($2); $$=$1;*/}
       | instruccion {$$=nodobase.nuevonodo('INSTRUCCIONES',[$1],yylineno);  /*$$=[$1]*/} 
       ;
 
-instruccion: declaraciones {$$=$1}
-            | asignacion   {$$=$1}
+instruccion: declaraciones {$$=$1} //LISTO
+            | asignacion   {$$=$1} //LISTO
             | instruccionif {$$=$1}
             | instruccionswitch 
             | instruccionfor 
             | instruccionwhile {$$=$1;}
-            | imprimir {$$=$1;}
+            | imprimir {$$=$1;}  //LISTO
             | declararfuncion {$$=$1}
             | IDENTIFICADOR RMASMAS RPUNTOCOMA
             | RGRAFICAR RPARA RPARC RPUNTOCOMA
@@ -145,23 +145,28 @@ instruccion: declaraciones {$$=$1}
 
 
 
-
+//LISTO
 declaraciones: tipovariable listavariables RPUNTOCOMA {$$=nodobase.nuevonodo('DECLARACION_VARIABLE',[$1,$2,$3],yylineno);};
 
-listavariables:   listavariables RCOMA variable {$1.hijos.push($2); $$=$1;}
+
+//LISTO
+listavariables:   listavariables RCOMA variable {$1.hijos.push($3); $$=$1;}
                 | variable {$$=nodobase.nuevonodo('LISTA_VARIABLES',[$1],yylineno);};
 
+
+//LISTO          
 variable: IDENTIFICADOR RDOSPUNTOS tipodato RIGUAL expresion {$$= nodobase.nuevonodo('VARIABLE_FULL',[$1,$2,$3,$4,$5],yylineno);}
          | IDENTIFICADOR RIGUAL expresion    {$$= nodobase.nuevonodo('VARIABLE_CON_EXPRESION',[$1,$2,$3],yylineno);}
          | IDENTIFICADOR RDOSPUNTOS tipodato {$$= nodobase.nuevonodo('VARIABLE_SIN_EXPRESION',[$1,$2,$3],yylineno);}
          | IDENTIFICADOR {$$= nodobase.nuevonodo('VARIABLE_ID',[$1],yylineno);}
          ;
 
-tipovariable: RLET   {$$= nodobase.nuevonodo('LET',[$1],yylineno);}
-            | RCONST {$$= nodobase.nuevonodo('CONST',[$1],yylineno);}
+//LISTO
+tipovariable: RLET   {$$= nodobase.nuevonodo('LET',[$1],yylineno);}  //LISTO
+            | RCONST {$$= nodobase.nuevonodo('CONST',[$1],yylineno);} //LISTO
             ;
 
-
+//LISTO
 asignacion: IDENTIFICADOR RIGUAL expresion RPUNTOCOMA
             {$$=nodobase.nuevonodo('ASIGNACION',[$1,$2,$3,$4],yylineno)};
 
@@ -216,9 +221,14 @@ parametros: parametros RCOMA parametro {$1.hijos.push($2); $$=$1;}
 parametro: IDENTIFICADOR RDOSPUNTOS tipodato {$$= nodobase.nuevonodo('PARAMETRO',[$1,$2,$3],yylineno);};
 
 
-tipodato:  RSTRING {$$= nodobase.nuevonodo('STRING',[$1],yylineno);}
+tipodato:  
+          //LISTO
+           RSTRING {$$= nodobase.nuevonodo('STRING',[$1],yylineno);}
+           //LISTO  
           |RNUMBER {$$= nodobase.nuevonodo('NUMBER',[$1],yylineno);}
+          //LISTO
           |RBOOLEAN {$$= nodobase.nuevonodo('BOOLEAN',[$1],yylineno);}
+          //LISTO
           |RVOID   {$$= nodobase.nuevonodo('VOID',[$1],yylineno);}
           ;
 
@@ -260,12 +270,12 @@ expresion:
           /*RESTANTES*/
           |RPARA expresion RPARC  {$$= nodobase.nuevonodo('PAREXPRESION',[$1,$2,$3],yylineno);}
           |expresion RINTERROGACION expresion RDOSPUNTOS expresion
-          |NUM                    {$$= nodobase.nuevonodo('NUMERO',[$1],yylineno);}
+          |NUM                    {$$= nodobase.nuevonodo('NUMERO',[$1],yylineno);} //LISTO
           |RTRUE                  {$$= nodobase.nuevonodo('TRUE',[$1],yylineno);}
           |RFALSE                 {$$= nodobase.nuevonodo('FALSE',[$1],yylineno);}
           |CADENACOMILLADOBLE  {$$= nodobase.nuevonodo('COMILLA_DOBLE',[$1],yylineno);} //LISTO
           |CADENACOMILLASIMPLE {$$= nodobase.nuevonodo('COMILLA_SIMPLE',[$1],yylineno);} //LISTO
-          |IDENTIFICADOR       {$$= nodobase.nuevonodo('IDENTIFICADOR',[$1],yylineno);}
+          |IDENTIFICADOR       {$$= nodobase.nuevonodo('IDENTIFICADOR',[$1],yylineno);}  //LISTO
           //LLAMADA A FUNCIONES 
           | IDENTIFICADOR RPARA listaexpresiones RPARC 
           ;

@@ -27,7 +27,7 @@ class Traduccion2 extends React.Component {
       let ast;
       ast = Traducir.parse(this.state.valor);
       //this.props.agregarCodigo(this.state.valor);
-      //console.log(ast);
+      console.log(ast);
       let codigoDesanidado=desanidar(ast);
       console.log(codigoDesanidado);
       //this.setState(this.state.valor);
