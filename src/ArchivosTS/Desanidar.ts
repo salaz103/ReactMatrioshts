@@ -10,7 +10,7 @@ function desanidar(ast:nodobase):string{
 
         return recolector;
     }
-    //*******************INSTRUCCIONES*******************************
+//*******************INSTRUCCIONES*******************************
     else if(ast.tipo=='IMPRIMIR'){
         let recolector='';
         let expresion= desanidar(ast.hijos[4]);
@@ -28,10 +28,288 @@ function desanidar(ast:nodobase):string{
         let expresion= desanidar(ast.hijos[2]);
         recolector= id+"="+expresion+";\n";
         return recolector;
+    }else if(ast.tipo=='WHILE'){
+        let recolector='';
+        let expresion= desanidar(ast.hijos[2]);
+        let lista= desanidar(ast.hijos[5]);
+        recolector= "while("+expresion+"){\n"+lista+"}\n";
+        return recolector;        
+    }else if(ast.tipo=='DO_WHILE'){
+        let recolector='';
+        let lista= desanidar(ast.hijos[2]);
+        let expresion= desanidar(ast.hijos[6]);
+        recolector= "do{\n"+lista+"}while("+expresion+")\n";
+        return recolector;
     }else if(ast.tipo=='FUNCION'){
-        
+        //HAY 4 TIPOS DE DECLARACION DE FUNCION
+        let recolector='';
+        let recolector2='';
+        let instruccionesPadre='';
+        // function id(){instrucciones}
+        if(ast.hijos.length==7){
+            const instrucciones= ast.hijos[5].hijos;
+            if(vieneFuncion(instrucciones)){
+                //SI VIENE UNA FUNCION HAY QUE IMPRIMIR ESA FUNCION Y CAMBIARLE EL NOMBRE
+                const nombrePadre= ast.hijos[1];
+                instrucciones.forEach(instruccion => {
+                    if(instruccion.tipo=='FUNCION'){
+                        //AQUI LE CAMBIAMOS EL NOMBRE A LA FUNCION ANIDADA
+                        instruccion.hijos[1]=nombrePadre+"_"+instruccion.hijos[1];
+                        recolector2+= desanidar(instruccion); 
+                    }
+                });
+                //TOCA IMPRIMIR LA FUNCION PADRE, ES DECIR LA FUNCION ACTUAL
+                instrucciones.forEach(instruccion => {
+                    if(instruccion.tipo!='FUNCION'){
+                        instruccionesPadre+= desanidar(instruccion);
+                    }
+                });
+              
+                recolector= "function "+nombrePadre+"(){\n"+ instruccionesPadre+"}\n"+ recolector2;
+                return recolector;
+                
+            }else{
+              let id= ast.hijos[1];
+              let instrucciones= desanidar(ast.hijos[5]);
+              recolector="function "+id+"(){\n"+instrucciones+"}\n";
+              return recolector;
+            }
+         
+            
+            //function id (parametros) {lista}
+        }else if(ast.hijos.length==8){
+            const instrucciones= ast.hijos[6].hijos;
+            const parametros= desanidar(ast.hijos[3]);
+            if(vieneFuncion(instrucciones)){
+                //SI VIENE UNA FUNCION HAY QUE IMPRIMIR ESA FUNCION Y CAMBIARLE EL NOMBRE
+                const nombrePadre= ast.hijos[1];
+                instrucciones.forEach(instruccion => {
+                    if(instruccion.tipo=='FUNCION'){
+                        //AQUI LE CAMBIAMOS EL NOMBRE A LA FUNCION ANIDADA
+                        instruccion.hijos[1]=nombrePadre+"_"+instruccion.hijos[1];
+                        recolector2+= desanidar(instruccion); 
+                    }
+                });
+                //TOCA IMPRIMIR LA FUNCION PADRE, ES DECIR LA FUNCION ACTUAL
+                instrucciones.forEach(instruccion => {
+                    if(instruccion.tipo!='FUNCION'){
+                        instruccionesPadre+= desanidar(instruccion);
+                    }
+                });
+
+                recolector= "function "+nombrePadre+"("+parametros+"){\n"+instruccionesPadre+"}\n"+recolector2;
+                return recolector;
+                
+            }else{
+              let id= ast.hijos[1];
+              let instrucciones= desanidar(ast.hijos[6]);
+              recolector="function "+id+"("+parametros+"){\n"+instrucciones+"}\n";
+              return recolector;
+            }
+
+
+            //function id ( ) : tipodato {lista}
+        }else if(ast.hijos.length==9){
+
+
+            const instrucciones= ast.hijos[7].hijos;
+            const tipodato= desanidar(ast.hijos[5]);
+            if(vieneFuncion(instrucciones)){
+                //SI VIENE UNA FUNCION HAY QUE IMPRIMIR ESA FUNCION Y CAMBIARLE EL NOMBRE
+                const nombrePadre= ast.hijos[1];
+                instrucciones.forEach(instruccion => {
+                    if(instruccion.tipo=='FUNCION'){
+                        //AQUI LE CAMBIAMOS EL NOMBRE A LA FUNCION ANIDADA
+                        instruccion.hijos[1]=nombrePadre+"_"+instruccion.hijos[1];
+                        recolector2+= desanidar(instruccion); 
+                    }
+                });
+                //TOCA IMPRIMIR LA FUNCION PADRE, ES DECIR LA FUNCION ACTUAL
+                instrucciones.forEach(instruccion => {
+                    if(instruccion.tipo!='FUNCION'){
+                        instruccionesPadre+= desanidar(instruccion);
+                    }
+                });
+
+                recolector= "function "+nombrePadre+"():"+tipodato+"{\n"+instruccionesPadre+"}\n"+recolector2;
+                return recolector;
+                
+            }else{
+              let id= ast.hijos[1];
+              let instrucciones= desanidar(ast.hijos[7]);
+              recolector="function "+id+"():"+tipodato+"{\n"+instrucciones+"}\n";
+              return recolector;
+            }
+
+            //function id (parametros) : tipodato {lista}
+        }else if(ast.hijos.length==10){
+
+            const instrucciones= ast.hijos[8].hijos;
+            const parametros= desanidar(ast.hijos[3]);
+            const tipodato= desanidar(ast.hijos[6]);
+            if(vieneFuncion(instrucciones)){
+                //SI VIENE UNA FUNCION HAY QUE IMPRIMIR ESA FUNCION Y CAMBIARLE EL NOMBRE
+                const nombrePadre= ast.hijos[1];
+                instrucciones.forEach(instruccion => {
+                    if(instruccion.tipo=='FUNCION'){
+                        //AQUI LE CAMBIAMOS EL NOMBRE A LA FUNCION ANIDADA
+                        instruccion.hijos[1]=nombrePadre+"_"+instruccion.hijos[1];
+                        recolector2+= desanidar(instruccion); 
+                    }
+                });
+                //TOCA IMPRIMIR LA FUNCION PADRE, ES DECIR LA FUNCION ACTUAL
+                instrucciones.forEach(instruccion => {
+                    if(instruccion.tipo!='FUNCION'){
+                        instruccionesPadre+= desanidar(instruccion);
+                    }
+                });
+
+                recolector= "function "+nombrePadre+"("+parametros+"):"+tipodato+"{\n"+instruccionesPadre+"}\n"+recolector2;
+                return recolector;
+                
+            }else{
+              let id= ast.hijos[1];
+              let instrucciones= desanidar(ast.hijos[8]);
+              recolector="function "+id+"("+parametros+"):"+tipodato+"{\n"+instrucciones+"}\n";
+              return recolector;
+            }
+        }
+
+    }else if(ast.tipo=='RETURN'){
+        let recolector='';
+
+        if(ast.hijos.length==2){
+            recolector= "return ;"
+        }else if(ast.hijos.length==3){
+            let expresion= desanidar(ast.hijos[1]);
+            recolector= "return "+expresion+";\n"
+        }
+
+        return recolector;
     }
-    // ****************LISTAS - NODOS INTERMEDIOS*********************
+//****************************EXPRESIONES***********************/
+    else if(ast.tipo=='MAS'){
+        let recolector='';
+        let operizq= desanidar(ast.hijos[0]);
+        let operder= desanidar(ast.hijos[2]);
+
+        recolector= operizq+"+"+operder;
+        return recolector;
+    }else if(ast.tipo=='MENOS'){
+        let recolector='';
+        let operizq= desanidar(ast.hijos[0]);
+        let operder= desanidar(ast.hijos[2]);
+
+        recolector= operizq+"-"+operder;
+        return recolector;
+
+    }else if(ast.tipo=='POR'){
+        let recolector='';
+        let operizq= desanidar(ast.hijos[0]);
+        let operder= desanidar(ast.hijos[2]);
+
+        recolector= operizq+"*"+operder;
+        return recolector;
+
+    }else if(ast.tipo=='DIVISION'){
+        let recolector='';
+        let operizq= desanidar(ast.hijos[0]);
+        let operder= desanidar(ast.hijos[2]);
+
+        recolector= operizq+"/"+operder;
+        return recolector;
+
+    }else if(ast.tipo=='MODULO'){
+        let recolector='';
+        let operizq= desanidar(ast.hijos[0]);
+        let operder= desanidar(ast.hijos[2]);
+
+        recolector= operizq+"%"+operder;
+        return recolector;
+
+    }else if(ast.tipo=='EXPONENTE'){
+        let recolector='';
+        let operizq= desanidar(ast.hijos[0]);
+        let operder= desanidar(ast.hijos[2]);
+
+        recolector= operizq+"**"+operder;
+        return recolector;
+
+    }else if(ast.tipo=='MAYORQUE'){
+        let recolector='';
+        let operizq= desanidar(ast.hijos[0]);
+        let operder= desanidar(ast.hijos[2]);
+
+        recolector= operizq+">"+operder;
+        return recolector;
+
+    }else if(ast.tipo=='MENORQUE'){
+        let recolector='';
+        let operizq= desanidar(ast.hijos[0]);
+        let operder= desanidar(ast.hijos[2]);
+
+        recolector= operizq+"<"+operder;
+        return recolector;
+
+    }else if(ast.tipo=='MAYORIGUALQUE'){
+        let recolector='';
+        let operizq= desanidar(ast.hijos[0]);
+        let operder= desanidar(ast.hijos[2]);
+
+        recolector= operizq+">="+operder;
+        return recolector;
+
+    }else if(ast.tipo=='MENORIGUALQUE'){
+        let recolector='';
+        let operizq= desanidar(ast.hijos[0]);
+        let operder= desanidar(ast.hijos[2]);
+
+        recolector= operizq+"<="+operder;
+        return recolector;
+
+    }else if(ast.tipo=='IGUALQUE'){
+        let recolector='';
+        let operizq= desanidar(ast.hijos[0]);
+        let operder= desanidar(ast.hijos[2]);
+
+        recolector= operizq+"=="+operder;
+        return recolector;
+
+    }else if(ast.tipo=='DIFERENTEQUE'){
+        let recolector='';
+        let operizq= desanidar(ast.hijos[0]);
+        let operder= desanidar(ast.hijos[2]);
+
+        recolector= operizq+"!="+operder;
+        return recolector;
+
+    }else if(ast.tipo=='AND'){
+        let recolector='';
+        let operizq= desanidar(ast.hijos[0]);
+        let operder= desanidar(ast.hijos[2]);
+
+        recolector= operizq+"&&"+operder;
+        return recolector;
+
+    }else if(ast.tipo=='OR'){
+        let recolector='';
+        let operizq= desanidar(ast.hijos[0]);
+        let operder= desanidar(ast.hijos[2]);
+
+        recolector= operizq+"||"+operder;
+        return recolector;
+
+    }else if(ast.tipo=='NOT'){
+        let recolector='';
+        let operando= desanidar(ast.hijos[1]);
+
+        recolector= "!"+operando;
+        return recolector;
+
+    }
+
+
+// ****************LISTAS - NODOS INTERMEDIOS*********************
     else if(ast.tipo=='LISTA_VARIABLES'){
         let recolector='';
 
@@ -43,6 +321,30 @@ function desanidar(ast:nodobase):string{
             });
         }else{
         //SI LA LISTA DE VARIABLES TRAE MAS DE UN HIJO
+        //SIGNIFICA QUE LA LISTA VIENE SEPARADA POR COMAS
+        let contador:number= 0;
+        let hijos:number= ast.hijos.length;
+        ast.hijos.forEach(variable => {
+            contador++;
+            if(contador==hijos){
+                recolector+= desanidar(variable);
+            }else{
+                recolector+= desanidar(variable)+",";
+            }
+        });
+        }
+        return recolector;
+    }else if(ast.tipo=='LISTA_PARAMETROS'){
+        let recolector='';
+
+        if(ast.hijos.length==1){
+            //SI LA LISTA SOLO TRAE UN HIJO
+            //ENTONCES NO LE AGREGAMOS COMAS
+            ast.hijos.forEach(variable => {
+                recolector+= desanidar(variable);
+            });
+        }else{
+        //SI LA LISTA DE PARAMETROS TRAE MAS DE UN HIJO
         //SIGNIFICA QUE LA LISTA VIENE SEPARADA POR COMAS
         let contador:number= 0;
         let hijos:number= ast.hijos.length;
@@ -83,8 +385,14 @@ function desanidar(ast:nodobase):string{
         let id= ast.hijos[0];
         recolector= id;
         return recolector;
+    }else if(ast.tipo=='PARAMETRO'){
+        let recolector='';
+        let id= ast.hijos[0];
+        let tipodato= desanidar(ast.hijos[2]);
+        recolector= id+":"+tipodato;
+        return recolector;
     }
-    //*****************NODOS HOJA, SUS HIJOS YA NO TRAEN MAS HIJOS************************
+//**************NODOS HOJA, SUS HIJOS YA NO TRAEN MAS HIJOS************************
     else if(ast.tipo=='COMILLA_DOBLE'){
         let valor= "\""+ast.hijos[0]+"\"";
         return valor;
@@ -120,5 +428,17 @@ function desanidar(ast:nodobase):string{
     return '';
 
 }
+
+function vieneFuncion(instrucciones:any):boolean{
+    for (let i = 0; i < instrucciones.length; i++) {
+        if(instrucciones[i].tipo=='FUNCION'){
+          //SI ES UNA FUNCION REGRESAMOS TRUE
+          return true;
+        }
+      }
+      //SI REGRESAMOS FALSE ES POR QUE NO VIENEN FUNCIONES EN LAS INSTRUCCIONES
+      return false;
+}
+
 
 export {desanidar};

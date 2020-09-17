@@ -101,7 +101,7 @@ break;
 case 17:
 this.$=nodobase.nuevonodo('DECLARACION_VARIABLE',[$$[$0-2],$$[$0-1],$$[$0]],yylineno);
 break;
-case 18:
+case 18: case 45:
 $$[$0-2].hijos.push($$[$0]); this.$=$$[$0-2];
 break;
 case 19:
@@ -158,9 +158,6 @@ break;
 case 44:
 this.$= nodobase.nuevonodo('FUNCION',[$$[$0-8],$$[$0-7],$$[$0-6],$$[$0-5],$$[$0-4],$$[$0-3],$$[$0-2],$$[$0-1],$$[$0]],yylineno);
 break;
-case 45:
-$$[$0-2].hijos.push($$[$0-1]); this.$=$$[$0-2];
-break;
 case 46:
 this.$=nodobase.nuevonodo('LISTA_PARAMETROS',[$$[$0]],yylineno);
 break;
@@ -183,10 +180,10 @@ case 52:
 this.$= nodobase.nuevonodo('IMPRIMIR',[$$[$0-6],$$[$0-5],$$[$0-4],$$[$0-3],$$[$0-2],$$[$0-1],$$[$0]],yylineno);
 break;
 case 53:
-this.$= nodobase.nuevonodo('RETURN_SOLO',[$$[$0-1],$$[$0]],yylineno);
+this.$= nodobase.nuevonodo('RETURN',[$$[$0-1],$$[$0]],yylineno);
 break;
 case 54:
-this.$= nodobase.nuevonodo('RETURN_EXP',[$$[$0-2],$$[$0-1],$$[$0]],yylineno);
+this.$= nodobase.nuevonodo('RETURN',[$$[$0-2],$$[$0-1],$$[$0]],yylineno);
 break;
 case 57:
 this.$= nodobase.nuevonodo('MAS',[$$[$0-2],$$[$0-1],$$[$0]],yylineno);
