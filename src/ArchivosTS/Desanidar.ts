@@ -1,5 +1,40 @@
 import nodobase from '../arbolBase/nodobase.js';
 
+
+let grafo:string='';
+let contador:number;
+
+function AST_grafo(ast:nodobase): string {
+    contador = 0;
+    grafo = "digraph AST {\n";
+    if (ast != null) {
+      graficar(ast);
+    }
+    grafo += "\n}";
+    return grafo;
+  }
+
+function graficar(ast:nodobase):void{
+
+    if(ast instanceof Object){
+        let padre= contador;
+        grafo += "node"+padre+"[label=\""+ast.tipo+"\"];\n";
+        if (ast.hasOwnProperty("hijos")){
+            ast.hijos.forEach((hijo:any) => {
+                let idHijo = ++contador;
+                if (hijo instanceof Object){
+                    graficar(hijo);
+                }else{
+                grafo+= "node"+idHijo+"[label=\""+hijo+"\"];\n"
+                }
+                grafo+= "node"+padre+"->node"+idHijo+";\n";
+            });
+        }
+    }
+}
+
+
+
 function desanidar(ast:nodobase):string{
     //PRIMERO RECIBIMOS LA RAIZ DEL AST
     if(ast.tipo=='INSTRUCCIONES'){
@@ -441,4 +476,4 @@ function vieneFuncion(instrucciones:any):boolean{
 }
 
 
-export {desanidar};
+export {desanidar,AST_grafo};

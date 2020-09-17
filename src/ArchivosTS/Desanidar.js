@@ -1,5 +1,35 @@
 "use strict";
 exports.__esModule = true;
+var grafo = '';
+var contador;
+function AST_grafo(ast) {
+    contador = 0;
+    grafo = "digraph AST {\n";
+    if (ast != null) {
+        graficar(ast);
+    }
+    grafo += "\n}";
+    return grafo;
+}
+exports.AST_grafo = AST_grafo;
+function graficar(ast) {
+    if (ast instanceof Object) {
+        var padre_1 = contador;
+        grafo += "node" + padre_1 + "[label=\"" + ast.tipo + "\"];\n";
+        if (ast.hasOwnProperty("hijos")) {
+            ast.hijos.forEach(function (hijo) {
+                var idHijo = ++contador;
+                if (hijo instanceof Object) {
+                    graficar(hijo);
+                }
+                else {
+                    grafo += "node" + idHijo + "[label=\"" + hijo + "\"];\n";
+                }
+                grafo += "node" + padre_1 + "->node" + idHijo + ";\n";
+            });
+        }
+    }
+}
 function desanidar(ast) {
     //PRIMERO RECIBIMOS LA RAIZ DEL AST
     if (ast.tipo == 'INSTRUCCIONES') {

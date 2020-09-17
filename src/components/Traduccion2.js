@@ -7,7 +7,7 @@ import {agregarCodigo} from '../actions/ts';
 import "ace-builds/src-noconflict/mode-typescript";
 import "ace-builds/src-noconflict/theme-tomorrow_night_blue";
 import "ace-builds/src-noconflict/ext-language_tools";
-import {desanidar} from '../ArchivosTS/Desanidar';
+import {desanidar,AST_grafo} from '../ArchivosTS/Desanidar';
 
 class Traduccion2 extends React.Component {
   state = {
@@ -23,14 +23,15 @@ class Traduccion2 extends React.Component {
 
 
   traducir=()=>{
-      //console.log(this.state.valor);
       let ast;
+      let graphviz;
       ast = Traducir.parse(this.state.valor);
-      //this.props.agregarCodigo(this.state.valor);
       console.log(ast);
+      
       let codigoDesanidado=desanidar(ast);
+      graphviz= AST_grafo(ast);
       console.log(codigoDesanidado);
-      //this.setState(this.state.valor);
+      this.props.agregarCodigo(graphviz);
   }
 
   ejecutar=()=>{

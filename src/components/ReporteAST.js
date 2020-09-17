@@ -4,7 +4,10 @@ import {Graphviz} from 'graphviz-react';
 
 const ReporteAST= (props)=>(
     <div>
-        <Graphviz dot={props.codigografo.codigografo}/>
+        <Graphviz 
+        dot={props.codigografo.codigografo}
+        options={{zoom:true, height:700, width:1500}}
+        />
     </div>
 );
 
