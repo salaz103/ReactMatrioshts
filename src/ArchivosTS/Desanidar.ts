@@ -3,7 +3,6 @@ const nodobase= require('../arbolBase/nodobase').nodobase;
 
 let grafo:string='';
 let contador:number;
-let funciones= nodobase.nuevonodo('FUNCIONES',[],0);
 
 
 function AST_grafo(ast:typeof nodobase): string {
@@ -16,9 +15,6 @@ function AST_grafo(ast:typeof nodobase): string {
     return grafo;
   }
 
-function desanidadas():any{
-    return funciones;
-}
 
 function graficar(ast:typeof nodobase):void{
 
@@ -97,35 +93,21 @@ function desanidar(ast:typeof nodobase):string{
                         recolector2+= desanidar(instruccion); 
                     }
                 });
-                //CREAMOS LA NUEVA FUNCION PERO SIN UNA INSTRUCCION FUNCION EN ELLA
-                let funcionPadre= nodobase.nuevonodo('FUNCION',[],ast.posicion);
-                funcionPadre.hijos.push(ast.hijos[0]);
-                funcionPadre.hijos.push(ast.hijos[1]);
-                funcionPadre.hijos.push(ast.hijos[2]);
-                funcionPadre.hijos.push(ast.hijos[3]);
-                funcionPadre.hijos.push(ast.hijos[4]);
-                let nuevasInstrucciones= nodobase.nuevonodo('INSTRUCCIONES',[],ast.hijos[5].posicion);
+                
                 //TOCA IMPRIMIR LA FUNCION PADRE, ES DECIR LA FUNCION ACTUAL
                 instrucciones.forEach(instruccion => {
                     if(instruccion.tipo!='FUNCION'){
                         instruccionesPadre+= desanidar(instruccion);
-                        nuevasInstrucciones.hijos.push(instruccion);
                     }
                 });
-                //METEMOS LAS NUEVAS INSTRUCCIONES
-                funcionPadre.hijos.push(nuevasInstrucciones);
-                funcionPadre.hijos.push(ast.hijos[6]);
+                
                 recolector= "function "+nombrePadre+"(){\n"+ instruccionesPadre+"}\n"+ recolector2;
-                //AGREGANDO LAS FUNCIONES YA DESANIDADAS Y CON NOMBRE CAMBIADO
-                funciones.hijos.push(funcionPadre);
                 return recolector;
                 
             }else{
               let id= ast.hijos[1];
               let instrucciones= desanidar(ast.hijos[5]);
               recolector="function "+id+"(){\n"+instrucciones+"}\n";
-              //AGREGANDO LAS FUNCIONES YA DESANIDADAS Y CON NOMBRE CAMBIADO
-              funciones.hijos.push(ast);
               return recolector;
             }
          
@@ -144,25 +126,14 @@ function desanidar(ast:typeof nodobase):string{
                         recolector2+= desanidar(instruccion); 
                     }
                 });
-                //CREAMOS LA NUEVA FUNCION PERO SIN UNA INSTRUCCION FUNCION EN ELLA
-                let funcionPadre= nodobase.nuevonodo('FUNCION',[],ast.posicion);
-                funcionPadre.hijos.push(ast.hijos[0]);
-                funcionPadre.hijos.push(ast.hijos[1]);
-                funcionPadre.hijos.push(ast.hijos[2]);
-                funcionPadre.hijos.push(ast.hijos[3]);
-                funcionPadre.hijos.push(ast.hijos[4]);
-                funcionPadre.hijos.push(ast.hijos[5]);
-                let nuevasInstrucciones= nodobase.nuevonodo('INSTRUCCIONES',[],ast.hijos[6].posicion);
+               
                 //TOCA IMPRIMIR LA FUNCION PADRE, ES DECIR LA FUNCION ACTUAL
                 instrucciones.forEach(instruccion => {
                     if(instruccion.tipo!='FUNCION'){
                         instruccionesPadre+= desanidar(instruccion);
-                        nuevasInstrucciones.hijos.push(instruccion);
                     }
                 });
-                funcionPadre.hijos.push(nuevasInstrucciones);
-                funcionPadre.hijos.push(ast.hijos[7]);
-                funciones.hijos.push(funcionPadre);
+               
                 recolector= "function "+nombrePadre+"("+parametros+"){\n"+instruccionesPadre+"}\n"+recolector2;
                 return recolector;
                 
@@ -170,7 +141,6 @@ function desanidar(ast:typeof nodobase):string{
               let id= ast.hijos[1];
               let instrucciones= desanidar(ast.hijos[6]);
               recolector="function "+id+"("+parametros+"){\n"+instrucciones+"}\n";
-              funciones.hijos.push(ast);
               return recolector;
             }
 
@@ -190,26 +160,14 @@ function desanidar(ast:typeof nodobase):string{
                         recolector2+= desanidar(instruccion); 
                     }
                 });
-                //CREAMOS LA NUEVA FUNCION PERO SIN UNA INSTRUCCION FUNCION EN ELLA
-                let funcionPadre= nodobase.nuevonodo('FUNCION',[],ast.posicion);
-                funcionPadre.hijos.push(ast.hijos[0]);
-                funcionPadre.hijos.push(ast.hijos[1]);
-                funcionPadre.hijos.push(ast.hijos[2]);
-                funcionPadre.hijos.push(ast.hijos[3]);
-                funcionPadre.hijos.push(ast.hijos[4]);
-                funcionPadre.hijos.push(ast.hijos[5]);
-                funcionPadre.hijos.push(ast.hijos[6]);
-                let nuevasInstrucciones= nodobase.nuevonodo('INSTRUCCIONES',[],ast.hijos[7].posicion);
+                
                 //TOCA IMPRIMIR LA FUNCION PADRE, ES DECIR LA FUNCION ACTUAL
                 instrucciones.forEach(instruccion => {
                     if(instruccion.tipo!='FUNCION'){
                         instruccionesPadre+= desanidar(instruccion);
-                        nuevasInstrucciones.hijos.push(instruccion);
                     }
                 });
-                funcionPadre.hijos.push(nuevasInstrucciones);
-                funcionPadre.hijos.push(ast.hijos[8]);
-                funciones.hijos.push(funcionPadre);
+                
                 recolector= "function "+nombrePadre+"():"+tipodato+"{\n"+instruccionesPadre+"}\n"+recolector2;
                 return recolector;
                 
@@ -217,7 +175,6 @@ function desanidar(ast:typeof nodobase):string{
               let id= ast.hijos[1];
               let instrucciones= desanidar(ast.hijos[7]);
               recolector="function "+id+"():"+tipodato+"{\n"+instrucciones+"}\n";
-              funciones.hijos.push(ast);
               return recolector;
             }
 
@@ -237,27 +194,13 @@ function desanidar(ast:typeof nodobase):string{
                         recolector2+= desanidar(instruccion); 
                     }
                 });
-                //CREAMOS LA NUEVA FUNCION PERO SIN UNA INSTRUCCION FUNCION EN ELLA
-                let funcionPadre= nodobase.nuevonodo('FUNCION',[],ast.posicion);
-                funcionPadre.hijos.push(ast.hijos[0]); //function
-                funcionPadre.hijos.push(ast.hijos[1]); //id
-                funcionPadre.hijos.push(ast.hijos[2]); // (
-                funcionPadre.hijos.push(ast.hijos[3]); //PARAMETROS
-                funcionPadre.hijos.push(ast.hijos[4]); // )
-                funcionPadre.hijos.push(ast.hijos[5]); // :
-                funcionPadre.hijos.push(ast.hijos[6]); // tipodato
-                funcionPadre.hijos.push(ast.hijos[7]); // {
-                let nuevasInstrucciones= nodobase.nuevonodo('INSTRUCCIONES',[],ast.hijos[8].posicion);
                 //TOCA IMPRIMIR LA FUNCION PADRE, ES DECIR LA FUNCION ACTUAL
                 instrucciones.forEach(instruccion => {
                     if(instruccion.tipo!='FUNCION'){
                         instruccionesPadre+= desanidar(instruccion);
-                        nuevasInstrucciones.hijos.push(instruccion);
                     }
                 });
-                funcionPadre.hijos.push(nuevasInstrucciones);
-                funcionPadre.hijos.push(ast.hijos[9]);
-                funciones.hijos.push(funcionPadre);
+               
                 recolector= "function "+nombrePadre+"("+parametros+"):"+tipodato+"{\n"+instruccionesPadre+"}\n"+recolector2;
                 return recolector;
                 
@@ -265,7 +208,6 @@ function desanidar(ast:typeof nodobase):string{
               let id= ast.hijos[1];
               let instrucciones= desanidar(ast.hijos[8]);
               recolector="function "+id+"("+parametros+"):"+tipodato+"{\n"+instrucciones+"}\n";
-              funciones.hijos.push(ast);
               return recolector;
             }
         }
@@ -537,4 +479,4 @@ function vieneFuncion(instrucciones:any):boolean{
 
 
 
-export {desanidar,AST_grafo,desanidadas};
+export {desanidar,AST_grafo};

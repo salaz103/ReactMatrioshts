@@ -8,23 +8,23 @@ import {agregarCodigo} from '../actions/ts';
 import "ace-builds/src-noconflict/mode-typescript";
 import "ace-builds/src-noconflict/theme-tomorrow_night_blue";
 import "ace-builds/src-noconflict/ext-language_tools";
-import {desanidar,AST_grafo,desanidadas} from '../ArchivosTS/Desanidar';
+import {desanidar,AST_grafo} from '../ArchivosTS/Desanidar';
 
 class Traduccion2 extends React.Component {
   state = {
-    valor: " ",
-    codigofinal:"",
+    valorEditor1: " ",
+    codigoDesanidado:"",
   };
 
   onChange= (newvalue)=>{
     this.setState(()=>({
-        valor:newvalue
+      valorEditor1:newvalue
     }))
   };
 
   onChange2= (codigo)=>{
     this.setState(()=>({
-        codigofinal:codigo
+      codigoDesanidado:codigo
     }))
   };
 
@@ -32,19 +32,14 @@ class Traduccion2 extends React.Component {
   traducir=()=>{
       let ast;
       let graphviz;
-      ast = Traducir.parse(this.state.valor);
+      ast = Traducir.parse(this.state.valorEditor1);
       console.log(ast);
       
-      let codigoDesanidado=desanidar(ast);
+      let codigofinal=desanidar(ast);
       graphviz= AST_grafo(ast);
-      console.log(codigoDesanidado);
-      this.onChange2(codigoDesanidado);
-      let funciones= desanidadas();
+      console.log(codigofinal);
+      this.onChange2(codigofinal);
       this.props.agregarCodigo(graphviz);
-      console.log("FUNCIONES DESANIDADAS:");
-      console.log(funciones);
-      console.log("AST ORIGINAL DESPUES DE HABERLO RECORRIDO");
-      console.log(ast);
   }
 
   ejecutar=()=>{
@@ -79,7 +74,7 @@ class Traduccion2 extends React.Component {
             mode="typescript"
             theme="tomorrow_night_blue"
             name="editor"
-            value={this.state.codigofinal}
+            value={this.state.codigoDesanidado}
             fontSize='20px'
         />
         </div>
