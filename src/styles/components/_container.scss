@@ -9,3 +9,11 @@
   flex-direction: row;
   padding: $m-size;
 }
+
+.container-inline2{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  color: white;
+  font-weight: bold;
+}

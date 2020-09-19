@@ -57,6 +57,10 @@ class Traduccion2 extends React.Component {
       <div>
         <div className='container'>
 
+        <div className='container-inline2'>
+          <h1>ENTRADA</h1>
+          <h1>SALIDA</h1>
+        </div>
 
         <div className='container-inline'>
         <AceEditor

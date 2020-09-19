@@ -9,7 +9,7 @@ const AppRouter=()=>(
     <BrowserRouter>
     <div>
     <Header title='ReactMatrioshTS- 201213181'></Header>
-        <Switch>
+      <Switch>
       <Route path="/" component={Traduccion2} exact={true}/>
       <Route path="/ast" component={ReporteAST}/>
       </Switch>  
