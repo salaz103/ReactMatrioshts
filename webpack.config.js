@@ -6,7 +6,7 @@ module.exports={
     entry:'./src/app.js',
     output:{
         path:path.join(__dirname,'public/build'),
-        filename:'bundle.js'
+        filename:'bundle.js',
     },
     //ESTA ES LA CONFIGURACIÓN PARA BABEL CON WEBPACK
     module:{
