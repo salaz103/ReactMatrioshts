@@ -1,10 +1,10 @@
 import {createStore, combineReducers} from 'redux';
-import codigoReducer from '../reducers/codigoReducer';
+import reducerGeneral from '../reducers/codigoReducer';
 
 export default ()=>{
     const store=createStore(
         combineReducers({
-            codigografo:codigoReducer
+            storecodigo:reducerGeneral
         })
     );
 

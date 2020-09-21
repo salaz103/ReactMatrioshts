@@ -1,9 +1,9 @@
-const enum tipo{
-    NUMBER,
-    STRING,
-    BOOLEAN,
-    TYPE,
-    VOID
+ enum tipo_valor{
+    NUMBER="NUMBER",
+    STRING ="STRING",
+    BOOLEAN ="BOOLEAN",
+    TYPE ="TYPE",
+    VOID="VOID"
 }
 
-export default tipo;
+export {tipo_valor};

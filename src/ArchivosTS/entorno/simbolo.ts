@@ -1,12 +1,12 @@
-import tipo from './tipo';
+import {tipo_valor} from './tipo';
 
 export class simbolo{
 
-    tipoSimbolo:tipo;
+    tipoSimbolo:tipo_valor;
     id:string;
     valor:object;
 
-    constructor(id_e:string,tipo_e:tipo,valor?:object){
+    constructor(id_e:string,tipo_e:tipo_valor,valor?:object){
         this.id=id_e;
         this.tipoSimbolo=tipo_e;
         this.valor=valor;

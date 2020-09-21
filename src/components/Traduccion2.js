@@ -1,14 +1,16 @@
 import React from 'react';
 import AceEditor from 'react-ace';
-import { split as SplitEditor } from "react-ace";
 import Action from './Action';
 import Traducir from '../analizadores/matrioshts';
+import Ejecutar from '../analizadores/ejecutar';
 import {connect} from 'react-redux';
 import {agregarCodigo} from '../actions/ts';
+import Consola from './Consola';
 import "ace-builds/src-noconflict/mode-typescript";
 import "ace-builds/src-noconflict/theme-tomorrow_night_blue";
 import "ace-builds/src-noconflict/ext-language_tools";
 import {desanidar,AST_grafo} from '../ArchivosTS/Desanidar';
+import inicioEjecucion from '../ArchivosTS/Ejecutar';
 
 class Traduccion2 extends React.Component {
   state = {
@@ -19,6 +21,12 @@ class Traduccion2 extends React.Component {
   onChange= (newvalue)=>{
     this.setState(()=>({
       valorEditor1:newvalue
+    }))
+  };
+
+  ingresoManual= (newvalue)=>{
+    this.setState(()=>({
+      codigoDesanidado:newvalue
     }))
   };
 
@@ -43,8 +51,17 @@ class Traduccion2 extends React.Component {
   }
 
   ejecutar=()=>{
-      console.log('Presiono el boton de ejecutar');
+      ///////**************************RECORDATORIO************************************ */
+    // *****FALTA AGREGAR QUE GRAFIQUE CUANDO SE PRESIONE EL BOTON EJECUTAR
+
+
+    let ast;
+    ast= Ejecutar.parse(this.state.codigoDesanidado);
+    console.log(ast);
+    inicioEjecucion(ast);
   }
+
+
 
   render() {
 
@@ -53,14 +70,14 @@ class Traduccion2 extends React.Component {
         <div className='container'>
 
         <div className='container-inline2'>
-          <h1>ENTRADA</h1>
-          <h1>SALIDA</h1>
+          <h1>Entrada traduccion</h1>
+          <h1>Salida traduccion</h1>
         </div>
 
         <div className='container-inline'>
         <AceEditor
             onChange={this.onChange}
-            width='1500px'
+            width='1900px'
             height='400px'
             mode="typescript"
             theme="tomorrow_night_blue"
@@ -69,7 +86,8 @@ class Traduccion2 extends React.Component {
         />
 
         <AceEditor
-            width='1500px'
+            onChange={this.ingresoManual}
+            width='1900px'
             height='400px'
             mode="typescript"
             theme="tomorrow_night_blue"
@@ -89,12 +107,17 @@ class Traduccion2 extends React.Component {
             action={this.ejecutar}
             nombre= 'Ejecutar'
         />
+
+       <Consola/>
+
         </div>
         </div>
       </div>
     );
   }
 }
+
+
 
 
 export default connect(null,{agregarCodigo})(Traduccion2)

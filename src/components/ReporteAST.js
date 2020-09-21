@@ -13,7 +13,7 @@ const ReporteAST= (props)=>(
 
 const mapStatetoProps= (state)=>{
     return{
-      codigografo: state.codigografo,
+      codigografo: state.storecodigo,
     };
 };
 
