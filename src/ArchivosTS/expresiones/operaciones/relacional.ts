@@ -1,0 +1,104 @@
+import entorno from "../../entorno/entorno";
+import { operador, tipo_valor } from "../../entorno/tipo";
+import expresion from "../expresion";
+import operacion from "./operacion";
+
+export class relacional extends operacion implements expresion{
+
+    tipo:tipo_valor;
+
+    constructor(expiz:expresion,op:operador,expder:expresion){
+        super(expiz,op,expder);
+    }
+
+    obtenerValor(ambito:entorno){
+        const valorizquierdo= this.expresionizquierda.obtenerValor(ambito);
+        const valorderecha= this.expresionderecha.obtenerValor(ambito);
+
+        const tipoiz= this.expresionizquierda.obtenerTipo(ambito);
+        const tipoder= this.expresionderecha.obtenerTipo(ambito);
+
+        //PRIMERO VEMOS SI ES >,<,>=,<=,!=,==
+        if(this.tipooperador==operador.MAYORQUE){
+
+            if(tipoiz==tipo_valor.NUMBER && tipoder==tipo_valor.NUMBER){
+                const res= Number(valorizquierdo) > Number(valorderecha);
+                this.tipo=tipo_valor.BOOLEAN;
+                return new Boolean(res);
+            }else{
+                //ERROR SEMANTICO
+            }
+            
+        
+    
+        }else if(this.tipooperador==operador.MENORQUE){
+            
+           if(tipoiz==tipo_valor.NUMBER && tipoder==tipo_valor.NUMBER){
+                const res= Number(valorizquierdo) < Number(valorderecha);
+                this.tipo=tipo_valor.BOOLEAN;
+                return new Boolean(res);
+            }else{
+                //ERROR SEMANTICO
+            }
+
+        }else if(this.tipooperador==operador.MAYORIGUALQUE){
+
+            if(tipoiz==tipo_valor.NUMBER && tipoder==tipo_valor.NUMBER){
+                const res= Number(valorizquierdo) >= Number(valorderecha);
+                this.tipo=tipo_valor.BOOLEAN;
+                return new Boolean(res);
+            }else{
+                //ERROR SEMANTICO
+            }
+           
+
+        }else if(this.tipooperador==operador.MENORIGUALQUE){
+
+            if(tipoiz==tipo_valor.NUMBER && tipoder==tipo_valor.NUMBER){
+                const res= Number(valorizquierdo) <= Number(valorderecha);
+                this.tipo=tipo_valor.BOOLEAN;
+                return new Boolean(res);
+            }else{
+                //ERROR SEMANTICO
+            }
+
+        }else if(this.tipooperador==operador.DIFERENTEQUE){
+
+            if(tipoiz==tipo_valor.NUMBER && tipoder==tipo_valor.NUMBER){
+                const res= Number(valorizquierdo) != Number(valorderecha);
+                this.tipo=tipo_valor.BOOLEAN;
+                return new Boolean(res);
+            }else if(tipoiz==tipo_valor.STRING && tipoder==tipo_valor.STRING){
+                const res= String(valorizquierdo) != String(valorderecha);
+                this.tipo=tipo_valor.BOOLEAN;
+                return new Boolean(res);
+            }else{
+                //ERROR SEMANTICO
+            }
+            
+
+        }else if(this.tipooperador==operador.IGUALQUE){
+
+            if(tipoiz==tipo_valor.NUMBER && tipoder==tipo_valor.NUMBER){
+                const res= Number(valorizquierdo) == Number(valorderecha);
+                this.tipo=tipo_valor.BOOLEAN;
+                return new Boolean(res);
+            }else if(tipoiz==tipo_valor.STRING && tipoder==tipo_valor.STRING){
+                const res= String(valorizquierdo) == String(valorderecha);
+                this.tipo=tipo_valor.BOOLEAN;
+                return new Boolean(res);
+            }else{
+                //ERROR SEMANTICO
+
+            }
+
+        }
+      
+        return null;
+    }
+
+    obtenerTipo(){
+        return this.tipo;
+    }
+
+}

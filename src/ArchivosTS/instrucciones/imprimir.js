@@ -8,7 +8,6 @@ var imprimir = /** @class */ (function () {
         this.expresion = expresion;
     }
     imprimir.prototype.ejecutar = function (ambito) {
-        //SIEMPRE VOY A DEVOLVER UN OBJETO {VALOR,TIPO}
         var exp = this.expresion.obtenerValor(ambito);
         var resultado = "> " + String(exp) + "\n";
         this.storeglobal.dispatch(ts_js_1.codigoconsola(resultado));

@@ -25,10 +25,81 @@ var aritmetica = /** @class */ (function (_super) {
         var valorderecha = this.expresionderecha.obtenerValor(ambito);
         var tipoiz = this.expresionizquierda.obtenerTipo(ambito);
         var tipoder = this.expresionderecha.obtenerTipo(ambito);
-        if (tipoiz == tipo_1.tipo_valor.NUMBER && tipoder == tipo_1.tipo_valor.NUMBER) {
-            var res = Number(valorizquierdo) + Number(valorderecha);
-            this.tipo = tipo_1.tipo_valor.NUMBER;
-            return new Number(res);
+        //PRIMERO VEMOS SI ES +,-,*,/
+        if (this.tipooperador == tipo_1.operador.MAS) {
+            if (tipoiz == tipo_1.tipo_valor.NUMBER && tipoder == tipo_1.tipo_valor.NUMBER) {
+                var res = Number(valorizquierdo) + Number(valorderecha);
+                this.tipo = tipo_1.tipo_valor.NUMBER;
+                return new Number(res);
+            }
+            else if (tipoiz == tipo_1.tipo_valor.STRING && tipoder == tipo_1.tipo_valor.NUMBER) {
+                var res = String(valorizquierdo) + String(valorderecha);
+                this.tipo = tipo_1.tipo_valor.STRING;
+                return new String(res);
+            }
+            else if (tipoiz == tipo_1.tipo_valor.NUMBER && tipoder == tipo_1.tipo_valor.STRING) {
+                var res = String(valorizquierdo) + String(valorderecha);
+                this.tipo = tipo_1.tipo_valor.STRING;
+                return new String(res);
+            }
+            else if (tipoiz == tipo_1.tipo_valor.STRING && tipoder == tipo_1.tipo_valor.STRING) {
+                var res = String(valorizquierdo) + String(valorderecha);
+                this.tipo = tipo_1.tipo_valor.STRING;
+                return new String(res);
+            }
+            else {
+                //AQUI IRIA UN ERRROR SEMANTICO YA QUE NO SE PUEDE HACER SUMA DE OTROS TIPOS
+            }
+        }
+        else if (this.tipooperador == tipo_1.operador.MENOS) {
+            if (tipoiz == tipo_1.tipo_valor.NUMBER && tipoder == tipo_1.tipo_valor.NUMBER) {
+                var res = Number(valorizquierdo) - Number(valorderecha);
+                this.tipo = tipo_1.tipo_valor.NUMBER;
+                return new Number(res);
+            }
+            else {
+                //ERROR SEMANTICO
+            }
+        }
+        else if (this.tipooperador == tipo_1.operador.POR) {
+            if (tipoiz == tipo_1.tipo_valor.NUMBER && tipoder == tipo_1.tipo_valor.NUMBER) {
+                var res = Number(valorizquierdo) * Number(valorderecha);
+                this.tipo = tipo_1.tipo_valor.NUMBER;
+                return new Number(res);
+            }
+            else {
+                //ERROR SEMANTICO
+            }
+        }
+        else if (this.tipooperador == tipo_1.operador.DIVISION) {
+            if (tipoiz == tipo_1.tipo_valor.NUMBER && tipoder == tipo_1.tipo_valor.NUMBER) {
+                var res = Number(valorizquierdo) / Number(valorderecha);
+                this.tipo = tipo_1.tipo_valor.NUMBER;
+                return new Number(res);
+            }
+            else {
+                //ERROR SEMANTICO
+            }
+        }
+        else if (this.tipooperador == tipo_1.operador.MODULO) {
+            if (tipoiz == tipo_1.tipo_valor.NUMBER && tipoder == tipo_1.tipo_valor.NUMBER) {
+                var res = Number(valorizquierdo) % Number(valorderecha);
+                this.tipo = tipo_1.tipo_valor.NUMBER;
+                return new Number(res);
+            }
+            else {
+                //ERROR SEMANTICO
+            }
+        }
+        else if (this.tipooperador == tipo_1.operador.EXPONENTE) {
+            if (tipoiz == tipo_1.tipo_valor.NUMBER && tipoder == tipo_1.tipo_valor.NUMBER) {
+                var res = Math.pow(Number(valorizquierdo), Number(valorderecha));
+                this.tipo = tipo_1.tipo_valor.NUMBER;
+                return new Number(res);
+            }
+            else {
+                //ERROR SEMANTICO
+            }
         }
         return null;
     };

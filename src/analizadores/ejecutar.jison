@@ -101,7 +101,9 @@ const cadena= require('../ArchivosTS/expresiones/cadena');
 const valorLogico= require('../ArchivosTS/expresiones/valorLogico');
 const numero= require('../ArchivosTS/expresiones/numero');
 const aritmetica= require('../ArchivosTS/expresiones/operaciones/aritmetica');
-
+const relacional= require('../ArchivosTS/expresiones/operaciones/relacional');
+const logica= require('../ArchivosTS/expresiones/operaciones/logica');
+const unaria= require('../ArchivosTS/expresiones/operaciones/unaria');
   //INSTRUCCIONES
 const imprimir= require('../ArchivosTS/instrucciones/imprimir');
 
@@ -255,27 +257,28 @@ listaexpresiones: listaexpresiones RCOMA expresion
 
 expresion: 
            /*EXPRESIONES ARITMETICAS*/
-           RMENOS expresion %prec UMENOS   ///FALTA PONERLO EN LA TRADUCCION
-          | expresion RMAS expresion     {$$= new aritmetica.aritmetica($1,operador.MAS,$3)}
-          |expresion RMENOS expresion  
-          |expresion RPOR expresion    
-          |expresion RDIVISION expresion 
-          |expresion RMODULO expresion   
-          |expresion REXPONENTE expresion 
+           ///FALTA PONERLO EN LA TRADUCCION
+           RMENOS expresion %prec UMENOS  {$$= new unaria.unaria(operador.MENOS,$2)} 
+          | expresion RMAS expresion      {$$= new aritmetica.aritmetica($1,operador.MAS,$3)}
+          |expresion RMENOS expresion     {$$= new aritmetica.aritmetica($1,operador.MENOS,$3)}
+          |expresion RPOR expresion       {$$= new aritmetica.aritmetica($1,operador.POR,$3)}
+          |expresion RDIVISION expresion  {$$= new aritmetica.aritmetica($1,operador.DIVISION,$3)}
+          |expresion RMODULO expresion    {$$= new aritmetica.aritmetica($1,operador.MODULO,$3)}
+          |expresion REXPONENTE expresion {$$= new aritmetica.aritmetica($1,operador.EXPONENTE,$3)}
           /*|IDENTIFICADOR RMASMAS
           |IDENTIFICADOR RMENOSMENOS*/
 
           /*EXPRESIONES RELACIONALES*/
-          |expresion RMAYORQUE expresion 
-          |expresion RMENORQUE expresion  
-          |expresion RMAYORIGUALQUE expresion 
-          |expresion RMENORIGUALQUE expresion 
-          |expresion RIGUALQUE expresion   
-          |expresion RDIFERENTEQUE expresion  
+          |expresion RMAYORQUE expresion       {$$= new relacional.relacional($1,operador.MAYORQUE,$3)}
+          |expresion RMENORQUE expresion       {$$= new relacional.relacional($1,operador.MENORQUE,$3)}
+          |expresion RMAYORIGUALQUE expresion  {$$= new relacional.relacional($1,operador.MAYORIGUALQUE,$3)}
+          |expresion RMENORIGUALQUE expresion  {$$= new relacional.relacional($1,operador.MENORIGUALQUE,$3)}
+          |expresion RIGUALQUE expresion       {$$= new relacional.relacional($1,operador.IGUALQUE,$3)}
+          |expresion RDIFERENTEQUE expresion   {$$= new relacional.relacional($1,operador.DIFERENTEQUE,$3)}
           /*EXPRESIONES LOGICAS*/
-          |expresion RAND expresion       
-          |expresion ROR expresion           
-          |RNOT expresion                      
+          |expresion RAND expresion    {$$= new logica.logica($1,operador.AND,$3)}   
+          |expresion ROR expresion     {$$= new logica.logica($1,operador.OR,$3)}      
+          |RNOT expresion              {$$= new unaria.unaria(operador.NOT,$2)}        
           /*RESTANTES*/
           |RPARA expresion RPARC  {$$=$2}
           |expresion RINTERROGACION expresion RDOSPUNTOS expresion

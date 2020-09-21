@@ -95,8 +95,53 @@ break;
 case 52:
 this.$=new imprimir.imprimir($$[$0-2])
 break;
+case 57:
+this.$= new unaria.unaria(operador.MENOS,$$[$0])
+break;
 case 58:
 this.$= new aritmetica.aritmetica($$[$0-2],operador.MAS,$$[$0])
+break;
+case 59:
+this.$= new aritmetica.aritmetica($$[$0-2],operador.MENOS,$$[$0])
+break;
+case 60:
+this.$= new aritmetica.aritmetica($$[$0-2],operador.POR,$$[$0])
+break;
+case 61:
+this.$= new aritmetica.aritmetica($$[$0-2],operador.DIVISION,$$[$0])
+break;
+case 62:
+this.$= new aritmetica.aritmetica($$[$0-2],operador.MODULO,$$[$0])
+break;
+case 63:
+this.$= new aritmetica.aritmetica($$[$0-2],operador.EXPONENTE,$$[$0])
+break;
+case 64:
+this.$= new relacional.relacional($$[$0-2],operador.MAYORQUE,$$[$0])
+break;
+case 65:
+this.$= new relacional.relacional($$[$0-2],operador.MENORQUE,$$[$0])
+break;
+case 66:
+this.$= new relacional.relacional($$[$0-2],operador.MAYORIGUALQUE,$$[$0])
+break;
+case 67:
+this.$= new relacional.relacional($$[$0-2],operador.MENORIGUALQUE,$$[$0])
+break;
+case 68:
+this.$= new relacional.relacional($$[$0-2],operador.IGUALQUE,$$[$0])
+break;
+case 69:
+this.$= new relacional.relacional($$[$0-2],operador.DIFERENTEQUE,$$[$0])
+break;
+case 70:
+this.$= new logica.logica($$[$0-2],operador.AND,$$[$0])
+break;
+case 71:
+this.$= new logica.logica($$[$0-2],operador.OR,$$[$0])
+break;
+case 72:
+this.$= new unaria.unaria(operador.NOT,$$[$0])
 break;
 case 73:
 this.$=$$[$0-1]
@@ -269,7 +314,9 @@ const cadena= require('../ArchivosTS/expresiones/cadena');
 const valorLogico= require('../ArchivosTS/expresiones/valorLogico');
 const numero= require('../ArchivosTS/expresiones/numero');
 const aritmetica= require('../ArchivosTS/expresiones/operaciones/aritmetica');
-
+const relacional= require('../ArchivosTS/expresiones/operaciones/relacional');
+const logica= require('../ArchivosTS/expresiones/operaciones/logica');
+const unaria= require('../ArchivosTS/expresiones/operaciones/unaria');
   //INSTRUCCIONES
 const imprimir= require('../ArchivosTS/instrucciones/imprimir');
 

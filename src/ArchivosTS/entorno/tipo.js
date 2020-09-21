@@ -16,6 +16,8 @@ var operador;
     operador["MENOS"] = "MENOS";
     operador["POR"] = "POR";
     operador["DIVISION"] = "DIVISION";
+    operador["MODULO"] = "MODULO";
+    operador["EXPONENTE"] = "EXPONENTE";
     //OPERADORES RELACIONES
     operador["MAYORQUE"] = "MAYORQUE";
     operador["MENORQUE"] = "MENORQUE";

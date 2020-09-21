@@ -16,7 +16,6 @@ export class imprimir implements instruccion{
     }
 
     ejecutar(ambito:entorno){
-        //SIEMPRE VOY A DEVOLVER UN OBJETO {VALOR,TIPO}
         const exp= this.expresion.obtenerValor(ambito);
         let resultado= "> "+ String(exp)+"\n";
         this.storeglobal.dispatch(codigoconsola(resultado));
