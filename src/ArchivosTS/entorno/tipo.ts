@@ -6,4 +6,23 @@
     VOID="VOID"
 }
 
-export {tipo_valor};
+enum operador{
+    //OPERADORES ARITMETICOS
+    MAS="MAS",
+    MENOS="MENOS",
+    POR="POR",
+    DIVISION="DIVISION",
+    //OPERADORES RELACIONES
+    MAYORQUE="MAYORQUE",
+    MENORQUE="MENORQUE",
+    MAYORIGUALQUE="MAYORIGUALQUE",
+    MENORIGUALQUE="MENORIGUALQUE",
+    DIFERENTEQUE="DIFERENTEQUE",
+    IGUALQUE="IGUALQUE",
+    //OPERADORES LOGICOS
+    NOT="NOT",
+    AND="AND",
+    OR="OR"
+}
+
+export {tipo_valor,operador};

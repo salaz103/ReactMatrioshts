@@ -1,5 +1,6 @@
 import expresion from "./expresion";
 import {tipo_valor} from "../entorno/tipo";
+import entorno from "../entorno/entorno";
 
 export class cadena implements expresion{
 
@@ -11,7 +12,7 @@ export class cadena implements expresion{
         this.tipoCadena=tipo;
     }
 
-    obtenerValor(){
+    obtenerValor(ambito:entorno){
         return this.valorcadena;
     }
 

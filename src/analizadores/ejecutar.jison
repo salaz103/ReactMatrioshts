@@ -99,12 +99,15 @@
   //EXPRESIONES
 const cadena= require('../ArchivosTS/expresiones/cadena');
 const valorLogico= require('../ArchivosTS/expresiones/valorLogico');
+const numero= require('../ArchivosTS/expresiones/numero');
+const aritmetica= require('../ArchivosTS/expresiones/operaciones/aritmetica');
 
   //INSTRUCCIONES
 const imprimir= require('../ArchivosTS/instrucciones/imprimir');
 
   //OTROS
 const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
+const operador= require('../ArchivosTS/entorno/tipo').operador;
 %}
 
 
@@ -252,7 +255,8 @@ listaexpresiones: listaexpresiones RCOMA expresion
 
 expresion: 
            /*EXPRESIONES ARITMETICAS*/
-           expresion RMAS expresion    
+           RMENOS expresion %prec UMENOS   ///FALTA PONERLO EN LA TRADUCCION
+          | expresion RMAS expresion     {$$= new aritmetica.aritmetica($1,operador.MAS,$3)}
           |expresion RMENOS expresion  
           |expresion RPOR expresion    
           |expresion RDIVISION expresion 
@@ -273,9 +277,9 @@ expresion:
           |expresion ROR expresion           
           |RNOT expresion                      
           /*RESTANTES*/
-          |RPARA expresion RPARC  
+          |RPARA expresion RPARC  {$$=$2}
           |expresion RINTERROGACION expresion RDOSPUNTOS expresion
-          |NUM                    
+          |NUM                  {$$=new numero.numero(Number($1),tipo_valor.NUMBER)}  
           |RTRUE                {$$=new valorLogico.valorLogico("TRUE",tipo_valor.BOOLEAN)} 
           |RFALSE               {$$=new valorLogico.valorLogico("FALSE",tipo_valor.BOOLEAN)}  
           |CADENACOMILLADOBLE   {$$=new cadena.cadena($1,tipo_valor.STRING)} 

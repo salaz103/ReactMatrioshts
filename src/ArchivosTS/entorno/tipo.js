@@ -9,3 +9,23 @@ var tipo_valor;
     tipo_valor["VOID"] = "VOID";
 })(tipo_valor || (tipo_valor = {}));
 exports.tipo_valor = tipo_valor;
+var operador;
+(function (operador) {
+    //OPERADORES ARITMETICOS
+    operador["MAS"] = "MAS";
+    operador["MENOS"] = "MENOS";
+    operador["POR"] = "POR";
+    operador["DIVISION"] = "DIVISION";
+    //OPERADORES RELACIONES
+    operador["MAYORQUE"] = "MAYORQUE";
+    operador["MENORQUE"] = "MENORQUE";
+    operador["MAYORIGUALQUE"] = "MAYORIGUALQUE";
+    operador["MENORIGUALQUE"] = "MENORIGUALQUE";
+    operador["DIFERENTEQUE"] = "DIFERENTEQUE";
+    operador["IGUALQUE"] = "IGUALQUE";
+    //OPERADORES LOGICOS
+    operador["NOT"] = "NOT";
+    operador["AND"] = "AND";
+    operador["OR"] = "OR";
+})(operador || (operador = {}));
+exports.operador = operador;

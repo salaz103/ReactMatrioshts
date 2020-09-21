@@ -1,5 +1,6 @@
 import expresion from "./expresion";
 import {tipo_valor} from "../entorno/tipo";
+import entorno from "../entorno/entorno";
 
 export class valorLogico implements expresion{
 
@@ -11,7 +12,7 @@ export class valorLogico implements expresion{
         this.tipovalor=tipo;
     }
 
-    obtenerValor(){
+    obtenerValor(ambito:entorno){
         if(this.valorlogico=='TRUE'){
             return new Boolean(true);
         }else if(this.valorlogico=='FALSE'){

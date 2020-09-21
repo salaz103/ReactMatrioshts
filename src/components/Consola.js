@@ -7,14 +7,6 @@ import "ace-builds/src-noconflict/theme-twilight";
 
 
 const Consola= (props)=>(
-    // <AceEditor
-    //         width='1000px'
-    //         readOnly= {true}
-    //         height='180px'
-    //         theme="tomorrow_night_blue"
-    //         value={props.codigoconsola.codigoconsola}
-    //         fontSize='20px'
-    //     />
     <AceEditor
             width='1000px'
             height='180px'

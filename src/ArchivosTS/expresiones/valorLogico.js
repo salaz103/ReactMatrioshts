@@ -5,7 +5,7 @@ var valorLogico = /** @class */ (function () {
         this.valorlogico = valor;
         this.tipovalor = tipo;
     }
-    valorLogico.prototype.obtenerValor = function () {
+    valorLogico.prototype.obtenerValor = function (ambito) {
         if (this.valorlogico == 'TRUE') {
             return new Boolean(true);
         }

@@ -16,13 +16,10 @@ export class imprimir implements instruccion{
     }
 
     ejecutar(ambito:entorno){
-     
-        
-        console.log(this.storeglobal.getState());
+        //SIEMPRE VOY A DEVOLVER UN OBJETO {VALOR,TIPO}
         const exp= this.expresion.obtenerValor(ambito);
-        let resultado= ">"+ String(exp)+"\n";
+        let resultado= "> "+ String(exp)+"\n";
         this.storeglobal.dispatch(codigoconsola(resultado));
-        console.log(this.storeglobal.getState());
         return null;
     }
 

@@ -5,7 +5,7 @@ var cadena = /** @class */ (function () {
         this.valorcadena = valor;
         this.tipoCadena = tipo;
     }
-    cadena.prototype.obtenerValor = function () {
+    cadena.prototype.obtenerValor = function (ambito) {
         return this.valorcadena;
     };
     cadena.prototype.obtenerTipo = function () {
