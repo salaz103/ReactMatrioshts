@@ -104,12 +104,15 @@ const aritmetica= require('../ArchivosTS/expresiones/operaciones/aritmetica');
 const relacional= require('../ArchivosTS/expresiones/operaciones/relacional');
 const logica= require('../ArchivosTS/expresiones/operaciones/logica');
 const unaria= require('../ArchivosTS/expresiones/operaciones/unaria');
+const identificador= require('../ArchivosTS/expresiones/identificador');
   //INSTRUCCIONES
 const imprimir= require('../ArchivosTS/instrucciones/imprimir');
-
+const declaracion= require('../ArchivosTS/instrucciones/declaracion');
   //OTROS
 const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
+const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;
 const operador= require('../ArchivosTS/entorno/tipo').operador;
+const variable= require('../ArchivosTS/instrucciones/variable');
 %}
 
 
@@ -141,7 +144,7 @@ lista : lista instruccion {$1.push($2); $$=$1;}
       | instruccion {$$=[$1];}
       ;
 
-instruccion:  declaraciones 
+instruccion:  declaraciones {$$=$1}
             | asignacion   
             | instruccionif 
             | instruccionswitch 
@@ -159,24 +162,30 @@ instruccion:  declaraciones
 
 
 //LISTO
-declaraciones: tipovariable listavariables RPUNTOCOMA ;
+declaraciones: tipovariable listavariables RPUNTOCOMA
+              {$$=new declaracion.declaracion($1,$2);} ;
 
 
 //LISTO
-listavariables:   listavariables RCOMA variable 
-                | variable ;
+listavariables:   listavariables RCOMA variable {$1.push($3); $$=$1;} 
+                | variable {$$=[$1];}
+                ;
 
 
 //LISTO          
-variable: IDENTIFICADOR RDOSPUNTOS tipodato RIGUAL expresion 
-         | IDENTIFICADOR RIGUAL expresion    
-         | IDENTIFICADOR RDOSPUNTOS tipodato 
+variable:  IDENTIFICADOR RDOSPUNTOS tipodato RIGUAL expresion 
+            {$$=new variable.variable($1,$3,$5)}
+         | IDENTIFICADOR RIGUAL expresion
+           {$$=new variable.variable($1,undefined,$3)}    
+         | IDENTIFICADOR RDOSPUNTOS tipodato
+           {$$=new variable.variable($1,$3,undefined)} 
          | IDENTIFICADOR 
+           {$$=new variable.variable($1)} 
          ;
 
 //LISTO
-tipovariable: RLET   
-            | RCONST  
+tipovariable: RLET   {$$=tipo_variable.LET}
+            | RCONST {$$=tipo_variable.CONST} 
             ;
 
 //LISTO
@@ -232,13 +241,13 @@ parametro: IDENTIFICADOR RDOSPUNTOS tipodato ;
 
 tipodato:  
           //LISTO
-           RSTRING 
+           RSTRING {$$=tipo_valor.STRING}
            //LISTO  
-          |RNUMBER 
+          |RNUMBER {$$=tipo_valor.NUMBER}
           //LISTO
-          |RBOOLEAN 
+          |RBOOLEAN {$$=tipo_valor.BOOLEAN}
           //LISTO
-          |RVOID   
+          |RVOID   {$$=tipo_valor.VOID}
           ;
 
 
@@ -287,7 +296,7 @@ expresion:
           |RFALSE               {$$=new valorLogico.valorLogico("FALSE",tipo_valor.BOOLEAN)}  
           |CADENACOMILLADOBLE   {$$=new cadena.cadena($1,tipo_valor.STRING)} 
           |CADENACOMILLASIMPLE  {$$=new cadena.cadena($1,tipo_valor.STRING)}   
-          |IDENTIFICADOR          
+          |IDENTIFICADOR        {$$=new identificador.identificador($1);}  
           //LLAMADA A FUNCIONES 
           | IDENTIFICADOR RPARA listaexpresiones RPARC 
           ;

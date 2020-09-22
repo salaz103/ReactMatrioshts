@@ -9,6 +9,12 @@ var tipo_valor;
     tipo_valor["VOID"] = "VOID";
 })(tipo_valor || (tipo_valor = {}));
 exports.tipo_valor = tipo_valor;
+var tipo_variable;
+(function (tipo_variable) {
+    tipo_variable["CONST"] = "CONST";
+    tipo_variable["LET"] = "LET";
+})(tipo_variable || (tipo_variable = {}));
+exports.tipo_variable = tipo_variable;
 var operador;
 (function (operador) {
     //OPERADORES ARITMETICOS

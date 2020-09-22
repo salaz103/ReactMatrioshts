@@ -55,7 +55,7 @@ class Traduccion2 extends React.Component {
     // *****FALTA AGREGAR QUE GRAFIQUE CUANDO SE PRESIONE EL BOTON EJECUTAR
 
 
-    let ast;
+    let ast=null;
     ast= Ejecutar.parse(this.state.codigoDesanidado);
     console.log(ast);
     inicioEjecucion(ast);

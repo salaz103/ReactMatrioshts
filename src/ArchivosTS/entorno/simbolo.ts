@@ -1,15 +1,17 @@
-import {tipo_valor} from './tipo';
+import {tipo_valor, tipo_variable} from './tipo';
 
 export class simbolo{
 
-    tipoSimbolo:tipo_valor;
+    tipovalor:tipo_valor;
     id:string;
     valor:object;
+    reasignable:boolean;
 
-    constructor(id_e:string,tipo_e:tipo_valor,valor?:object){
+    constructor(id_e:string,reasignable:boolean,tipo_e?:tipo_valor,valor?:object){
         this.id=id_e;
-        this.tipoSimbolo=tipo_e;
+        this.tipovalor=tipo_e;
         this.valor=valor;
+        this.reasignable=reasignable;
     }
 
     
@@ -18,7 +20,7 @@ export class simbolo{
     }
 
     getTipo(){
-        return this.tipoSimbolo;
+        return this.tipovalor;
     }
 
     getValor(){

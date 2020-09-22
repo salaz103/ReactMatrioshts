@@ -6,6 +6,11 @@
     VOID="VOID"
 }
 
+enum tipo_variable{
+    CONST="CONST",
+    LET ="LET"
+}
+
 enum operador{
     //OPERADORES ARITMETICOS
     MAS="MAS",
@@ -27,4 +32,6 @@ enum operador{
     OR="OR"
 }
 
-export {tipo_valor,operador};
+
+
+export {tipo_valor,operador,tipo_variable};

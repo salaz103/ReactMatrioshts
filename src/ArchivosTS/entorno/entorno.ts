@@ -5,14 +5,15 @@ class entorno{
 
     apuntadorPadre:entorno;
     ts:simbolo[];
+    nombre:string;
 
-    constructor(simbolos?:entorno){
-        this.apuntadorPadre = simbolos != null ? simbolos : null;
+    constructor(nombre:string,ambitoPadre?:entorno){
+        this.apuntadorPadre = ambitoPadre != null ? ambitoPadre : null;
         this.ts=[];
+        this.nombre= nombre;
     }
 
-    agregarSimbolo(id:string,tipo:tipo_valor,valor:object){
-        const nuevoSimbolo= new simbolo(id,tipo,valor);
+    agregarSimbolo(nuevoSimbolo:simbolo){
         this.ts.push(nuevoSimbolo)
     }
 
@@ -21,6 +22,34 @@ class entorno{
 
     }
 
+    existe(id:string):boolean{
+
+        for (let i = 0; i < this.ts.length; i++) {
+            if(this.ts[i].id==id){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    getSimbolo(id:string):simbolo{
+
+        //FORMA 1
+        // for(let e:entorno= this;e!=null;e=e.apuntadorPadre){
+        //     for (let i = 0; i < this.ts.length; i++) {
+        //         if(this.ts[i].getId()==id){
+        //             return this.ts[i];
+        //         }
+        //     }
+        // }
+
+        //AQUI ESTA BUSCANDO EL SIMBOLO EN EL AMBITO QUE LE ESTOY PASANDO
+        for (let i = 0; i < this.ts.length; i++) {
+            if(this.ts[i].getId()==id){
+                return this.ts[i];
+            }
+        }
+    }
 
 }
 
