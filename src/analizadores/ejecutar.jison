@@ -83,7 +83,7 @@
 "("                   return 'RPARA';
 ")"                   return 'RPARC';
 
-\'[^\"]*\'          { yytext = yytext.substr(1,yyleng-2); return 'CADENACOMILLASIMPLE'; }
+\'[^\']*\'            { yytext = yytext.substr(1,yyleng-2); return 'CADENACOMILLASIMPLE'; }
 \"[^\"]*\"            { yytext = yytext.substr(1,yyleng-2); return 'CADENACOMILLADOBLE'; }
 [0-9]+("."[0-9]+)?\b          return 'NUM';
 ([a-zA-Z])[a-zA-Z0-9_]*       return 'IDENTIFICADOR';
@@ -108,6 +108,8 @@ const identificador= require('../ArchivosTS/expresiones/identificador');
   //INSTRUCCIONES
 const imprimir= require('../ArchivosTS/instrucciones/imprimir');
 const declaracion= require('../ArchivosTS/instrucciones/declaracion');
+const asignacion = require('../ArchivosTS/instrucciones/asignacion');
+
   //OTROS
 const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
 const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;
@@ -144,26 +146,25 @@ lista : lista instruccion {$1.push($2); $$=$1;}
       | instruccion {$$=[$1];}
       ;
 
-instruccion:  declaraciones {$$=$1}
-            | asignacion   
+instruccion:  declaraciones {$$=$1;}
             | instruccionif 
             | instruccionswitch 
             | instruccionfor 
             | instruccionwhile 
-            | imprimir 
+            | imprimir     {$$=$1;}
             | declararfuncion 
             | IDENTIFICADOR RMASMAS RPUNTOCOMA
             | RGRAFICAR RPARA RPARC RPUNTOCOMA
             | RBREAK RPUNTOCOMA
             | RCONTINUE RPUNTOCOMA
             | instruccionreturn 
+            | asignacion    {$$=$1;}
             ;
 
 
 
 //LISTO
-declaraciones: tipovariable listavariables RPUNTOCOMA
-              {$$=new declaracion.declaracion($1,$2);} ;
+declaraciones: tipovariable listavariables RPUNTOCOMA {$$=new declaracion.declaracion($1,$2);} ;
 
 
 //LISTO
@@ -174,22 +175,23 @@ listavariables:   listavariables RCOMA variable {$1.push($3); $$=$1;}
 
 //LISTO          
 variable:  IDENTIFICADOR RDOSPUNTOS tipodato RIGUAL expresion 
-            {$$=new variable.variable($1,$3,$5)}
+            {$$=new variable.variable($1,$3,$5);}
          | IDENTIFICADOR RIGUAL expresion
-           {$$=new variable.variable($1,undefined,$3)}    
+           {$$=new variable.variable($1,undefined,$3);}    
          | IDENTIFICADOR RDOSPUNTOS tipodato
-           {$$=new variable.variable($1,$3,undefined)} 
+           {$$=new variable.variable($1,$3,undefined);} 
          | IDENTIFICADOR 
-           {$$=new variable.variable($1)} 
+           {$$=new variable.variable($1);} 
          ;
 
 //LISTO
-tipovariable: RLET   {$$=tipo_variable.LET}
-            | RCONST {$$=tipo_variable.CONST} 
+tipovariable: RLET   {$$=tipo_variable.LET;}
+            | RCONST {$$=tipo_variable.CONST;} 
             ;
 
 //LISTO
-asignacion: IDENTIFICADOR RIGUAL expresion RPUNTOCOMA;
+asignacion: IDENTIFICADOR RIGUAL expresion RPUNTOCOMA {$$ = new asignacion.asignacion($1,$3);}
+            ;
 
 instruccionif: RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC
              | RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC instruccionelse
@@ -241,19 +243,19 @@ parametro: IDENTIFICADOR RDOSPUNTOS tipodato ;
 
 tipodato:  
           //LISTO
-           RSTRING {$$=tipo_valor.STRING}
+           RSTRING {$$=tipo_valor.STRING;}
            //LISTO  
-          |RNUMBER {$$=tipo_valor.NUMBER}
+          |RNUMBER {$$=tipo_valor.NUMBER;}
           //LISTO
-          |RBOOLEAN {$$=tipo_valor.BOOLEAN}
+          |RBOOLEAN {$$=tipo_valor.BOOLEAN;}
           //LISTO
-          |RVOID   {$$=tipo_valor.VOID}
+          |RVOID   {$$=tipo_valor.VOID;}
           ;
 
 
 //LISTO
-imprimir  : RCONSOLE RPUNTO RLOG RPARA expresion RPARC RPUNTOCOMA
-            {$$=new imprimir.imprimir($5)};  
+imprimir  : RCONSOLE RPUNTO RLOG RPARA expresion RPARC RPUNTOCOMA {$$=new imprimir.imprimir($5);}
+            ;  
 
 //LISTO
 instruccionreturn: RRETURN RPUNTOCOMA 
@@ -267,35 +269,35 @@ listaexpresiones: listaexpresiones RCOMA expresion
 expresion: 
            /*EXPRESIONES ARITMETICAS*/
            ///FALTA PONERLO EN LA TRADUCCION
-           RMENOS expresion %prec UMENOS  {$$= new unaria.unaria(operador.MENOS,$2)} 
-          | expresion RMAS expresion      {$$= new aritmetica.aritmetica($1,operador.MAS,$3)}
-          |expresion RMENOS expresion     {$$= new aritmetica.aritmetica($1,operador.MENOS,$3)}
-          |expresion RPOR expresion       {$$= new aritmetica.aritmetica($1,operador.POR,$3)}
-          |expresion RDIVISION expresion  {$$= new aritmetica.aritmetica($1,operador.DIVISION,$3)}
-          |expresion RMODULO expresion    {$$= new aritmetica.aritmetica($1,operador.MODULO,$3)}
-          |expresion REXPONENTE expresion {$$= new aritmetica.aritmetica($1,operador.EXPONENTE,$3)}
+           RMENOS expresion %prec UMENOS  {$$= new unaria.unaria(operador.MENOS,$2);} 
+          | expresion RMAS expresion      {$$= new aritmetica.aritmetica($1,operador.MAS,$3);}
+          |expresion RMENOS expresion     {$$= new aritmetica.aritmetica($1,operador.MENOS,$3);}
+          |expresion RPOR expresion       {$$= new aritmetica.aritmetica($1,operador.POR,$3);}
+          |expresion RDIVISION expresion  {$$= new aritmetica.aritmetica($1,operador.DIVISION,$3);}
+          |expresion RMODULO expresion    {$$= new aritmetica.aritmetica($1,operador.MODULO,$3);}
+          |expresion REXPONENTE expresion {$$= new aritmetica.aritmetica($1,operador.EXPONENTE,$3);}
           /*|IDENTIFICADOR RMASMAS
           |IDENTIFICADOR RMENOSMENOS*/
 
           /*EXPRESIONES RELACIONALES*/
-          |expresion RMAYORQUE expresion       {$$= new relacional.relacional($1,operador.MAYORQUE,$3)}
-          |expresion RMENORQUE expresion       {$$= new relacional.relacional($1,operador.MENORQUE,$3)}
-          |expresion RMAYORIGUALQUE expresion  {$$= new relacional.relacional($1,operador.MAYORIGUALQUE,$3)}
-          |expresion RMENORIGUALQUE expresion  {$$= new relacional.relacional($1,operador.MENORIGUALQUE,$3)}
-          |expresion RIGUALQUE expresion       {$$= new relacional.relacional($1,operador.IGUALQUE,$3)}
-          |expresion RDIFERENTEQUE expresion   {$$= new relacional.relacional($1,operador.DIFERENTEQUE,$3)}
+          |expresion RMAYORQUE expresion       {$$= new relacional.relacional($1,operador.MAYORQUE,$3);}
+          |expresion RMENORQUE expresion       {$$= new relacional.relacional($1,operador.MENORQUE,$3);}
+          |expresion RMAYORIGUALQUE expresion  {$$= new relacional.relacional($1,operador.MAYORIGUALQUE,$3);}
+          |expresion RMENORIGUALQUE expresion  {$$= new relacional.relacional($1,operador.MENORIGUALQUE,$3);}
+          |expresion RIGUALQUE expresion       {$$= new relacional.relacional($1,operador.IGUALQUE,$3);}
+          |expresion RDIFERENTEQUE expresion   {$$= new relacional.relacional($1,operador.DIFERENTEQUE,$3);}
           /*EXPRESIONES LOGICAS*/
-          |expresion RAND expresion    {$$= new logica.logica($1,operador.AND,$3)}   
-          |expresion ROR expresion     {$$= new logica.logica($1,operador.OR,$3)}      
-          |RNOT expresion              {$$= new unaria.unaria(operador.NOT,$2)}        
+          |expresion RAND expresion    {$$= new logica.logica($1,operador.AND,$3);}   
+          |expresion ROR expresion     {$$= new logica.logica($1,operador.OR,$3);}      
+          |RNOT expresion              {$$= new unaria.unaria(operador.NOT,$2);}        
           /*RESTANTES*/
-          |RPARA expresion RPARC  {$$=$2}
+          |RPARA expresion RPARC  {$$=$2;}
           |expresion RINTERROGACION expresion RDOSPUNTOS expresion
-          |NUM                  {$$=new numero.numero(Number($1),tipo_valor.NUMBER)}  
-          |RTRUE                {$$=new valorLogico.valorLogico("TRUE",tipo_valor.BOOLEAN)} 
-          |RFALSE               {$$=new valorLogico.valorLogico("FALSE",tipo_valor.BOOLEAN)}  
-          |CADENACOMILLADOBLE   {$$=new cadena.cadena($1,tipo_valor.STRING)} 
-          |CADENACOMILLASIMPLE  {$$=new cadena.cadena($1,tipo_valor.STRING)}   
+          |NUM                  {$$=new numero.numero(Number($1),tipo_valor.NUMBER);}  
+          |RTRUE                {$$=new valorLogico.valorLogico("TRUE",tipo_valor.BOOLEAN);} 
+          |RFALSE               {$$=new valorLogico.valorLogico("FALSE",tipo_valor.BOOLEAN);}  
+          |CADENACOMILLADOBLE   {$$=new cadena.cadena($1,tipo_valor.STRING);} 
+          |CADENACOMILLASIMPLE  {$$=new cadena.cadena($1,tipo_valor.STRING);}   
           |IDENTIFICADOR        {$$=new identificador.identificador($1);}  
           //LLAMADA A FUNCIONES 
           | IDENTIFICADOR RPARA listaexpresiones RPARC 

@@ -13,6 +13,9 @@ var simbolo = /** @class */ (function () {
     simbolo.prototype.getTipo = function () {
         return this.tipovalor;
     };
+    simbolo.prototype.setTipo = function (tipo) {
+        this.tipovalor = tipo;
+    };
     simbolo.prototype.getValor = function () {
         return this.valor;
     };

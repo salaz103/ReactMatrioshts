@@ -17,38 +17,49 @@ class entorno{
         this.ts.push(nuevoSimbolo)
     }
 
-    setValor(id:string,valor:object){
-        const simbolo= this.ts.filter(simbolo=>simbolo.id==id)[0];
+    asignarValor(id:string,valor:object,tipo:tipo_valor){
+
+        for(let entornoactual:entorno = this; entornoactual!=null ; entornoactual=this.apuntadorPadre){
+            for (let i = 0; i < entornoactual.ts.length; i++) {
+                if(entornoactual.ts[i].getId()==id){
+                    entornoactual.ts[i].setTipo(tipo);
+                    entornoactual.ts[i].setValor(valor);
+                    return;
+                 }
+            }
+         }
 
     }
 
     existe(id:string):boolean{
 
-        for (let i = 0; i < this.ts.length; i++) {
-            if(this.ts[i].id==id){
-                return true;
+        //RECORRIENDO LOS ENTORNOS
+        for (let entornoactual:entorno = this; entornoactual!=null ; entornoactual=this.apuntadorPadre) {
+            console.log("RECORRIENDO AMBITOS: ");
+            console.log(entornoactual);
+
+            //RECORRIENDO LA TABLA DE SIMBOLOS DEL ENTORNO ACTUAL
+            for (let i = 0; i <entornoactual.ts.length; i++) {
+                if(entornoactual.ts[i].getId()==id){
+                    return true;
+                }
             }
-        }
+        } 
+
+        //SI REGRESA FALSE ES POR QUE NO ENCONTRO EL ID EN NINGUN AMBITO
         return false;
     }
 
     getSimbolo(id:string):simbolo{
 
-        //FORMA 1
-        // for(let e:entorno= this;e!=null;e=e.apuntadorPadre){
-        //     for (let i = 0; i < this.ts.length; i++) {
-        //         if(this.ts[i].getId()==id){
-        //             return this.ts[i];
-        //         }
-        //     }
-        // }
-
-        //AQUI ESTA BUSCANDO EL SIMBOLO EN EL AMBITO QUE LE ESTOY PASANDO
-        for (let i = 0; i < this.ts.length; i++) {
-            if(this.ts[i].getId()==id){
-                return this.ts[i];
+         for(let entornoactual:entorno = this; entornoactual!=null ; entornoactual=this.apuntadorPadre){
+            for (let i = 0; i < entornoactual.ts.length; i++) {
+                if(entornoactual.ts[i].getId()==id){
+                    return entornoactual.ts[i];
+                 }
             }
-        }
+         }
+
     }
 
 }

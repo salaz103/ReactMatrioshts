@@ -9,30 +9,38 @@ var entorno = /** @class */ (function () {
     entorno.prototype.agregarSimbolo = function (nuevoSimbolo) {
         this.ts.push(nuevoSimbolo);
     };
-    entorno.prototype.setValor = function (id, valor) {
-        var simbolo = this.ts.filter(function (simbolo) { return simbolo.id == id; })[0];
-    };
-    entorno.prototype.existe = function (id) {
-        for (var i = 0; i < this.ts.length; i++) {
-            if (this.ts[i].id == id) {
-                return true;
+    entorno.prototype.asignarValor = function (id, valor, tipo) {
+        for (var entornoactual = this; entornoactual != null; entornoactual = this.apuntadorPadre) {
+            for (var i = 0; i < entornoactual.ts.length; i++) {
+                if (entornoactual.ts[i].getId() == id) {
+                    entornoactual.ts[i].setTipo(tipo);
+                    entornoactual.ts[i].setValor(valor);
+                    return;
+                }
             }
         }
+    };
+    entorno.prototype.existe = function (id) {
+        //RECORRIENDO LOS ENTORNOS
+        for (var entornoactual = this; entornoactual != null; entornoactual = this.apuntadorPadre) {
+            console.log("RECORRIENDO AMBITOS: ");
+            console.log(entornoactual);
+            //RECORRIENDO LA TABLA DE SIMBOLOS DEL ENTORNO ACTUAL
+            for (var i = 0; i < entornoactual.ts.length; i++) {
+                if (entornoactual.ts[i].getId() == id) {
+                    return true;
+                }
+            }
+        }
+        //SI REGRESA FALSE ES POR QUE NO ENCONTRO EL ID EN NINGUN AMBITO
         return false;
     };
     entorno.prototype.getSimbolo = function (id) {
-        //FORMA 1
-        // for(let e:entorno= this;e!=null;e=e.apuntadorPadre){
-        //     for (let i = 0; i < this.ts.length; i++) {
-        //         if(this.ts[i].getId()==id){
-        //             return this.ts[i];
-        //         }
-        //     }
-        // }
-        //AQUI ESTA BUSCANDO EL SIMBOLO EN EL AMBITO QUE LE ESTOY PASANDO
-        for (var i = 0; i < this.ts.length; i++) {
-            if (this.ts[i].getId() == id) {
-                return this.ts[i];
+        for (var entornoactual = this; entornoactual != null; entornoactual = this.apuntadorPadre) {
+            for (var i = 0; i < entornoactual.ts.length; i++) {
+                if (entornoactual.ts[i].getId() == id) {
+                    return entornoactual.ts[i];
+                }
             }
         }
     };

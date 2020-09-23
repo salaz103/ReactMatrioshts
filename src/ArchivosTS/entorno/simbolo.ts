@@ -23,11 +23,15 @@ export class simbolo{
         return this.tipovalor;
     }
 
+    setTipo(tipo:tipo_valor){
+        this.tipovalor= tipo;
+    }
+
     getValor(){
         return this.valor;
     }
 
-    setValor(valor_e){
+    setValor(valor_e:object){
         this.valor= valor_e;
     }
 
