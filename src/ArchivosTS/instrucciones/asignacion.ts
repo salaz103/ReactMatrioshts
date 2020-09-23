@@ -29,9 +29,13 @@ export class asignacion implements instruccion{
             if(sim.getTipo()){
                 //SI TRAE UN TIPO, HAY QUE VALIDAR QUE EL TIPO DE LA EXPRESION, SEA IGUAL AL QUE TIENE
                 //Y ASI PODER SETEAR LA NUEVA ASIGNACION
+                //PARA PODER SABER QUE TIPO DE VALOR ES, HAY QUE EJECUTAR PRIMERO ESA EXPRESION
+                const valorexpresion= this.expresion.obtenerValor(ambito);
+                //AHORA QUE YA SE EJECUTO YA PODEMOS VER QUE TIPO DE VALOR ES
+                const tipovalor= this.expresion.obtenerTipo(ambito);
 
-                if(sim.getTipo()==this.expresion.obtenerTipo(ambito)){
-                    ambito.asignarValor(this.id,this.expresion.obtenerValor(ambito),sim.getTipo());
+                if(sim.getTipo()==tipovalor){
+                    ambito.asignarValor(this.id,valorexpresion,sim.getTipo());
                 }else{
                     console.log("ERROR - EL TIPO DE LA VARIABLE "+sim.getId()+" NO ES IGUAL AL TIPO DEL VALOR");
                 }
@@ -39,8 +43,10 @@ export class asignacion implements instruccion{
             }else{
                 //SI NO TRAE UN TIPO DE VALOR, HAY QUE SACAR EL TIPO DE VALOR DE LA EXPRESION Y ASIGNARSELO
                 //A LA VARIABLE
+                //PARA SABER EL TIPO DE VALOR DE LA EXPRESION, TENEMOS QUE EJECUTARLA
+                const valor= this.expresion.obtenerValor(ambito);
                 const tipo= this.expresion.obtenerTipo(ambito);
-                ambito.asignarValor(this.id,this.expresion.obtenerValor(ambito),tipo);
+                ambito.asignarValor(this.id,valor,tipo);
             }
 
         }else{

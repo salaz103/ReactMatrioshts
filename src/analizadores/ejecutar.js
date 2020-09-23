@@ -92,7 +92,7 @@ break;
 case 3: case 19: case 31:
 this.$=[$$[$0]];
 break;
-case 4: case 5: case 6: case 9: case 16:
+case 4: case 5: case 6: case 8: case 9: case 16:
 this.$=$$[$0];
 break;
 case 17:
@@ -136,6 +136,9 @@ this.$= new caso.caso($$[$0-4],$$[$0-2]);
 break;
 case 33:
 this.$= new caso.caso(undefined,$$[$0-2]);
+break;
+case 37:
+this.$= new instruccionwhile.instruccionwhile($$[$0-4],$$[$0-1]);
 break;
 case 46:
 this.$=tipo_valor.STRING;
@@ -385,6 +388,7 @@ const asignacion = require('../ArchivosTS/instrucciones/asignacion');
 const instruccionif= require('../ArchivosTS/instrucciones/instruccionif');
 const instruccionifelse= require('../ArchivosTS/instrucciones/instruccionifelse');
 const instruccionswitch= require('../ArchivosTS/instrucciones/instruccionswitch');
+const instruccionwhile= require('../ArchivosTS/instrucciones/instruccionwhile');
   //OTROS
 const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
 const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;

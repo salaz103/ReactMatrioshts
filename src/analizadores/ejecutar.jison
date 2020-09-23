@@ -112,6 +112,7 @@ const asignacion = require('../ArchivosTS/instrucciones/asignacion');
 const instruccionif= require('../ArchivosTS/instrucciones/instruccionif');
 const instruccionifelse= require('../ArchivosTS/instrucciones/instruccionifelse');
 const instruccionswitch= require('../ArchivosTS/instrucciones/instruccionswitch');
+const instruccionwhile= require('../ArchivosTS/instrucciones/instruccionwhile');
   //OTROS
 const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
 const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;
@@ -153,7 +154,7 @@ instruccion:  declaraciones {$$=$1;}
             | instruccionif {$$=$1;}
             | instruccionswitch {$$=$1;}
             | instruccionfor 
-            | instruccionwhile 
+            | instruccionwhile {$$=$1;}
             | imprimir     {$$=$1;}
             | declararfuncion 
             | IDENTIFICADOR RMASMAS RPUNTOCOMA
@@ -226,7 +227,8 @@ instruccionfor: RFOR RPARA tipovariable IDENTIFICADOR RIGUAL expresion RPUNTOCOM
               ;
 
 //LISTO
-instruccionwhile:  RWHILE RPARA expresion RPARC RLLAVEA lista RLLAVEC
+instruccionwhile:  RWHILE RPARA expresion RPARC RLLAVEA lista RLLAVEC 
+                   {$$= new instruccionwhile.instruccionwhile($3,$6);}
                  | RDO RLLAVEA lista RLLAVEC RWHILE RPARA expresion RPARC 
                   ;
 
