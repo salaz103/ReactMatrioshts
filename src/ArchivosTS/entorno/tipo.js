@@ -24,6 +24,8 @@ var operador;
     operador["DIVISION"] = "DIVISION";
     operador["MODULO"] = "MODULO";
     operador["EXPONENTE"] = "EXPONENTE";
+    operador["INCREMENTO"] = "INCREMENTO";
+    operador["DECREMENTO"] = "DECREMENTO";
     //OPERADORES RELACIONES
     operador["MAYORQUE"] = "MAYORQUE";
     operador["MENORQUE"] = "MENORQUE";

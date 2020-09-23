@@ -35,6 +35,10 @@ export class simbolo{
         this.valor= valor_e;
     }
 
+    getReasignable(){
+        return this.reasignable;
+    }
+
 }
 
 export default simbolo;

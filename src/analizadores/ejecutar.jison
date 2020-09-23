@@ -96,7 +96,7 @@
 /lex
 
 %{
-  //EXPRESIONES
+  //***********************EXPRESIONES********************************
 const cadena= require('../ArchivosTS/expresiones/cadena');
 const valorLogico= require('../ArchivosTS/expresiones/valorLogico');
 const numero= require('../ArchivosTS/expresiones/numero');
@@ -105,7 +105,7 @@ const relacional= require('../ArchivosTS/expresiones/operaciones/relacional');
 const logica= require('../ArchivosTS/expresiones/operaciones/logica');
 const unaria= require('../ArchivosTS/expresiones/operaciones/unaria');
 const identificador= require('../ArchivosTS/expresiones/identificador');
-  //INSTRUCCIONES
+  //***********************INSTRUCCIONES***************************
 const imprimir= require('../ArchivosTS/instrucciones/imprimir');
 const declaracion= require('../ArchivosTS/instrucciones/declaracion');
 const asignacion = require('../ArchivosTS/instrucciones/asignacion');
@@ -113,7 +113,9 @@ const instruccionif= require('../ArchivosTS/instrucciones/instruccionif');
 const instruccionifelse= require('../ArchivosTS/instrucciones/instruccionifelse');
 const instruccionswitch= require('../ArchivosTS/instrucciones/instruccionswitch');
 const instruccionwhile= require('../ArchivosTS/instrucciones/instruccionwhile');
-  //OTROS
+const incremento_decremento= require('../ArchivosTS/instrucciones/incremento_decremento');
+
+  //*****************************OTROS*********************************
 const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
 const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;
 const operador= require('../ArchivosTS/entorno/tipo').operador;
@@ -157,7 +159,10 @@ instruccion:  declaraciones {$$=$1;}
             | instruccionwhile {$$=$1;}
             | imprimir     {$$=$1;}
             | declararfuncion 
-            | IDENTIFICADOR RMASMAS RPUNTOCOMA
+            | IDENTIFICADOR RMASMAS RPUNTOCOMA 
+              {$$= new incremento_decremento.incremento_decremento($1,operador.INCREMENTO);}
+            | IDENTIFICADOR RMENOSMENOS RPUNTOCOMA
+              {$$= new incremento_decremento.incremento_decremento($1,operador.DECREMENTO);}
             | RGRAFICAR RPARA RPARC RPUNTOCOMA
             | RBREAK RPUNTOCOMA
             | RCONTINUE RPUNTOCOMA

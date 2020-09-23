@@ -22,6 +22,9 @@ var simbolo = /** @class */ (function () {
     simbolo.prototype.setValor = function (valor_e) {
         this.valor = valor_e;
     };
+    simbolo.prototype.getReasignable = function () {
+        return this.reasignable;
+    };
     return simbolo;
 }());
 exports.simbolo = simbolo;
