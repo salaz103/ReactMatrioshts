@@ -109,6 +109,8 @@ const identificador= require('../ArchivosTS/expresiones/identificador');
 const imprimir= require('../ArchivosTS/instrucciones/imprimir');
 const declaracion= require('../ArchivosTS/instrucciones/declaracion');
 const asignacion = require('../ArchivosTS/instrucciones/asignacion');
+const instruccionif= require('../ArchivosTS/instrucciones/instruccionif');
+const instruccionifelse= require('../ArchivosTS/instrucciones/instruccionifelse');
 
   //OTROS
 const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
@@ -147,7 +149,7 @@ lista : lista instruccion {$1.push($2); $$=$1;}
       ;
 
 instruccion:  declaraciones {$$=$1;}
-            | instruccionif 
+            | instruccionif {$$=$1;}
             | instruccionswitch 
             | instruccionfor 
             | instruccionwhile 
@@ -193,13 +195,12 @@ tipovariable: RLET   {$$=tipo_variable.LET;}
 asignacion: IDENTIFICADOR RIGUAL expresion RPUNTOCOMA {$$ = new asignacion.asignacion($1,$3);}
             ;
 
-instruccionif: RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC
-             | RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC instruccionelse
-               ;
+//LISTO
+instruccionif: RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC {$$= new instruccionif.instruccionif($3,$6);}
+             | RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC RELSE RLLAVEA lista RLLAVEC
+               {$$= new instruccionifelse.instruccionifelse($3,$6,$10);}
+             ;
 
-instruccionelse: RELSE instruccionif 
-                | RELSE RLLAVEA lista RLLAVEC  
-                ;
 
 instruccionswitch: RSWITCH RPARA expresion RPARC RLLAVEA casos RLLAVEC;
 
