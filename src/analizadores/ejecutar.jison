@@ -111,12 +111,13 @@ const declaracion= require('../ArchivosTS/instrucciones/declaracion');
 const asignacion = require('../ArchivosTS/instrucciones/asignacion');
 const instruccionif= require('../ArchivosTS/instrucciones/instruccionif');
 const instruccionifelse= require('../ArchivosTS/instrucciones/instruccionifelse');
-
+const instruccionswitch= require('../ArchivosTS/instrucciones/instruccionswitch');
   //OTROS
 const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
 const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;
 const operador= require('../ArchivosTS/entorno/tipo').operador;
 const variable= require('../ArchivosTS/instrucciones/variable');
+const caso= require('../ArchivosTS/instrucciones/caso');
 %}
 
 
@@ -150,7 +151,7 @@ lista : lista instruccion {$1.push($2); $$=$1;}
 
 instruccion:  declaraciones {$$=$1;}
             | instruccionif {$$=$1;}
-            | instruccionswitch 
+            | instruccionswitch {$$=$1;}
             | instruccionfor 
             | instruccionwhile 
             | imprimir     {$$=$1;}
@@ -202,13 +203,19 @@ instruccionif: RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC {$$= new instrucc
              ;
 
 
-instruccionswitch: RSWITCH RPARA expresion RPARC RLLAVEA casos RLLAVEC;
+instruccionswitch: RSWITCH RPARA expresion RPARC RLLAVEA casos RLLAVEC
+                   {$$= new instruccionswitch.instruccionswitch($3,$6);}
+                   ;
 
-casos: casos caso
-      | caso; 
+casos: casos caso {$1.push($2); $$=$1;}
+      | caso {$$=[$1];}
+      ; 
 
-caso: RCASE expresion RDOSPUNTOS lista RBREAK RPUNTOCOMA
-      | RDEFAULT RDOSPUNTOS lista RBREAK RPUNTOCOMA;
+caso:   RCASE expresion RDOSPUNTOS lista RBREAK RPUNTOCOMA
+        {$$= new caso.caso($2,$4);}
+      | RDEFAULT RDOSPUNTOS lista RBREAK RPUNTOCOMA
+        {$$= new caso.caso(undefined,$3);}
+        ;
 
 instruccionfor: RFOR RPARA tipovariable IDENTIFICADOR RIGUAL expresion RPUNTOCOMA expresion RPUNTOCOMA IDENTIFICADOR RMASMAS RPARC 
                 RLLAVEA  lista RLLAVEC
