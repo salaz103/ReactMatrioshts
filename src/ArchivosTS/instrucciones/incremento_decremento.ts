@@ -19,6 +19,7 @@ export class incremento_decremento implements instruccion{
         //SI EXISTE LO GUARDAMOS PARA PODER REVISAR SUS PROPIEDADES
         let sim:simbolo;
         if(ambito.existe(this.id)){
+            //console.log("SI EXISTE EL ID: "+ this.id);
             sim=ambito.getSimbolo(this.id);
             //AHORA QUE YA SABEMOS QUE EXISTE, HAY QUE HACER 3 VALIDACIONES
             //1. VERIFICAR SI ES CONST O NO 
@@ -32,7 +33,7 @@ export class incremento_decremento implements instruccion{
                 if(sim.getTipo()==tipo_valor.NUMBER){
 
                     //VALIDACION 3)
-                    if(sim.getValor()!=null){
+                    if(JSON.stringify(sim.getValor())!=null){
                         //SI PASO TODAS LAS VALIDACIONES
                         //AHORA TOCA VER SI ES UN INCREMENTO O UN DECREMENTO
                         let valor= JSON.stringify(sim.getValor());

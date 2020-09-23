@@ -10,6 +10,7 @@ var identificador = /** @class */ (function () {
         //1. PUEDE QUE EL ID SEA LOCAL O VENGA DE UN AMBITO SUPERIOR
         ///  LO QUE HAY QUE HACER ES IR RECORRIENDO LOS AMBITOS, INICIANDO POR EL ACTUAL, DONDE ESTOY (ambito)
         if (ambito.existe(this.id)) {
+            console.log("SI ENCONTRE EL ID: " + this.id);
             sim = ambito.getSimbolo(this.id);
         }
         //AQUI COMIENZAN LAS OPERACIONES PARA VER SI ENCONTRO O NO EL SIMBOLO

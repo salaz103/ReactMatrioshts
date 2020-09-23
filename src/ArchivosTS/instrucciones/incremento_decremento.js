@@ -11,6 +11,7 @@ var incremento_decremento = /** @class */ (function () {
         //SI EXISTE LO GUARDAMOS PARA PODER REVISAR SUS PROPIEDADES
         var sim;
         if (ambito.existe(this.id)) {
+            //console.log("SI EXISTE EL ID: "+ this.id);
             sim = ambito.getSimbolo(this.id);
             //AHORA QUE YA SABEMOS QUE EXISTE, HAY QUE HACER 3 VALIDACIONES
             //1. VERIFICAR SI ES CONST O NO 
@@ -21,7 +22,7 @@ var incremento_decremento = /** @class */ (function () {
                 //VALIDACION 2)
                 if (sim.getTipo() == tipo_1.tipo_valor.NUMBER) {
                     //VALIDACION 3)
-                    if (sim.getValor() != null) {
+                    if (JSON.stringify(sim.getValor()) != null) {
                         //SI PASO TODAS LAS VALIDACIONES
                         //AHORA TOCA VER SI ES UN INCREMENTO O UN DECREMENTO
                         var valor = JSON.stringify(sim.getValor());
