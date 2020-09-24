@@ -1,6 +1,7 @@
 const codigoReducerDefaultState={
     codigografo:'digraph G{}',
     codigoconsola:'',
+    entornos:{},
     s:'date'
 };
 
@@ -20,6 +21,11 @@ const reducerGeneral=(state=codigoReducerDefaultState,action)=>{
             return{
                 ...state,
                 codigoconsola: ''
+            }
+        case 'ENTORNOFINAL':
+            return{
+                ...state,
+                entornos: action.entorno
             }
         default:
             return state;

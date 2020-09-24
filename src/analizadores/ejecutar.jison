@@ -1,7 +1,7 @@
 /* lexical grammar */
 %lex
 %options flex case-sensitive
-%option yylineno
+%option yylineno 
 %locations
 
 %%
@@ -185,13 +185,13 @@ listavariables:   listavariables RCOMA variable {$1.push($3); $$=$1;}
 
 //LISTO          
 variable:  IDENTIFICADOR RDOSPUNTOS tipodato RIGUAL expresion 
-            {$$=new variable.variable($1,$3,$5);}
+            {$$=new variable.variable($1,@1.first_line,@1.first_column,$3,$5);}
          | IDENTIFICADOR RIGUAL expresion
-           {$$=new variable.variable($1,undefined,$3);}    
+           {$$=new variable.variable($1,@1.first_line,@1.first_column,undefined,$3);}    
          | IDENTIFICADOR RDOSPUNTOS tipodato
-           {$$=new variable.variable($1,$3,undefined);} 
+           {$$=new variable.variable($1,@1.first_line,@1.first_column,$3,undefined);} 
          | IDENTIFICADOR 
-           {$$=new variable.variable($1);} 
+           {$$=new variable.variable($1,@1.first_line,@1.first_column);} 
          ;
 
 //LISTO

@@ -8,10 +8,15 @@ export class declaracion implements instruccion{
 
     tipovariable:tipo_variable;
     variables:variable[];
+    /*linea:number;
+    columna:number;*/
 
-    constructor(tipov:tipo_variable,vars:variable[]){
+
+    constructor(tipov:tipo_variable,vars:variable[]/*,l:number,c:number*/){
         this.tipovariable=tipov;
         this.variables= vars;
+        /*this.linea=l;
+        this.columna=c;*/
     }
     
 

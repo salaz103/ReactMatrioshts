@@ -3,9 +3,13 @@ exports.__esModule = true;
 var simbolo_1 = require("../entorno/simbolo");
 var tipo_1 = require("../entorno/tipo");
 var declaracion = /** @class */ (function () {
-    function declaracion(tipov, vars) {
+    /*linea:number;
+    columna:number;*/
+    function declaracion(tipov, vars /*,l:number,c:number*/) {
         this.tipovariable = tipov;
         this.variables = vars;
+        /*this.linea=l;
+        this.columna=c;*/
     }
     declaracion.prototype.ejecutar = function (ambito) {
         //1. Recorrer el arreglo de variables

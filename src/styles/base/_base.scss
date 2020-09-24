@@ -12,6 +12,15 @@ body{
     font-size: $m-size;
 }
 
+table {
+    text-align: center;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    color: white;
+    border-collapse: collapse;
+    border: 3px solid #ddd;
+    width: 100%;
+  }
+
 button{
     cursor: pointer;
 }

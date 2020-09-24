@@ -1,6 +1,6 @@
 import entorno from './entorno/entorno';
 import {almacen} from '../../src/app';
-import {limpiarconsola} from '../actions/ts.js';
+import {limpiarconsola,tsfinal} from '../actions/ts.js';
 
 
 
@@ -14,6 +14,12 @@ const entornoGlobal= new entorno("global",);
 console.log("Recibiendo el AST para EJECUTAR:");
 console.log(ast);
 ejecutar(ast,entornoGlobal);
+console.log("MI ENTORNO FINAL, CON TODAS LAS VARIABLES");
+console.log(entornoGlobal);
+
+almacen.dispatch(tsfinal(Object(entornoGlobal)));
+
+
 }
 
 

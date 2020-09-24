@@ -11,6 +11,9 @@ function inicioEjecucion(ast) {
     console.log("Recibiendo el AST para EJECUTAR:");
     console.log(ast);
     ejecutar(ast, entornoGlobal);
+    console.log("MI ENTORNO FINAL, CON TODAS LAS VARIABLES");
+    console.log(entornoGlobal);
+    app_1.almacen.dispatch(ts_js_1.tsfinal(Object(entornoGlobal)));
 }
 function ejecutar(ast, entorno) {
     ast.forEach(function (instruccion) {

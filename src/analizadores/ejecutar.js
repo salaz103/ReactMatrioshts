@@ -108,16 +108,16 @@ case 19:
 $$[$0-2].push($$[$0]); this.$=$$[$0-2];
 break;
 case 21:
-this.$=new variable.variable($$[$0-4],$$[$0-2],$$[$0]);
+this.$=new variable.variable($$[$0-4],_$[$0-4].first_line,_$[$0-4].first_column,$$[$0-2],$$[$0]);
 break;
 case 22:
-this.$=new variable.variable($$[$0-2],undefined,$$[$0]);
+this.$=new variable.variable($$[$0-2],_$[$0-2].first_line,_$[$0-2].first_column,undefined,$$[$0]);
 break;
 case 23:
-this.$=new variable.variable($$[$0-2],$$[$0],undefined);
+this.$=new variable.variable($$[$0-2],_$[$0-2].first_line,_$[$0-2].first_column,$$[$0],undefined);
 break;
 case 24:
-this.$=new variable.variable($$[$0]);
+this.$=new variable.variable($$[$0],_$[$0].first_line,_$[$0].first_column);
 break;
 case 25:
 this.$=tipo_variable.LET;

@@ -11,3 +11,8 @@ export const codigoconsola=(codigoconsola='')=>({
 export const limpiarconsola=()=>({
     type:'LIMPIAR_CONSOLA',
 });
+
+export const tsfinal=(entorno)=>({
+    type:'ENTORNOFINAL',
+    entorno
+});
