@@ -18,7 +18,119 @@ export class declaracion implements instruccion{
     ejecutar(ambito:entorno){
         //1. Recorrer el arreglo de variables
         //2. Revisar si la variable ya existe SOLO EN ESTE AMBITO, YA SEA NUEVO O GLOBAL
-        this.variables.forEach(variable => {
+
+        for (let i = 0; i < this.variables.length; i++) {
+            //AQUI VOY RECORRIENDO EL ARREGLO DE VARIABLES
+
+            //TOCA REVISAR SI LA VARIABLE EXISTE PERO SOLO EN ESTE AMBITO
+            //POR QUE SI EXISTE EN UN AMBITO SUPERIOR ESO NO NOS IMPORTA
+            if(ambito.existeLocal(this.variables[i].id)){
+                //SI EXISTE LOCALMENTE ENTONCES NO LA PODEMOS DECLARAR
+                console.log("ERROR- ID: "+this.variables[i].id+" YA EXISTE EN ESTE AMBITO "+ ambito.nombre);    
+            }else{
+
+                //SI NO EXISTE, ENTONCES PODEMOS DECLARAR LA NUEVA VARIABLE PERO TENEMOS 2 TIPOS DE VARIABLES
+                //CONST Y LET, ENTONCES LO PRIMERO ES VER QUE TIPO DE VARIABLE ES
+
+                if(this.tipovariable==tipo_variable.CONST){
+                    //SI ENTRO AQUI ES POR QUE LAS VARIABLES O VARIABLE SON CONST
+                    //LAS VARIABLES CONST TIENEN QUE VENIR CON UN VALOR OBLIGATORIO
+                    if(this.variables[i].exp!=undefined){
+                        //SI SON DIFERENTES DE UNDEFINED, SIGNIFICA QUE SI TRAEN UN VALOR
+                        //EN LAS CONST HAY DOS FORMAS DE DECLARAR
+                        //1. const id=expresion
+                        //2. const id:tipodato=expresion
+                        if(this.variables[i].tipodato==undefined){
+                            //SI EL TIPO DE DATO ES UNDEFINED ENTONCES SOLO TRAE ID Y VALOR
+                            //HAY QUE PONERLE EL TIPO DE DATO DE LA EXPRESION
+                            const valor= this.variables[i].exp.obtenerValor(ambito);
+                            const tipo= this.variables[i].exp.obtenerTipo(ambito);
+                            const nuevosimbolo= new simbolo(this.variables[i].id,false,tipo,valor);
+                            ambito.agregarSimbolo(nuevosimbolo);
+                            console.log("VARIABLE CONST: "+this.variables[i].id+" GUARDADA");
+                        }else{
+                            //DE LO CONTRARIO SIGNIFICA QUE VIENE UN TIPO DE DATO
+                            //ENTONCES AQUI LO QUE TOCA HACER ES VERIFICAR SI EL TIPO DE DATO ENTRANTE
+                            //ES IGUAL AL TIPO DE DATO DE LA EXPRESION
+                            const valor= this.variables[i].exp.obtenerValor(ambito);
+                            const tipo= this.variables[i].exp.obtenerTipo(ambito);
+                            if(this.variables[i].tipodato==tipo){
+                                //SI SON LOS MISMOS TIPOS DE DATO ENTONCES GUARDAMOS EL SIMBOLO
+                            const nuevosimbolo= new simbolo(this.variables[i].id,false,tipo,valor);
+                            ambito.agregarSimbolo(nuevosimbolo);
+                            console.log("VARIABLE CONST: "+this.variables[i].id+" GUARDADA");
+                            }else{
+                                console.log("ERROR EN CONST: "+this.variables[i].id+" TIPO DATO Y VALOR NO SON SIMILARES");
+                            }
+
+                        }
+
+
+
+                    }else{
+                        console.log("ERROR - CONST "+this.variables[i].id+ " NO ESTA INICIALIZADA");
+                    }
+
+
+                }else if(this.tipovariable==tipo_variable.LET){
+                    //SI ENTRO AQUI ES POR QUE LAS VARIABLES O VARIABLE SON LET
+                    //LAS VARIABLES LET SE PUEDEN GUARDAR CON O SIN VALOR
+                    //AQUI VAMOS A VERIFICAR LAS COMBINACIONES, LO UNICO QUE SI TIENE QUE VENIR
+                    //COMO MINIMO ES EL IDs
+                    //LAS POSIBLES COMBINACIONES SON:
+                    //1. LET ID;
+                    //2. LET ID:TIPODATO;
+                    //3. LET ID=EXPRESION; //AQUI HAY QUE PONERLE EL TIPO DE DATO QUE EL MISMO DE LA EXPRESION
+                    //4. LET ID:TIPODATO=EXPRESION; AQUI TOCA VALIDAD SI EL TIPO DE DATO ES IGUAL A LA EXPRESION
+                
+                if(this.variables[i].tipodato==undefined && this.variables[i].exp==undefined){
+                    const nuevosimbolo= new simbolo(this.variables[i].id,true,undefined,undefined);
+                    ambito.agregarSimbolo(nuevosimbolo);
+                    console.log("VARIABLE LET: "+this.variables[i].id+" GUARDADA");
+                }else if(this.variables[i].tipodato!=undefined && this.variables[i].exp==undefined){
+                    const tipodato= this.variables[i].tipodato;
+                    const nuevosimbolo= new simbolo(this.variables[i].id,true,tipodato,undefined);
+                    ambito.agregarSimbolo(nuevosimbolo);
+                    console.log("VARIABLE LET: "+this.variables[i].id+" GUARDADA");
+
+                }else if(this.variables[i].tipodato==undefined && this.variables[i].exp!=undefined){
+                    const valor= this.variables[i].exp.obtenerValor(ambito);
+                    const tipodato= this.variables[i].exp.obtenerTipo(ambito);
+                    const nuevosimbolo= new simbolo(this.variables[i].id,true,tipodato,valor);
+                    ambito.agregarSimbolo(nuevosimbolo);
+                    console.log("VARIABLE LET: "+this.variables[i].id+" GUARDADA");
+
+                }else if(this.variables[i].tipodato!=undefined && this.variables[i].exp!=undefined){
+                    //SOLO HAY QUE VERIFICAR SI EL TIPO DE DATO ENTRANTE ES IGUAL A LA DE LA EXPRESION
+                    const valor= this.variables[i].exp.obtenerValor(ambito);
+                    const tipodato= this.variables[i].exp.obtenerTipo(ambito);
+
+                    if(this.variables[i].tipodato==tipodato){
+                    const nuevosimbolo= new simbolo(this.variables[i].id,true,tipodato,valor);
+                    ambito.agregarSimbolo(nuevosimbolo);
+                    console.log("VARIABLE LET: "+this.variables[i].id+" GUARDADA");
+                    }else{
+                        console.log("ERROR - LET: "+this.variables[i].id+" NO ES COMPATIBLE CON "+tipodato);
+                    }
+
+                    
+                }
+
+
+
+                    
+                }
+
+
+
+            }
+            
+        }
+
+
+
+
+        /*this.variables.forEach(variable => {
             
             if(ambito.existe(variable.id)){
                 //ESTA VARIABLE YA EXISTE
@@ -116,7 +228,7 @@ export class declaracion implements instruccion{
                 }
                 
             }
-        });
+        });*/
 
         return null;
     }

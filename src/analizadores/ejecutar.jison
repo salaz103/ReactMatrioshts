@@ -114,6 +114,7 @@ const instruccionifelse= require('../ArchivosTS/instrucciones/instruccionifelse'
 const instruccionswitch= require('../ArchivosTS/instrucciones/instruccionswitch');
 const instruccionwhile= require('../ArchivosTS/instrucciones/instruccionwhile');
 const incremento_decremento= require('../ArchivosTS/instrucciones/incremento_decremento');
+const instrucciondowhile= require('../ArchivosTS/instrucciones/instrucciondowhile');
 
   //*****************************OTROS*********************************
 const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
@@ -234,7 +235,8 @@ instruccionfor: RFOR RPARA tipovariable IDENTIFICADOR RIGUAL expresion RPUNTOCOM
 //LISTO
 instruccionwhile:  RWHILE RPARA expresion RPARC RLLAVEA lista RLLAVEC 
                    {$$= new instruccionwhile.instruccionwhile($3,$6);}
-                 | RDO RLLAVEA lista RLLAVEC RWHILE RPARA expresion RPARC 
+                 | RDO RLLAVEA lista RLLAVEC RWHILE RPARA expresion RPARC
+                   {$$= new instrucciondowhile.instrucciondowhile($3,$7);} 
                   ;
 
                  //FUNCION SIN TIPO DATO Y SIN PARAMETROS

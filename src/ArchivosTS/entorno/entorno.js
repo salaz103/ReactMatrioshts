@@ -35,6 +35,14 @@ var entorno = /** @class */ (function () {
         //SI REGRESA FALSE ES POR QUE NO ENCONTRO EL ID EN NINGUN AMBITO
         return false;
     };
+    entorno.prototype.existeLocal = function (id) {
+        //RECORRIENDO LA TABLA DE SIMBOLOS DEL ENTORNO ACTUAL
+        for (var i = 0; i < this.ts.length; i++) {
+            if (this.ts[i].getId() == id) {
+                return true;
+            }
+        }
+    };
     entorno.prototype.getSimbolo = function (id) {
         for (var entornoactual = this; entornoactual != null; entornoactual = this.apuntadorPadre) {
             for (var i = 0; i < entornoactual.ts.length; i++) {

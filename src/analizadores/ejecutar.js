@@ -146,6 +146,9 @@ break;
 case 38:
 this.$= new instruccionwhile.instruccionwhile($$[$0-4],$$[$0-1]);
 break;
+case 39:
+this.$= new instrucciondowhile.instrucciondowhile($$[$0-5],$$[$0-1]);
+break;
 case 47:
 this.$=tipo_valor.STRING;
 break;
@@ -396,6 +399,7 @@ const instruccionifelse= require('../ArchivosTS/instrucciones/instruccionifelse'
 const instruccionswitch= require('../ArchivosTS/instrucciones/instruccionswitch');
 const instruccionwhile= require('../ArchivosTS/instrucciones/instruccionwhile');
 const incremento_decremento= require('../ArchivosTS/instrucciones/incremento_decremento');
+const instrucciondowhile= require('../ArchivosTS/instrucciones/instrucciondowhile');
 
   //*****************************OTROS*********************************
 const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;

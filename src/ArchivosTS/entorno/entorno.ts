@@ -50,6 +50,17 @@ class entorno{
         return false;
     }
 
+    existeLocal(id:string):boolean{
+        //RECORRIENDO LA TABLA DE SIMBOLOS DEL ENTORNO ACTUAL
+        for (let i = 0; i <this.ts.length; i++) {
+            if(this.ts[i].getId()==id){
+                return true;
+            }
+        }
+
+    }
+
+    
     getSimbolo(id:string):simbolo{
 
          for(let entornoactual:entorno = this; entornoactual!=null ; entornoactual=this.apuntadorPadre){
