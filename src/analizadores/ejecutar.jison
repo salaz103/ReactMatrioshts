@@ -115,7 +115,7 @@ const instruccionswitch= require('../ArchivosTS/instrucciones/instruccionswitch'
 const instruccionwhile= require('../ArchivosTS/instrucciones/instruccionwhile');
 const incremento_decremento= require('../ArchivosTS/instrucciones/incremento_decremento');
 const instrucciondowhile= require('../ArchivosTS/instrucciones/instrucciondowhile');
-
+const graficar= require('../ArchivosTS/instrucciones/graficar');
   //*****************************OTROS*********************************
 const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
 const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;
@@ -148,7 +148,6 @@ s : lista EOF { return $1; }
   ;
 
 
-//DESANIDADO
 lista : lista instruccion {$1.push($2); $$=$1;}
       | instruccion {$$=[$1];}
       ;
@@ -165,6 +164,7 @@ instruccion:  declaraciones {$$=$1;}
             | IDENTIFICADOR RMENOSMENOS RPUNTOCOMA
               {$$= new incremento_decremento.incremento_decremento($1,operador.DECREMENTO);}
             | RGRAFICAR RPARA RPARC RPUNTOCOMA
+              {$$= new graficar.graficar();}
             | RBREAK RPUNTOCOMA
             | RCONTINUE RPUNTOCOMA
             | instruccionreturn 

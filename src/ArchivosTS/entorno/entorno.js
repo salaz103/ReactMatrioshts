@@ -10,7 +10,7 @@ var entorno = /** @class */ (function () {
         this.ts.push(nuevoSimbolo);
     };
     entorno.prototype.asignarValor = function (id, valor, tipo) {
-        for (var entornoactual = this; entornoactual != null; entornoactual = this.apuntadorPadre) {
+        for (var entornoactual = this; entornoactual != null; entornoactual = entornoactual.apuntadorPadre) {
             for (var i = 0; i < entornoactual.ts.length; i++) {
                 if (entornoactual.ts[i].getId() == id) {
                     entornoactual.ts[i].setTipo(tipo);
@@ -22,7 +22,7 @@ var entorno = /** @class */ (function () {
     };
     entorno.prototype.existe = function (id) {
         //RECORRIENDO LOS ENTORNOS
-        for (var entornoactual = this; entornoactual != null; entornoactual = this.apuntadorPadre) {
+        for (var entornoactual = this; entornoactual != null; entornoactual = entornoactual.apuntadorPadre) {
             console.log("RECORRIENDO AMBITOS: ");
             console.log(entornoactual);
             //RECORRIENDO LA TABLA DE SIMBOLOS DEL ENTORNO ACTUAL
@@ -44,7 +44,7 @@ var entorno = /** @class */ (function () {
         }
     };
     entorno.prototype.getSimbolo = function (id) {
-        for (var entornoactual = this; entornoactual != null; entornoactual = this.apuntadorPadre) {
+        for (var entornoactual = this; entornoactual != null; entornoactual = entornoactual.apuntadorPadre) {
             for (var i = 0; i < entornoactual.ts.length; i++) {
                 if (entornoactual.ts[i].getId() == id) {
                     return entornoactual.ts[i];

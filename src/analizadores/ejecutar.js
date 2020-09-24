@@ -101,6 +101,9 @@ break;
 case 12:
 this.$= new incremento_decremento.incremento_decremento($$[$0-2],operador.DECREMENTO);
 break;
+case 13:
+this.$= new graficar.graficar();
+break;
 case 18:
 this.$=new declaracion.declaracion($$[$0-2],$$[$0-1]);
 break;
@@ -400,7 +403,7 @@ const instruccionswitch= require('../ArchivosTS/instrucciones/instruccionswitch'
 const instruccionwhile= require('../ArchivosTS/instrucciones/instruccionwhile');
 const incremento_decremento= require('../ArchivosTS/instrucciones/incremento_decremento');
 const instrucciondowhile= require('../ArchivosTS/instrucciones/instrucciondowhile');
-
+const graficar= require('../ArchivosTS/instrucciones/graficar');
   //*****************************OTROS*********************************
 const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
 const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;

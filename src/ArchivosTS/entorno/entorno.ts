@@ -19,7 +19,7 @@ class entorno{
 
     asignarValor(id:string,valor:object,tipo:tipo_valor){
 
-        for(let entornoactual:entorno = this; entornoactual!=null ; entornoactual=this.apuntadorPadre){
+        for(let entornoactual:entorno = this; entornoactual!=null ; entornoactual=entornoactual.apuntadorPadre){
             for (let i = 0; i < entornoactual.ts.length; i++) {
                 if(entornoactual.ts[i].getId()==id){
                     entornoactual.ts[i].setTipo(tipo);
@@ -34,7 +34,7 @@ class entorno{
     existe(id:string):boolean{
 
         //RECORRIENDO LOS ENTORNOS
-        for (let entornoactual:entorno = this; entornoactual!=null ; entornoactual=this.apuntadorPadre) {
+        for (let entornoactual:entorno = this; entornoactual!=null ; entornoactual=entornoactual.apuntadorPadre) {
             console.log("RECORRIENDO AMBITOS: ");
             console.log(entornoactual);
 
@@ -63,7 +63,7 @@ class entorno{
     
     getSimbolo(id:string):simbolo{
 
-         for(let entornoactual:entorno = this; entornoactual!=null ; entornoactual=this.apuntadorPadre){
+         for(let entornoactual:entorno = this; entornoactual!=null ; entornoactual=entornoactual.apuntadorPadre){
             for (let i = 0; i < entornoactual.ts.length; i++) {
                 if(entornoactual.ts[i].getId()==id){
                     return entornoactual.ts[i];

@@ -16,3 +16,8 @@ export const tsfinal=(entorno)=>({
     type:'ENTORNOFINAL',
     entorno
 });
+
+export const reportets=(simbolosactuales)=>({
+    type:'ENTORNOACTUAL',
+    simbolosactuales
+});

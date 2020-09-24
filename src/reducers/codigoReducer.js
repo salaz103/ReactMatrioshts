@@ -2,6 +2,7 @@ const codigoReducerDefaultState={
     codigografo:'digraph G{}',
     codigoconsola:'',
     entornos:{},
+    simbolos:[],
     s:'date'
 };
 
@@ -20,12 +21,18 @@ const reducerGeneral=(state=codigoReducerDefaultState,action)=>{
         case 'LIMPIAR_CONSOLA':
             return{
                 ...state,
-                codigoconsola: ''
+                codigoconsola: '',
+                simbolos: []
             }
         case 'ENTORNOFINAL':
             return{
                 ...state,
                 entornos: action.entorno
+            }
+        case 'ENTORNOACTUAL':
+            return{
+                ...state,
+                simbolos: [... state.simbolos,action.simbolosactuales]
             }
         default:
             return state;

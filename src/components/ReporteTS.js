@@ -6,6 +6,10 @@ import {connect} from 'react-redux';
 
 const ReporteTS= (props)=>(
     <div>
+        <div className='container-inline2'>
+          <h1>TS DESPUES DE EJECUCIÓN</h1>
+        </div>
+
        <table>
          <tbody>
         <tr>
@@ -14,27 +18,78 @@ const ReporteTS= (props)=>(
         <th>Valor</th>
         <th>Tipo Variable</th>
         </tr>
-        {renderTableData(props.entornos.entornos.ts)}
+        {console.log(props.entornos.entornos.ts)}
+         {renderTableData(props.entornos.entornos.ts)}
         </tbody>
        </table>
+
+
+       <div className='container-inline2'>
+       <h1>TS INSTRUCCION graficar_ts</h1>
+      </div>
+       
+      {
+        /*console.log("SIMBOLOS DE LA STORE"),
+        console.log(props.simbolos)*/
+        props.simbolos.map((arreglosim, index) => (
+        <div key={index}>
+        <table  >
+        <tbody>
+        <tr>
+        <th>Nombre</th>
+        <th>Tipo</th>
+        <th>Ambito</th>
+        <th>Valor</th>
+        <th>Tipo Variable</th>
+        </tr>
+        {graficar_ts(arreglosim)}
+        </tbody>
+        </table>
+        <br></br>
+        <br></br>
+        <br></br>
+        </div>
+      ))
+      }
+        
+
     </div>
+    
+    
 );
 
 
+function graficar_ts(arreglosim){
+    
+    if(arreglosim){
+      //console.log(arreglosim);
+         return arreglosim.map((simbolo,index)=>(
+
+                <tr key={index}>
+                <td>{simbolo.nombre}</td>
+                <td>{simbolo.tipo}</td>
+                <td>{simbolo.ambito}</td>
+                <td>{simbolo.valor.valueOf()}</td>
+                <td>{simbolo.reasignable?"LET":"CONST"}</td>
+                </tr>
+         ))
+        
+    }
+
+}
+
 function renderTableData(ts) {
 
+    
     if(ts){
-        return ts.map((simbolo, index) => {
-            const { id, tipovalor, valor,reasignable } = simbolo //destructuring
-            return (
-               <tr key={id}>
-                  <td>{id}</td>
-                  <td>{tipovalor}</td>
-                  <td>{valor}</td>
-                  <td>{reasignable?"LET":"CONST"}</td>
+        return ts.map((simbolo, index) => (
+               <tr key={index}>
+                  <td>{simbolo.id}</td>
+                  <td>{simbolo.tipovalor}</td>
+                  <td>{simbolo.valor.valueOf()}</td>
+                  <td>{simbolo.reasignable?"LET":"CONST"}</td>
                </tr>
-            )
-         })
+        ))
     }
     
  }
@@ -43,6 +98,7 @@ function renderTableData(ts) {
 const mapStatetoProps= (state)=>{
     return{
       entornos: state.storecodigo,
+      simbolos:  state.storecodigo.simbolos
     };
 };
 
