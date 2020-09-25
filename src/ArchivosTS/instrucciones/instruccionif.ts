@@ -1,5 +1,5 @@
 import entorno from "../entorno/entorno";
-import { tipo_valor } from "../entorno/tipo";
+import { tipo_instruccion, tipo_valor } from "../entorno/tipo";
 import expresion from "../expresiones/expresion";
 import instruccion from "./instruccion";
 import {almacen} from '../../../src/app';
@@ -26,9 +26,17 @@ export class instruccionif implements instruccion{
             //SI ES BOOLEAN LA CONDICION ENTONCES SI SE PUEDE EJECUTAR
             if(valorc.valueOf()){
                 const tsif= new entorno("if",ambito);
-                this.instrucciones.forEach(instruccion => {
-                        instruccion.ejecutar(tsif);
-                });
+                for (let i = 0; i < this.instrucciones.length; i++) {
+                    //AQUI TENEMOS QUE IR RECIBIENDO EL "VALOR" DE LAS INSTRUCCIONES
+                    //QUE POR SER INSTRUCCIONES NO DEVUELVEN NADA, A EXCEPCION DE LOS BREAK O CONTINUE
+                    let valori= this.instrucciones[i].ejecutar(tsif);
+                    if(valori && valori.valueOf()==tipo_instruccion.BREAK){
+                        return valori;
+                    }else if(valori && valori.valueOf()==tipo_instruccion.CONTINUE){
+                        return valori;
+                    }
+                    
+                }
             }
 
         }else{

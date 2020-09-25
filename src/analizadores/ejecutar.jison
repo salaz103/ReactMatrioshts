@@ -111,15 +111,20 @@ const declaracion= require('../ArchivosTS/instrucciones/declaracion');
 const asignacion = require('../ArchivosTS/instrucciones/asignacion');
 const instruccionif= require('../ArchivosTS/instrucciones/instruccionif');
 const instruccionifelse= require('../ArchivosTS/instrucciones/instruccionifelse');
+const instruccionelse= require('../ArchivosTS/instrucciones/instruccionelse');
+const instruccionelseif= require('../ArchivosTS/instrucciones/instruccionelseif');
 const instruccionswitch= require('../ArchivosTS/instrucciones/instruccionswitch');
 const instruccionwhile= require('../ArchivosTS/instrucciones/instruccionwhile');
 const incremento_decremento= require('../ArchivosTS/instrucciones/incremento_decremento');
 const instrucciondowhile= require('../ArchivosTS/instrucciones/instrucciondowhile');
 const graficar= require('../ArchivosTS/instrucciones/graficar');
 const instruccionfor= require('../ArchivosTS/instrucciones/instruccionfor');
+const instruccionbreak= require('../ArchivosTS/instrucciones/instruccionBreak');
+const instruccioncontinue= require('../ArchivosTS/instrucciones/instruccioncontinue');
   //*****************************OTROS*********************************
 const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
 const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;
+const tipo_instruccion= require('../ArchivosTS/entorno/tipo').tipo_instruccion;
 const operador= require('../ArchivosTS/entorno/tipo').operador;
 const variable= require('../ArchivosTS/instrucciones/variable');
 const caso= require('../ArchivosTS/instrucciones/caso');
@@ -163,8 +168,8 @@ instruccion:  declaraciones RPUNTOCOMA{$$=$1;}
             | masmenos RPUNTOCOMA {$$=$1;}
             | RGRAFICAR RPARA RPARC RPUNTOCOMA
               {$$= new graficar.graficar();}
-            | RBREAK RPUNTOCOMA
-            | RCONTINUE RPUNTOCOMA
+            | RBREAK RPUNTOCOMA {$$= new instruccionbreak.instruccionbreak(tipo_instruccion.BREAK);}
+            | RCONTINUE RPUNTOCOMA {$$= new instruccioncontinue.instruccioncontinue(tipo_instruccion.CONTINUE);}
             | instruccionreturn 
             | asignacion  RPUNTOCOMA {$$=$1;}
             ;
@@ -207,10 +212,19 @@ asignacion: IDENTIFICADOR RIGUAL expresion  {$$ = new asignacion.asignacion($1,$
 
 //LISTO
 instruccionif: RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC {$$= new instruccionif.instruccionif($3,$6);}
-             | RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC RELSE RLLAVEA lista RLLAVEC
-               {$$= new instruccionifelse.instruccionifelse($3,$6,$10);}
-             ;
+             | RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC instruccionelseif
+              {$$= new instruccionifelse.instruccionifelse($3,$6,$8);}
+               ;
+               /*{$$= new instruccionifelse.instruccionifelse($3,$6,$10);}*/
 
+instruccionelseif:  RELSE RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC
+                    {$$= new instruccionelseif.instruccionelseif($4,$7,undefined);}
+                  | RELSE RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC instruccionelseif
+                    {$$= new instruccionelseif.instruccionelseif($4,$7,$9);}
+                  | instruccionelse {$$=$1;}
+                  ;
+
+instruccionelse: RELSE RLLAVEA lista RLLAVEC {$$= new instruccionelse.instruccionelse($3);};
 
 instruccionswitch: RSWITCH RPARA expresion RPARC RLLAVEA casos RLLAVEC
                    {$$= new instruccionswitch.instruccionswitch($3,$6);}

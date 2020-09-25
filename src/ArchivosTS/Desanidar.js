@@ -220,7 +220,7 @@ function desanidar(ast) {
         var recolector = '';
         var expresion = desanidar(ast.hijos[2]);
         var lista = desanidar(ast.hijos[5]);
-        recolector = "if (" + expresion + "){ \n" + lista + " }\n";
+        recolector = "if (" + expresion + "){ \n          " + lista + " }\n";
         return recolector;
     }
     else if (ast.tipo == 'IF_ELSE') {
@@ -228,7 +228,7 @@ function desanidar(ast) {
         var expresion = desanidar(ast.hijos[2]);
         var lista = desanidar(ast.hijos[5]);
         var instruccionelse = desanidar(ast.hijos[7]);
-        recolector = "if (" + expresion + "){\n" + lista + "}" + instruccionelse;
+        recolector = "if (" + expresion + "){ \n        " + lista + "}" + instruccionelse;
         return recolector;
     }
     else if (ast.tipo == 'ELSE_IF') {
@@ -240,7 +240,7 @@ function desanidar(ast) {
     else if (ast.tipo == 'ELSE') {
         var recolector = '';
         var lista = desanidar(ast.hijos[2]);
-        recolector = "else { \n" + lista + "}";
+        recolector = "else { \n        " + lista + "}";
         return recolector;
     }
     else if (ast.tipo == 'IMAS_MAS') {
@@ -261,7 +261,7 @@ function desanidar(ast) {
         var expresion = desanidar(ast.hijos[4]);
         var masmenos = desanidar(ast.hijos[6]);
         var lista = desanidar(ast.hijos[9]);
-        recolector = "for(" + declaraciones + ";" + expresion + ";" + masmenos + "){\n" + lista + "}\n";
+        recolector = "for(" + declaraciones + ";" + expresion + ";" + masmenos + "){\n       " + lista + "} \n   ";
         return recolector;
     }
     else if (ast.tipo == 'SWITCH') {
@@ -269,6 +269,18 @@ function desanidar(ast) {
         var expresion = desanidar(ast.hijos[2]);
         var casos = desanidar(ast.hijos[5]);
         recolector = 'switch(' + expresion + '){\n' + casos + '}\n';
+        return recolector;
+    }
+    else if (ast.tipo == 'BREAK') {
+        var recolector = 'break; \n';
+        return recolector;
+    }
+    else if (ast.tipo == 'CONTINUE') {
+        var recolector = 'continue; \n';
+        return recolector;
+    }
+    else if (ast.tipo == 'GRAFICAR') {
+        var recolector = 'graficar_ts();\n';
         return recolector;
     }
     //****************************EXPRESIONES***********************/

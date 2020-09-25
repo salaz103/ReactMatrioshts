@@ -18,10 +18,18 @@ var instruccionif = /** @class */ (function () {
             var valorc = valorcondicion;
             //SI ES BOOLEAN LA CONDICION ENTONCES SI SE PUEDE EJECUTAR
             if (valorc.valueOf()) {
-                var tsif_1 = new entorno_1["default"]("if", ambito);
-                this.instrucciones.forEach(function (instruccion) {
-                    instruccion.ejecutar(tsif_1);
-                });
+                var tsif = new entorno_1["default"]("if", ambito);
+                for (var i = 0; i < this.instrucciones.length; i++) {
+                    //AQUI TENEMOS QUE IR RECIBIENDO EL "VALOR" DE LAS INSTRUCCIONES
+                    //QUE POR SER INSTRUCCIONES NO DEVUELVEN NADA, A EXCEPCION DE LOS BREAK O CONTINUE
+                    var valori = this.instrucciones[i].ejecutar(tsif);
+                    if (valori && valori.valueOf() == tipo_1.tipo_instruccion.BREAK) {
+                        return valori;
+                    }
+                    else if (valori && valori.valueOf() == tipo_1.tipo_instruccion.CONTINUE) {
+                        return valori;
+                    }
+                }
             }
         }
         else {

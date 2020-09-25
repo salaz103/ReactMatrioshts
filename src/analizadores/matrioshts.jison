@@ -141,8 +141,11 @@ instruccion: declaraciones RPUNTOCOMA
             | masmenos RPUNTOCOMA 
              {$$=nodobase.nuevonodo('IMAS_MAS',[$1,$2],yylineno);} //LISTO
             | RGRAFICAR RPARA RPARC RPUNTOCOMA
+             {$$=nodobase.nuevonodo('GRAFICAR',[$1,$2,$3,$4],yylineno);}
             | RBREAK RPUNTOCOMA
+             {$$=nodobase.nuevonodo('BREAK',[$1,$2],yylineno);} 
             | RCONTINUE RPUNTOCOMA
+            {$$=nodobase.nuevonodo('CONTINUE',[$1,$2],yylineno);}
             | instruccionreturn {$$=$1}  //LISTO
             ;
 

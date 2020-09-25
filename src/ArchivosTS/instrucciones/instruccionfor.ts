@@ -1,4 +1,5 @@
 import entorno from "../entorno/entorno";
+import { tipo_instruccion } from "../entorno/tipo";
 import expresion from "../expresiones/expresion";
 import instruccion from "./instruccion";
 
@@ -26,7 +27,21 @@ listainstrucciones:instruccion[];
 
         while(this.expresion.obtenerValor(tsfor).valueOf()){
             for (let i = 0; i < this.listainstrucciones.length; i++) {
-                    this.listainstrucciones[i].ejecutar(tsfor);                
+                //AQUI VAMOS EJECUTANDO CADA UNA DE LAS INSTRUCCIONES
+                //SABEMOS QUE TODAS LAS INSTRUCCIONES DEVUELVEN NULO
+                //LAS INSTRUCCIONES SOLO EJECUTAN, PERO SI VINIERA ALGUN VALOR
+                // EN ESTE CASO PUEDE SER BREAK O CONTINUE
+                    let resultado=this.listainstrucciones[i].ejecutar(tsfor);
+                    if(resultado && resultado.valueOf()==tipo_instruccion.BREAK){
+                        //SI VIENE UNA INSTRUCCION BREAK, NO SEGUIMOS EL FOR
+                        return resultado;
+                    }else if(resultado && resultado.valueOf()==tipo_instruccion.CONTINUE){
+                        //SI VIENE UNA FUNCION CONTINUE ENTONCES TENEMOS QUE
+                        //SALIR DONDE ESTEMOS EN EL CICLO FOR Y EJECUTAR LA SIGUIENTE PASADA
+                        break;
+                    }
+                    /*console.log("RESULTADO DE UNA PASADA EN FOR:");
+                    console.log(resultado);*/              
             }
             this.tercerainstruccion.ejecutar(tsfor);
         }

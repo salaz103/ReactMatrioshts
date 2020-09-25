@@ -15,6 +15,12 @@ var tipo_variable;
     tipo_variable["LET"] = "LET";
 })(tipo_variable || (tipo_variable = {}));
 exports.tipo_variable = tipo_variable;
+var tipo_instruccion;
+(function (tipo_instruccion) {
+    tipo_instruccion["BREAK"] = "BREAK";
+    tipo_instruccion["CONTINUE"] = "CONTINUE";
+})(tipo_instruccion || (tipo_instruccion = {}));
+exports.tipo_instruccion = tipo_instruccion;
 var operador;
 (function (operador) {
     //OPERADORES ARITMETICOS

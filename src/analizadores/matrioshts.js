@@ -104,6 +104,15 @@ break;
 case 12:
 this.$=nodobase.nuevonodo('IMAS_MAS',[$$[$0-1],$$[$0]],yylineno);
 break;
+case 13:
+this.$=nodobase.nuevonodo('GRAFICAR',[$$[$0-3],$$[$0-2],$$[$0-1],$$[$0]],yylineno);
+break;
+case 14:
+this.$=nodobase.nuevonodo('BREAK',[$$[$0-1],$$[$0]],yylineno);
+break;
+case 15:
+this.$=nodobase.nuevonodo('CONTINUE',[$$[$0-1],$$[$0]],yylineno);
+break;
 case 17:
 this.$=nodobase.nuevonodo('MAS_MAS',[$$[$0-1],$$[$0]],yylineno);
 break;

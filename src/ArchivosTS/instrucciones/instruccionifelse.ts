@@ -9,12 +9,12 @@ export class instruccionifelse implements instruccion{
 
     condicion:expresion;
     listatrue:instruccion[];
-    listafalse:instruccion[];
+    elseif_else:instruccion;
 
-    constructor(condicion:expresion,listat:instruccion[],listaf:instruccion[]){
+    constructor(condicion:expresion,listat:instruccion[],elseifoelse:instruccion){
         this.condicion=condicion;
         this.listatrue= listat;
-        this.listafalse=listaf;
+        this.elseif_else=elseifoelse;
     }
 
 
@@ -36,12 +36,10 @@ export class instruccionifelse implements instruccion{
                         instruccion.ejecutar(tsif);
                 });
             }else{
-                //SI LA CONDICION NO ES VERDADERA, SE EJECUTA EL "ELSE"
-                //ES DECIR LAS INSTRUCCIONES DEL FALSE
-                const tselse= new entorno("else",ambito);
-                this.listafalse.forEach(instruccion => {
-                        instruccion.ejecutar(tselse);
-                });
+                //SI LA CONDICION NO ES VERDADERA SE EJECUTA LO OTRO
+                //PERO PUEDE QUE AQUI VENGA UN ELSE IF O SOLO UN ELSE
+                //SOLO MANDO A EJECUTAR ESE ELSE O ELSE IF Y QUE ELLOS HAGAN SUS NUEVOS AMBITOS
+                this.elseif_else.ejecutar(ambito);
             }
 
         }else{

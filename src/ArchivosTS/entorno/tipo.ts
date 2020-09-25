@@ -11,6 +11,11 @@ enum tipo_variable{
     LET ="LET"
 }
 
+enum tipo_instruccion{
+    BREAK= "BREAK",
+    CONTINUE="CONTINUE"
+}
+
 enum operador{
     //OPERADORES ARITMETICOS
     MAS="MAS",
@@ -36,4 +41,4 @@ enum operador{
 
 
 
-export {tipo_valor,operador,tipo_variable};
+export {tipo_valor,operador,tipo_variable,tipo_instruccion};

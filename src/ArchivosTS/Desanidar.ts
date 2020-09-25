@@ -230,14 +230,14 @@ function desanidar(ast:typeof nodobase):string{
         let recolector='';
         let expresion= desanidar(ast.hijos[2]);
         let lista= desanidar(ast.hijos[5]);
-        recolector= "if ("+ expresion+"){ \n"+lista+" }\n";
+        recolector= "if ("+ expresion+"){ \n          "+lista+" }\n";
         return recolector;
     }else if(ast.tipo=='IF_ELSE'){
         let recolector='';
         let expresion= desanidar(ast.hijos[2]);
         let lista = desanidar(ast.hijos[5]);
         let instruccionelse= desanidar(ast.hijos[7]);
-        recolector= "if ("+expresion+"){\n"+lista+"}"+instruccionelse;
+        recolector= "if ("+expresion+"){ \n        "+lista+"}"+instruccionelse;
 
         return recolector;
     }else if(ast.tipo=='ELSE_IF'){
@@ -250,7 +250,7 @@ function desanidar(ast:typeof nodobase):string{
     }else if(ast.tipo=='ELSE'){
         let recolector='';
         let lista= desanidar(ast.hijos[2]);
-        recolector="else { \n"+lista+"}";
+        recolector="else { \n        "+lista+"}";
 
         return recolector;
 
@@ -270,7 +270,7 @@ function desanidar(ast:typeof nodobase):string{
         let masmenos= desanidar(ast.hijos[6]);
         let lista= desanidar(ast.hijos[9]);
 
-        recolector= "for("+declaraciones+";"+expresion+";"+masmenos+"){\n"+lista+"}\n";
+        recolector= "for("+declaraciones+";"+expresion+";"+masmenos+"){\n       "+lista+"} \n   ";
         return recolector;
 
     }else if(ast.tipo=='SWITCH'){
@@ -278,6 +278,17 @@ function desanidar(ast:typeof nodobase):string{
         let expresion= desanidar(ast.hijos[2]);
         let casos= desanidar(ast.hijos[5]);
         recolector='switch('+expresion+'){\n'+casos+'}\n';
+        return recolector;
+    }else if(ast.tipo=='BREAK'){
+        let recolector= 'break; \n';
+        return recolector;
+
+    }else if(ast.tipo=='CONTINUE'){
+        let recolector= 'continue; \n';
+        return recolector;
+
+    }else if(ast.tipo=='GRAFICAR'){
+        let recolector= 'graficar_ts();\n';
         return recolector;
     }
     

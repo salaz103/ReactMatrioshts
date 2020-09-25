@@ -5,10 +5,10 @@ var tipo_1 = require("../entorno/tipo");
 var app_1 = require("../../../src/app");
 var ts_js_1 = require("../../actions/ts.js");
 var instruccionifelse = /** @class */ (function () {
-    function instruccionifelse(condicion, listat, listaf) {
+    function instruccionifelse(condicion, listat, elseifoelse) {
         this.condicion = condicion;
         this.listatrue = listat;
-        this.listafalse = listaf;
+        this.elseif_else = elseifoelse;
     }
     instruccionifelse.prototype.ejecutar = function (ambito) {
         //1. OBTENER EL VALOR Y TIPO DE LA CONDICION
@@ -27,12 +27,10 @@ var instruccionifelse = /** @class */ (function () {
                 });
             }
             else {
-                //SI LA CONDICION NO ES VERDADERA, SE EJECUTA EL "ELSE"
-                //ES DECIR LAS INSTRUCCIONES DEL FALSE
-                var tselse_1 = new entorno_1["default"]("else", ambito);
-                this.listafalse.forEach(function (instruccion) {
-                    instruccion.ejecutar(tselse_1);
-                });
+                //SI LA CONDICION NO ES VERDADERA SE EJECUTA LO OTRO
+                //PERO PUEDE QUE AQUI VENGA UN ELSE IF O SOLO UN ELSE
+                //SOLO MANDO A EJECUTAR ESE ELSE O ELSE IF Y QUE ELLOS HAGAN SUS NUEVOS AMBITOS
+                this.elseif_else.ejecutar(ambito);
             }
         }
         else {
