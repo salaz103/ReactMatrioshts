@@ -116,6 +116,7 @@ const instruccionwhile= require('../ArchivosTS/instrucciones/instruccionwhile');
 const incremento_decremento= require('../ArchivosTS/instrucciones/incremento_decremento');
 const instrucciondowhile= require('../ArchivosTS/instrucciones/instrucciondowhile');
 const graficar= require('../ArchivosTS/instrucciones/graficar');
+const instruccionfor= require('../ArchivosTS/instrucciones/instruccionfor');
   //*****************************OTROS*********************************
 const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
 const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;
@@ -152,29 +153,30 @@ lista : lista instruccion {$1.push($2); $$=$1;}
       | instruccion {$$=[$1];}
       ;
 
-instruccion:  declaraciones {$$=$1;}
+instruccion:  declaraciones RPUNTOCOMA{$$=$1;}
             | instruccionif {$$=$1;}
             | instruccionswitch {$$=$1;}
-            | instruccionfor 
+            | instruccionfor    {$$=$1;}
             | instruccionwhile {$$=$1;}
-            | imprimir     {$$=$1;}
+            | imprimir         {$$=$1;}
             | declararfuncion 
-            | IDENTIFICADOR RMASMAS RPUNTOCOMA 
-              {$$= new incremento_decremento.incremento_decremento($1,operador.INCREMENTO);}
-            | IDENTIFICADOR RMENOSMENOS RPUNTOCOMA
-              {$$= new incremento_decremento.incremento_decremento($1,operador.DECREMENTO);}
+            | masmenos RPUNTOCOMA {$$=$1;}
             | RGRAFICAR RPARA RPARC RPUNTOCOMA
               {$$= new graficar.graficar();}
             | RBREAK RPUNTOCOMA
             | RCONTINUE RPUNTOCOMA
             | instruccionreturn 
-            | asignacion    {$$=$1;}
+            | asignacion  RPUNTOCOMA {$$=$1;}
             ;
 
-
+masmenos: IDENTIFICADOR RMASMAS  
+         {$$= new incremento_decremento.incremento_decremento($1,operador.INCREMENTO);}
+         |IDENTIFICADOR RMENOSMENOS
+         {$$= new incremento_decremento.incremento_decremento($1,operador.DECREMENTO);}
+         ;
 
 //LISTO
-declaraciones: tipovariable listavariables RPUNTOCOMA {$$=new declaracion.declaracion($1,$2);} ;
+declaraciones: tipovariable listavariables  {$$=new declaracion.declaracion($1,$2);} ;
 
 
 //LISTO
@@ -200,7 +202,7 @@ tipovariable: RLET   {$$=tipo_variable.LET;}
             ;
 
 //LISTO
-asignacion: IDENTIFICADOR RIGUAL expresion RPUNTOCOMA {$$ = new asignacion.asignacion($1,$3);}
+asignacion: IDENTIFICADOR RIGUAL expresion  {$$ = new asignacion.asignacion($1,$3);}
             ;
 
 //LISTO
@@ -224,9 +226,12 @@ caso:   RCASE expresion RDOSPUNTOS lista RBREAK RPUNTOCOMA
         {$$= new caso.caso(undefined,$3);}
         ;
 
-instruccionfor: RFOR RPARA tipovariable IDENTIFICADOR RIGUAL expresion RPUNTOCOMA expresion RPUNTOCOMA IDENTIFICADOR RMASMAS RPARC 
-                RLLAVEA  lista RLLAVEC
-                
+instruccionfor: RFOR RPARA declaraciones RPUNTOCOMA expresion RPUNTOCOMA masmenos RPARC RLLAVEA lista RLLAVEC
+                {$$= new instruccionfor.instruccionfor($3,$5,$7,$10);}
+              
+              | RFOR RPARA asignacion RPUNTOCOMA expresion RPUNTOCOMA masmenos RPARC RLLAVEA lista RLLAVEC
+                {$$= new instruccionfor.instruccionfor($3,$5,$7,$10);}
+                 
               | RFOR RPARA tipovariable IDENTIFICADOR ROF IDENTIFICADOR RPARC RLLAVEA lista RLLAVEC
 
               | RFOR RPARA tipovariable IDENTIFICADOR RIN IDENTIFICADOR RPARC RLLAVEC lista RLLAVEC
@@ -293,8 +298,8 @@ expresion:
           |expresion RDIVISION expresion  {$$= new aritmetica.aritmetica($1,operador.DIVISION,$3);}
           |expresion RMODULO expresion    {$$= new aritmetica.aritmetica($1,operador.MODULO,$3);}
           |expresion REXPONENTE expresion {$$= new aritmetica.aritmetica($1,operador.EXPONENTE,$3);}
-          /*|IDENTIFICADOR RMASMAS
-          |IDENTIFICADOR RMENOSMENOS*/
+          |IDENTIFICADOR RMASMAS          {$$= new incremento_decremento.incremento_decremento($1,operador.INCREMENTO);}
+          |IDENTIFICADOR RMENOSMENOS      {$$= new incremento_decremento.incremento_decremento($1,operador.DECREMENTO);}
 
           /*EXPRESIONES RELACIONALES*/
           |expresion RMAYORQUE expresion       {$$= new relacional.relacional($1,operador.MAYORQUE,$3);}
