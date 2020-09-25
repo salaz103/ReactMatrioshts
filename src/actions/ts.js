@@ -21,3 +21,8 @@ export const reportets=(simbolosactuales)=>({
     type:'ENTORNOACTUAL',
     simbolosactuales
 });
+
+export const errores=(error_e)=>({
+    type:'ERROR',
+    error_e
+});

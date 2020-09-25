@@ -22,7 +22,6 @@ listainstrucciones:instruccion[];
 
         //PRIMERO HAY QUE HACER UNA NUEVA TS 
         const tsfor= new entorno("FOR",ambito);
-
         this.primerainstruccion.ejecutar(tsfor);
 
         while(this.expresion.obtenerValor(tsfor).valueOf()){

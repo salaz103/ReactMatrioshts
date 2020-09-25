@@ -3,6 +3,7 @@ const codigoReducerDefaultState={
     codigoconsola:'',
     entornos:{},
     simbolos:[],
+    errores:[],
     s:'date'
 };
 
@@ -33,6 +34,11 @@ const reducerGeneral=(state=codigoReducerDefaultState,action)=>{
             return{
                 ...state,
                 simbolos: [... state.simbolos,action.simbolosactuales]
+            }
+        case 'ERROR':
+            return{
+                ...state,
+                errores: state.errores.concat(action.error_e)
             }
         default:
             return state;
