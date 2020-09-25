@@ -1,5 +1,5 @@
 import entorno from "../entorno/entorno";
-import { tipo_valor } from "../entorno/tipo";
+import { tipo_instruccion, tipo_valor } from "../entorno/tipo";
 import expresion from "../expresiones/expresion";
 import instruccion from "./instruccion";
 import {almacen} from '../../../src/app';
@@ -32,7 +32,19 @@ export class instruccionwhile implements instruccion{
             while(this.expresioncondicion.obtenerValor(ambito).valueOf()){
                 const tswhile=new entorno("WHILE",ambito);
                 for (let i = 0; i < this.lista.length; i++) {
-                    this.lista[i].ejecutar(tswhile);
+
+                    let tipoinstruccion=this.lista[i].ejecutar(tswhile);
+
+                    //AQUI REVISAMOS SI EL VALOR DE LA INSTRUCCION ES, BREAK, CONTINUE O RETURN
+                    if(tipoinstruccion && tipoinstruccion.valueOf()==tipo_instruccion.BREAK){
+                        //SI DENTRO DEL WHILE VIENE UN BREAK ENTONCES NOS SALIMOS DEL MISMO
+                        return;   
+
+                    }else if(tipoinstruccion && tipoinstruccion.valueOf()==tipo_instruccion.CONTINUE){
+                        //SI VIENE CONTINUE DENTRO DEL WHILE, ENTONCES VOLVEMOS A EJECUTAR EL WHILE
+                        //EN ESTE CASO USAMOS BREAK PARA SALIRNOS DE LAS INSTRUCCIONES QUE ESTAMOS RECORRIENDO
+                        break;
+                    }
                 }
             }
 

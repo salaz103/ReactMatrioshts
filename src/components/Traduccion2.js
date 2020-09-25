@@ -4,7 +4,7 @@ import Action from './Action';
 import Traducir from '../analizadores/matrioshts';
 import Ejecutar from '../analizadores/ejecutar';
 import {connect} from 'react-redux';
-import {agregarCodigo} from '../actions/ts';
+import {agregarCodigo,guardartextotraduccion} from '../actions/ts';
 import Consola from './Consola';
 import "ace-builds/src-noconflict/mode-typescript";
 import "ace-builds/src-noconflict/theme-tomorrow_night_blue";
@@ -16,6 +16,7 @@ class Traduccion2 extends React.Component {
   state = {
     valorEditor1: " ",
     codigoDesanidado:"",
+    textot:''
   };
 
   onChange= (newvalue)=>{
@@ -41,8 +42,11 @@ class Traduccion2 extends React.Component {
       let ast;
       let graphviz;
       ast = Traducir.parse(this.state.valorEditor1);
+      let valor= this.state.valorEditor1;
       console.log(ast);
       
+      
+
       let codigofinal=desanidar(ast);
       graphviz= AST_grafo(ast);
       console.log(codigofinal);
@@ -81,7 +85,8 @@ class Traduccion2 extends React.Component {
             height='400px'
             mode="typescript"
             theme="tomorrow_night_blue"
-            name="editor"
+            name="editor1"
+            //value= {this.state.textot}
             fontSize='20px'
         />
 
@@ -117,7 +122,12 @@ class Traduccion2 extends React.Component {
   }
 }
 
+const mapStateToProps = state =>{
+  return{
+    textot: state.storecodigo.textot
+  }
+}
 
 
 
-export default connect(null,{agregarCodigo})(Traduccion2)
+export default connect(mapStateToProps,{agregarCodigo})(Traduccion2)

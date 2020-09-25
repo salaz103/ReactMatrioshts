@@ -3,6 +3,11 @@ export const agregarCodigo=(codigografo='')=>({
     codigografo
 });
 
+export const guardartextotraduccion=(textot='')=>({
+    type:'TEXTO_TRADUCCION',
+    textot
+});
+
 export const codigoconsola=(codigoconsola='')=>({
     type:'CONSOLA',
     codigoconsola

@@ -1,6 +1,7 @@
 const codigoReducerDefaultState={
     codigografo:'digraph G{}',
     codigoconsola:'',
+    textot:'',
     entornos:{},
     simbolos:[],
     errores:[],
@@ -13,6 +14,11 @@ const reducerGeneral=(state=codigoReducerDefaultState,action)=>{
             return {
                 ...state,
                 codigografo:action.codigografo
+            }
+        case 'TEXTO_TRADUCCION':
+            return {
+                ...state,
+                textot:action.textot
             }
         case 'CONSOLA':
             return{
