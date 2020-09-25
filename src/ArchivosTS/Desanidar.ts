@@ -55,13 +55,16 @@ function desanidar(ast:typeof nodobase):string{
         let recolector='';
         let tipovariable= desanidar(ast.hijos[0]);
         let listavariables= desanidar(ast.hijos[1]);
-        recolector= tipovariable+" " + listavariables +";\n"
+        recolector= tipovariable+" " + listavariables ;
+        return recolector;
+    }else if(ast.tipo=='IDECLARACIONES'){
+        let recolector=desanidar(ast.hijos[0])+";\n";
         return recolector;
     }else if(ast.tipo=='ASIGNACION'){
         let recolector='';
         let id= ast.hijos[0];
         let expresion= desanidar(ast.hijos[2]);
-        recolector= id+"="+expresion+";\n";
+        recolector= id+"="+expresion;
         return recolector;
     }else if(ast.tipo=='WHILE'){
         let recolector='';
@@ -223,9 +226,69 @@ function desanidar(ast:typeof nodobase):string{
         }
 
         return recolector;
+    }else if(ast.tipo=='IF_SIMPLE'){
+        let recolector='';
+        let expresion= desanidar(ast.hijos[2]);
+        let lista= desanidar(ast.hijos[5]);
+        recolector= "if ("+ expresion+"){ \n"+lista+" }\n";
+        return recolector;
+    }else if(ast.tipo=='IF_ELSE'){
+        let recolector='';
+        let expresion= desanidar(ast.hijos[2]);
+        let lista = desanidar(ast.hijos[5]);
+        let instruccionelse= desanidar(ast.hijos[7]);
+        recolector= "if ("+expresion+"){\n"+lista+"}"+instruccionelse;
+
+        return recolector;
+    }else if(ast.tipo=='ELSE_IF'){
+        let recolector='';
+        let instruccionif= desanidar(ast.hijos[1]);
+        recolector="else "+ instruccionif;
+
+        return recolector;
+
+    }else if(ast.tipo=='ELSE'){
+        let recolector='';
+        let lista= desanidar(ast.hijos[2]);
+        recolector="else { \n"+lista+"}";
+
+        return recolector;
+
+    }else if(ast.tipo=='IMAS_MAS'){
+        let recolector= desanidar(ast.hijos[0])+";\n";
+        return recolector;
+    }else if(ast.tipo=='MAS_MAS'){
+        let recolector= ast.hijos[0]+"++";
+        return recolector;
+    }else if(ast.tipo=='MENOS_MENOS'){
+        let recolector= ast.hijos[0]+"--";
+        return recolector;
+    }else if(ast.tipo=='FOR'){
+        let recolector='';
+        let declaraciones= desanidar(ast.hijos[2]);
+        let expresion= desanidar(ast.hijos[4]);
+        let masmenos= desanidar(ast.hijos[6]);
+        let lista= desanidar(ast.hijos[9]);
+
+        recolector= "for("+declaraciones+";"+expresion+";"+masmenos+"){\n"+lista+"}\n";
+        return recolector;
+
+    }else if(ast.tipo=='SWITCH'){
+        let recolector='';
+        let expresion= desanidar(ast.hijos[2]);
+        let casos= desanidar(ast.hijos[5]);
+        recolector='switch('+expresion+'){\n'+casos+'}\n';
+        return recolector;
     }
+    
 //****************************EXPRESIONES***********************/
-    else if(ast.tipo=='MAS'){
+    else if(ast.tipo=='NEGATIVO'){
+        let recolector='';
+        let expresion= desanidar(ast.hijos[1]);
+        recolector='-'+expresion;
+        return recolector;
+    
+    }else if(ast.tipo=='MAS'){
         let recolector='';
         let operizq= desanidar(ast.hijos[0]);
         let operder= desanidar(ast.hijos[2]);
@@ -343,11 +406,50 @@ function desanidar(ast:typeof nodobase):string{
         recolector= "!"+operando;
         return recolector;
 
+    }else if(ast.tipo=='LLAMADA_FUNCION'){
+        let recolector='';
+        let id= ast.hijos[0];
+        let parametros= desanidar(ast.hijos[2]);
+        recolector= id +"("+parametros+")";
+        return recolector;
+
+    }else if(ast.tipo=='PAREXPRESION'){
+        let recolector='';
+        let expresion= desanidar(ast.hijos[1]);
+        recolector= "("+expresion+")";
+
+        return recolector;
+
     }
 
 
 // ****************LISTAS - NODOS INTERMEDIOS*********************
-    else if(ast.tipo=='LISTA_VARIABLES'){
+    else if(ast.tipo=='LISTA_CASOS'){
+        let recolector='';
+
+        if(ast.hijos.length==1){
+            //SI LA LISTA SOLO TRAE UN HIJO
+            //ENTONCES NO LE AGREGAMOS COMAS
+            ast.hijos.forEach(variable => {
+                recolector+= desanidar(variable)+"\n";
+            });
+        }else{
+        //SI LA LISTA DE CASOS TRAE MAS DE UN HIJO
+        //SIGNIFICA QUE LA LISTA VIENE SEPARADA POR SALTOS DE LINEA
+        let contador:number= 0;
+        let hijos:number= ast.hijos.length;
+        ast.hijos.forEach(variable => {
+            contador++;
+            if(contador==hijos){
+                recolector+= desanidar(variable)+"\n";
+            }else{
+                recolector+= desanidar(variable)+"\n";
+            }
+        });
+        }
+        return recolector;
+
+    }else if(ast.tipo=='LISTA_VARIABLES'){
         let recolector='';
 
         if(ast.hijos.length==1){
@@ -395,6 +497,32 @@ function desanidar(ast:typeof nodobase):string{
         });
         }
         return recolector;
+    }else if(ast.tipo=='LISTA_EXPRESIONES'){
+
+        let recolector='';
+
+        if(ast.hijos.length==1){
+            //SI LA LISTA SOLO TRAE UN HIJO
+            //ENTONCES NO LE AGREGAMOS COMAS
+            ast.hijos.forEach(variable => {
+                recolector+= desanidar(variable);
+            });
+        }else{
+        //SI LA LISTA DE VARIABLES TRAE MAS DE UN HIJO
+        //SIGNIFICA QUE LA LISTA VIENE SEPARADA POR COMAS
+        let contador:number= 0;
+        let hijos:number= ast.hijos.length;
+        ast.hijos.forEach(variable => {
+            contador++;
+            if(contador==hijos){
+                recolector+= desanidar(variable);
+            }else{
+                recolector+= desanidar(variable)+",";
+            }
+        });
+        }
+        return recolector;
+
     }else if(ast.tipo=='VARIABLE_FULL'){
         let recolector='';
         let id= ast.hijos[0];
@@ -428,6 +556,17 @@ function desanidar(ast:typeof nodobase):string{
         let tipodato= desanidar(ast.hijos[2]);
         recolector= id+":"+tipodato;
         return recolector;
+    }else if(ast.tipo=='CASE'){
+        let recolector='';
+        let expresion= desanidar(ast.hijos[1]);
+        let lista= desanidar(ast.hijos[3]);
+        recolector= 'case '+expresion+":\n"+lista;
+        return recolector;
+    }else if(ast.tipo=='CASE_DEFAULT'){
+        let recolector='';
+        let lista= desanidar(ast.hijos[2]);
+        recolector= 'default:\n   '+lista;
+        return recolector;
     }
 //**************NODOS HOJA, SUS HIJOS YA NO TRAEN MAS HIJOS************************
     else if(ast.tipo=='COMILLA_DOBLE'){
@@ -458,6 +597,12 @@ function desanidar(ast:typeof nodobase):string{
         let valor= ast.hijos[0];
         return valor;
     }else if(ast.tipo=='VOID'){
+        let valor= ast.hijos[0];
+        return valor;
+    }else if(ast.tipo=='TRUE'){
+        let valor= ast.hijos[0];
+        return valor;
+    }else if(ast.tipo=='FALSE'){
         let valor= ast.hijos[0];
         return valor;
     }

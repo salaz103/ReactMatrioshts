@@ -83,7 +83,7 @@
 "("                   return 'RPARA';
 ")"                   return 'RPARC';
 
-\'[^\"]*\'          { yytext = yytext.substr(1,yyleng-2); return 'CADENACOMILLASIMPLE'; }
+\'[^\']*\'          { yytext = yytext.substr(1,yyleng-2); return 'CADENACOMILLASIMPLE'; }
 \"[^\"]*\"            { yytext = yytext.substr(1,yyleng-2); return 'CADENACOMILLADOBLE'; }
 [0-9]+("."[0-9]+)?\b          return 'NUM';
 ([a-zA-Z])[a-zA-Z0-9_]*       return 'IDENTIFICADOR';
@@ -128,25 +128,32 @@ lista : lista instruccion { $1.hijos.push($2); $$=$1;  /*$1.push($2); $$=$1;*/}
       | instruccion {$$=nodobase.nuevonodo('INSTRUCCIONES',[$1],yylineno);  /*$$=[$1]*/} 
       ;
 
-instruccion: declaraciones {$$=$1} //LISTO
-            | asignacion   {$$=$1} //LISTO
-            | instruccionif {$$=$1}
-            | instruccionswitch 
-            | instruccionfor 
+instruccion: declaraciones RPUNTOCOMA 
+              {$$=nodobase.nuevonodo('IDECLARACIONES',[$1,$2],yylineno);}
+            | asignacion RPUNTOCOMA  
+              {$$=nodobase.nuevonodo('IDECLARACIONES',[$1,$2],yylineno);} //LISTO
+            | instruccionif {$$=$1} //LISTO
+            | instruccionswitch {$$=$1} //LISTO
+            | instruccionfor {$$=$1;} //LISTO
             | instruccionwhile {$$=$1;} //LISTO
             | imprimir {$$=$1;}  //LISTO
-            | declararfuncion {$$=$1}
-            | IDENTIFICADOR RMASMAS RPUNTOCOMA
+            | declararfuncion {$$=$1} //LISTO
+            | masmenos RPUNTOCOMA 
+             {$$=nodobase.nuevonodo('IMAS_MAS',[$1,$2],yylineno);} //LISTO
             | RGRAFICAR RPARA RPARC RPUNTOCOMA
             | RBREAK RPUNTOCOMA
             | RCONTINUE RPUNTOCOMA
             | instruccionreturn {$$=$1}  //LISTO
             ;
 
-
+masmenos: IDENTIFICADOR RMASMAS
+          {$$=nodobase.nuevonodo('MAS_MAS',[$1,$2],yylineno);}  
+         |IDENTIFICADOR RMENOSMENOS
+         {$$=nodobase.nuevonodo('MENOS_MENOS',[$1,$2],yylineno);}
+         ;
 
 //LISTO
-declaraciones: tipovariable listavariables RPUNTOCOMA {$$=nodobase.nuevonodo('DECLARACION_VARIABLE',[$1,$2,$3],yylineno);};
+declaraciones: tipovariable listavariables {$$=nodobase.nuevonodo('DECLARACION_VARIABLE',[$1,$2],yylineno);};
 
 
 //LISTO
@@ -167,29 +174,36 @@ tipovariable: RLET   {$$= nodobase.nuevonodo('LET',[$1],yylineno);}  //LISTO
             ;
 
 //LISTO
-asignacion: IDENTIFICADOR RIGUAL expresion RPUNTOCOMA
-            {$$=nodobase.nuevonodo('ASIGNACION',[$1,$2,$3,$4],yylineno)};
+asignacion: IDENTIFICADOR RIGUAL expresion
+            {$$=nodobase.nuevonodo('ASIGNACION',[$1,$2,$3],yylineno)};
 
+//LISTO
 instruccionif: RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC
                {$$=nodobase.nuevonodo('IF_SIMPLE',[$1,$2,$3,$4,$5,$6,$7],yylineno)}
              | RIF RPARA expresion RPARC RLLAVEA lista RLLAVEC instruccionelse
                {$$=nodobase.nuevonodo('IF_ELSE',[$1,$2,$3,$4,$5,$6,$7,$8],yylineno)};
-
+// LISTO
 instruccionelse: RELSE instruccionif {$$=nodobase.nuevonodo('ELSE_IF',[$1,$2],yylineno)}
                 | RELSE RLLAVEA lista RLLAVEC  {$$=nodobase.nuevonodo('ELSE',[$1,$2,$3,$4],yylineno)}
                 ;
+//LISTO
+instruccionswitch: RSWITCH RPARA expresion RPARC RLLAVEA casos RLLAVEC
+                  {$$=nodobase.nuevonodo('SWITCH',[$1,$2,$3,$4,$5,$6,$7],yylineno);}
+                  ;
+//LISTO
+casos: casos caso {$1.hijos.push($2); $$=$1;}
+      | caso {$$=nodobase.nuevonodo('LISTA_CASOS',[$1],yylineno);}; 
 
-instruccionswitch: RSWITCH RPARA expresion RPARC RLLAVEA casos RLLAVEC;
+caso: RCASE expresion RDOSPUNTOS lista  
+      {$$= nodobase.nuevonodo('CASE',[$1,$2,$3,$4],yylineno);}
+      | RDEFAULT RDOSPUNTOS lista  
+        {$$= nodobase.nuevonodo('CASE_DEFAULT',[$1,$2,$3],yylineno);};
 
-casos: casos caso
-      | caso; 
-
-caso: RCASE expresion RDOSPUNTOS lista RBREAK RPUNTOCOMA
-      | RDEFAULT RDOSPUNTOS lista RBREAK RPUNTOCOMA;
-
-instruccionfor: RFOR RPARA tipovariable IDENTIFICADOR RIGUAL expresion RPUNTOCOMA expresion RPUNTOCOMA IDENTIFICADOR RMASMAS RPARC 
-                RLLAVEA  lista RLLAVEC
-                
+instruccionfor: RFOR RPARA declaraciones RPUNTOCOMA expresion RPUNTOCOMA masmenos RPARC RLLAVEA  lista RLLAVEC
+                {$$= nodobase.nuevonodo('FOR',[$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11],yylineno);}
+              
+              | RFOR RPARA asignacion RPUNTOCOMA expresion RPUNTOCOMA masmenos RPARC RLLAVEA lista RLLAVEC
+                {$$= nodobase.nuevonodo('FOR',[$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11],yylineno);}
               | RFOR RPARA tipovariable IDENTIFICADOR ROF IDENTIFICADOR RPARC RLLAVEA lista RLLAVEC
 
               | RFOR RPARA tipovariable IDENTIFICADOR RIN IDENTIFICADOR RPARC RLLAVEC lista RLLAVEC
@@ -246,13 +260,14 @@ instruccionreturn: RRETURN RPUNTOCOMA {$$= nodobase.nuevonodo('RETURN',[$1,$2],y
                   |RRETURN expresion RPUNTOCOMA {$$= nodobase.nuevonodo('RETURN',[$1,$2,$3],yylineno);}
                   ; 
 
-listaexpresiones: listaexpresiones RCOMA expresion
-                | expresion
+listaexpresiones: listaexpresiones RCOMA expresion {$1.hijos.push($3); $$=$1;}
+                | expresion {$$=nodobase.nuevonodo('LISTA_EXPRESIONES',[$1],yylineno);}
                 ;
 
 expresion: 
            /*EXPRESIONES ARITMETICAS*/
-           expresion RMAS expresion    {$$= nodobase.nuevonodo('MAS',[$1,$2,$3],yylineno);}  //LISTO
+           RMENOS expresion %prec UMENOS {$$= nodobase.nuevonodo('NEGATIVO',[$1,$2],yylineno);} //LISTO
+          |expresion RMAS expresion    {$$= nodobase.nuevonodo('MAS',[$1,$2,$3],yylineno);}  //LISTO
           |expresion RMENOS expresion  {$$= nodobase.nuevonodo('MENOS',[$1,$2,$3],yylineno);} //LISTO
           |expresion RPOR expresion    {$$= nodobase.nuevonodo('POR',[$1,$2,$3],yylineno);} //LISTO
           |expresion RDIVISION expresion {$$= nodobase.nuevonodo('DIVISON',[$1,$2,$3],yylineno);} //LISTO
@@ -273,14 +288,16 @@ expresion:
           |expresion ROR expresion         {$$= nodobase.nuevonodo('OR',[$1,$2,$3],yylineno);}   //LISTO
           |RNOT expresion                  {$$= nodobase.nuevonodo('NOT',[$1,$2],yylineno);}     //LISTO
           /*RESTANTES*/
-          |RPARA expresion RPARC  {$$= nodobase.nuevonodo('PAREXPRESION',[$1,$2,$3],yylineno);}
+          |RPARA expresion RPARC  {$$= nodobase.nuevonodo('PAREXPRESION',[$1,$2,$3],yylineno);}//LISTO
           |expresion RINTERROGACION expresion RDOSPUNTOS expresion
           |NUM                    {$$= nodobase.nuevonodo('NUMERO',[$1],yylineno);} //LISTO
-          |RTRUE                  {$$= nodobase.nuevonodo('TRUE',[$1],yylineno);}
-          |RFALSE                 {$$= nodobase.nuevonodo('FALSE',[$1],yylineno);}
+          |RTRUE                  {$$= nodobase.nuevonodo('TRUE',[$1],yylineno);}   //LISTO
+          |RFALSE                 {$$= nodobase.nuevonodo('FALSE',[$1],yylineno);}  //LISTO
           |CADENACOMILLADOBLE  {$$= nodobase.nuevonodo('COMILLA_DOBLE',[$1],yylineno);} //LISTO
           |CADENACOMILLASIMPLE {$$= nodobase.nuevonodo('COMILLA_SIMPLE',[$1],yylineno);} //LISTO
           |IDENTIFICADOR       {$$= nodobase.nuevonodo('IDENTIFICADOR',[$1],yylineno);}  //LISTO
           //LLAMADA A FUNCIONES 
-          | IDENTIFICADOR RPARA listaexpresiones RPARC 
+          //LISTO
+          | IDENTIFICADOR RPARA listaexpresiones RPARC
+            {$$= nodobase.nuevonodo('LLAMADA_FUNCION',[$1,$2,$3,$4],yylineno);} 
           ;

@@ -290,7 +290,6 @@ listaexpresiones: listaexpresiones RCOMA expresion
 
 expresion: 
            /*EXPRESIONES ARITMETICAS*/
-           ///FALTA PONERLO EN LA TRADUCCION
            RMENOS expresion %prec UMENOS  {$$= new unaria.unaria(operador.MENOS,$2);} 
           | expresion RMAS expresion      {$$= new aritmetica.aritmetica($1,operador.MAS,$3);}
           |expresion RMENOS expresion     {$$= new aritmetica.aritmetica($1,operador.MENOS,$3);}
