@@ -2,6 +2,8 @@
 exports.__esModule = true;
 var entorno_1 = require("../entorno/entorno");
 var tipo_1 = require("../entorno/tipo");
+var app_1 = require("../../../src/app");
+var ts_js_1 = require("../../actions/ts.js");
 var instruccionifelse = /** @class */ (function () {
     function instruccionifelse(condicion, listat, listaf) {
         this.condicion = condicion;
@@ -34,6 +36,11 @@ var instruccionifelse = /** @class */ (function () {
             }
         }
         else {
+            app_1.almacen.dispatch(ts_js_1.errores({
+                tipo: 'SEMANTICO',
+                descripcion: 'LA CONDICION ' + String(valorcondicion) + ' , NO ES BOOLEANA',
+                ambito: ambito.nombre
+            }));
             console.log("ERROR - LA CONDICION " + String(valorcondicion) + "NO ES BOOLEANA");
         }
         return null;

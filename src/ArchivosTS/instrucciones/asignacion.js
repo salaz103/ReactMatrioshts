@@ -1,5 +1,7 @@
 "use strict";
 exports.__esModule = true;
+var app_1 = require("../../../src/app");
+var ts_js_1 = require("../../actions/ts.js");
 var asignacion = /** @class */ (function () {
     function asignacion(id, ex) {
         this.id = id;
@@ -27,6 +29,11 @@ var asignacion = /** @class */ (function () {
                         ambito.asignarValor(this.id, valorexpresion, sim.getTipo());
                     }
                     else {
+                        app_1.almacen.dispatch(ts_js_1.errores({
+                            tipo: 'SEMANTICO',
+                            descripcion: 'EL TIPO DE LA VARIABLE ' + sim.getId() + ' NO ES IGUAL AL TIPO DEL VALOR',
+                            ambito: ambito.nombre
+                        }));
                         console.log("ERROR - EL TIPO DE LA VARIABLE " + sim.getId() + " NO ES IGUAL AL TIPO DEL VALOR");
                     }
                 }
@@ -41,10 +48,20 @@ var asignacion = /** @class */ (function () {
             }
             else {
                 //SIGNIFCA QUE ES UNA VARIABLE CONST Y ESTAS NO SE PUEDEN REASIGNAR
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'VARIABLE CONST ' + sim.getId() + ' NO SE PUEDE REASIGNAR',
+                    ambito: ambito.nombre
+                }));
                 console.log("ERROR - VARIABLE CONST: " + sim.getId() + " NO SE PUEDE REASIGNAR");
             }
         }
         else {
+            app_1.almacen.dispatch(ts_js_1.errores({
+                tipo: 'SEMANTICO',
+                descripcion: 'VARIABLE ' + this.id + ' NO PUEDE SER ASIGNADA POR QUE NO EXISTE',
+                ambito: ambito.nombre
+            }));
             console.log("ERROR- VARIABLE: " + this.id + " NO PUEDE SER ASIGNADA POR QUE NO EXISTE");
         }
         return null;

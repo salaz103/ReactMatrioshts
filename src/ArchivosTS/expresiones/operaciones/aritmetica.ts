@@ -2,6 +2,9 @@ import entorno from "../../entorno/entorno";
 import { operador, tipo_valor } from "../../entorno/tipo";
 import expresion from "../expresion";
 import operacion from "./operacion";
+import {almacen} from '../../../../src/app';
+import {errores} from '../../../actions/ts.js';
+
 
 export class aritmetica extends operacion implements expresion{
 
@@ -39,7 +42,11 @@ export class aritmetica extends operacion implements expresion{
                 return new String(res);
             }else{
                 //AQUI IRIA UN ERRROR SEMANTICO YA QUE NO SE PUEDE HACER SUMA DE OTROS TIPOS
-
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion: tipoiz+' NO SE PUEDE SUMAR CON '+ tipoder,
+                    ambito:ambito.nombre
+                }));
             }
     
         }else if(this.tipooperador==operador.MENOS){
@@ -50,6 +57,11 @@ export class aritmetica extends operacion implements expresion{
                 return new Number(res);
             }else{
                 //ERROR SEMANTICO
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion: tipoiz+' NO SE PUEDE RESTAR CON '+ tipoder,
+                    ambito:ambito.nombre
+                }));
             }
 
         }else if(this.tipooperador==operador.POR){
@@ -59,7 +71,11 @@ export class aritmetica extends operacion implements expresion{
                 this.tipo=tipo_valor.NUMBER;
                 return new Number(res);
             }else{
-                //ERROR SEMANTICO
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion: tipoiz+' NO SE PUEDE MULTIPLICAR CON '+ tipoder,
+                    ambito:ambito.nombre
+                }));
             }
 
         }else if(this.tipooperador==operador.DIVISION){
@@ -69,7 +85,11 @@ export class aritmetica extends operacion implements expresion{
                 this.tipo=tipo_valor.NUMBER;
                 return new Number(res);
             }else{
-                //ERROR SEMANTICO
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion: tipoiz+' NO SE PUEDE DIVIDIR DENTRO DE '+ tipoder,
+                    ambito:ambito.nombre
+                }));
             }
 
         }else if(this.tipooperador==operador.MODULO){
@@ -80,6 +100,11 @@ export class aritmetica extends operacion implements expresion{
                 return new Number(res);
             }else{
                 //ERROR SEMANTICO
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion: 'NO SE PUEDE RELIZAR EL MOD ENTRE '+ tipoiz+ ' Y '+tipoder,
+                    ambito:ambito.nombre
+                }));
             }
 
         }else if(this.tipooperador==operador.EXPONENTE){
@@ -90,6 +115,11 @@ export class aritmetica extends operacion implements expresion{
                 return new Number(res);
             }else{
                 //ERROR SEMANTICO
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion: tipoiz+' NO SE PUEDE REALIZAR EXPONENTE CON '+ tipoder,
+                    ambito:ambito.nombre
+                }));
             }
 
         }

@@ -2,6 +2,10 @@ import entorno from "../entorno/entorno";
 import simbolo from "../entorno/simbolo";
 import { tipo_valor } from "../entorno/tipo";
 import expresion from "./expresion";
+import {almacen} from '../../../src/app';
+import {errores} from '../../actions/ts.js';
+
+
 
 export class identificador implements expresion{
 
@@ -38,6 +42,11 @@ export class identificador implements expresion{
         }
 
     }else{
+        almacen.dispatch(errores({
+            tipo:'SEMANTICO',
+            descripcion:'IDENTIFICADOR '+ this.id+' NO EXISTE',
+            ambito:ambito.nombre
+        }));
         console.log("ERROR- IDENTIFICADOR "+ this.id+" NO EXISTE");
     }
         return null;

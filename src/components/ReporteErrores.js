@@ -15,7 +15,9 @@ const ReporteErrores= (props)=>(
         <th>Descripción</th>
         <th>Ambito</th>
         </tr>
-         {//renderTableData(props.entornos.entornos.ts)
+         {
+           console.log(props.errores),
+           renderTableData(props.errores)
          }
         </tbody>
        </table>        
@@ -26,11 +28,11 @@ const ReporteErrores= (props)=>(
 
 
 
-function renderTableData(ts) {
+function renderTableData(errores) {
 
     
-    if(ts){
-        return ts.map((error_e, index) => (
+    if(errores){
+        return errores.map((error_e, index) => (
                <tr key={index}>
                   <td>{error_e.tipo}</td>
                   <td>{error_e.descripcion}</td>

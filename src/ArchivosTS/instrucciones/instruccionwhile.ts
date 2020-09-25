@@ -2,6 +2,8 @@ import entorno from "../entorno/entorno";
 import { tipo_valor } from "../entorno/tipo";
 import expresion from "../expresiones/expresion";
 import instruccion from "./instruccion";
+import {almacen} from '../../../src/app';
+import {errores} from '../../actions/ts.js';
 
 export class instruccionwhile implements instruccion{
 
@@ -35,6 +37,11 @@ export class instruccionwhile implements instruccion{
             }
 
         }else{
+            almacen.dispatch(errores({
+                tipo:'SEMANTICO',
+                descripcion:'LA EXPRESION EN EL WHILE NO ES DE TIPO BOOLEANA',
+                ambito:ambito.nombre
+            }));
             console.log("ERROR - LA EXPRESION EN EL WHILE NO ES DE TIPO BOOLEANA");
         }
 

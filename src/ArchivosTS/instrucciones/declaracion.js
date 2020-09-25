@@ -2,6 +2,8 @@
 exports.__esModule = true;
 var simbolo_1 = require("../entorno/simbolo");
 var tipo_1 = require("../entorno/tipo");
+var app_1 = require("../../../src/app");
+var ts_js_1 = require("../../actions/ts.js");
 var declaracion = /** @class */ (function () {
     /*linea:number;
     columna:number;*/
@@ -20,6 +22,11 @@ var declaracion = /** @class */ (function () {
             //POR QUE SI EXISTE EN UN AMBITO SUPERIOR ESO NO NOS IMPORTA
             if (ambito.existeLocal(this.variables[i].id)) {
                 //SI EXISTE LOCALMENTE ENTONCES NO LA PODEMOS DECLARAR
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'IDENTIFICADOR ' + this.variables[i].id + ' YA EXISTE EN ESTE AMBITO',
+                    ambito: ambito.nombre
+                }));
                 console.log("ERROR- ID: " + this.variables[i].id + " YA EXISTE EN ESTE AMBITO " + ambito.nombre);
             }
             else {
@@ -55,11 +62,21 @@ var declaracion = /** @class */ (function () {
                                 console.log("VARIABLE CONST: " + this.variables[i].id + " GUARDADA");
                             }
                             else {
+                                app_1.almacen.dispatch(ts_js_1.errores({
+                                    tipo: 'SEMANTICO',
+                                    descripcion: 'CONST ' + this.variables[i].id + ' TIPO DATO Y VALOR NO SON SIMILARES',
+                                    ambito: ambito.nombre
+                                }));
                                 console.log("ERROR EN CONST: " + this.variables[i].id + " TIPO DATO Y VALOR NO SON SIMILARES");
                             }
                         }
                     }
                     else {
+                        app_1.almacen.dispatch(ts_js_1.errores({
+                            tipo: 'SEMANTICO',
+                            descripcion: 'CONST ' + this.variables[i].id + ' NO ESTA INICIALIZADA',
+                            ambito: ambito.nombre
+                        }));
                         console.log("ERROR - CONST " + this.variables[i].id + " NO ESTA INICIALIZADA");
                     }
                 }
@@ -101,6 +118,11 @@ var declaracion = /** @class */ (function () {
                             console.log("VARIABLE LET: " + this.variables[i].id + " GUARDADA");
                         }
                         else {
+                            app_1.almacen.dispatch(ts_js_1.errores({
+                                tipo: 'SEMANTICO',
+                                descripcion: 'VARIABLE LET ' + this.variables[i].id + ' NO ES COMPATIBLE CON ' + tipodato,
+                                ambito: ambito.nombre
+                            }));
                             console.log("ERROR - LET: " + this.variables[i].id + " NO ES COMPATIBLE CON " + tipodato);
                         }
                     }

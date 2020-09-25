@@ -1,6 +1,8 @@
 "use strict";
 exports.__esModule = true;
 var tipo_1 = require("../entorno/tipo");
+var app_1 = require("../../../src/app");
+var ts_js_1 = require("../../actions/ts.js");
 var identificador = /** @class */ (function () {
     function identificador(identificador) {
         this.id = identificador;
@@ -30,6 +32,11 @@ var identificador = /** @class */ (function () {
             }
         }
         else {
+            app_1.almacen.dispatch(ts_js_1.errores({
+                tipo: 'SEMANTICO',
+                descripcion: 'IDENTIFICADOR ' + this.id + ' NO EXISTE',
+                ambito: ambito.nombre
+            }));
             console.log("ERROR- IDENTIFICADOR " + this.id + " NO EXISTE");
         }
         return null;

@@ -15,6 +15,8 @@ var __extends = (this && this.__extends) || (function () {
 exports.__esModule = true;
 var tipo_1 = require("../../entorno/tipo");
 var operacion_1 = require("./operacion");
+var app_1 = require("../../../../src/app");
+var ts_js_1 = require("../../../actions/ts.js");
 var aritmetica = /** @class */ (function (_super) {
     __extends(aritmetica, _super);
     function aritmetica(expiz, op, expder) {
@@ -49,6 +51,11 @@ var aritmetica = /** @class */ (function (_super) {
             }
             else {
                 //AQUI IRIA UN ERRROR SEMANTICO YA QUE NO SE PUEDE HACER SUMA DE OTROS TIPOS
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: tipoiz + ' NO SE PUEDE SUMAR CON ' + tipoder,
+                    ambito: ambito.nombre
+                }));
             }
         }
         else if (this.tipooperador == tipo_1.operador.MENOS) {
@@ -59,6 +66,11 @@ var aritmetica = /** @class */ (function (_super) {
             }
             else {
                 //ERROR SEMANTICO
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: tipoiz + ' NO SE PUEDE RESTAR CON ' + tipoder,
+                    ambito: ambito.nombre
+                }));
             }
         }
         else if (this.tipooperador == tipo_1.operador.POR) {
@@ -68,7 +80,11 @@ var aritmetica = /** @class */ (function (_super) {
                 return new Number(res);
             }
             else {
-                //ERROR SEMANTICO
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: tipoiz + ' NO SE PUEDE MULTIPLICAR CON ' + tipoder,
+                    ambito: ambito.nombre
+                }));
             }
         }
         else if (this.tipooperador == tipo_1.operador.DIVISION) {
@@ -78,7 +94,11 @@ var aritmetica = /** @class */ (function (_super) {
                 return new Number(res);
             }
             else {
-                //ERROR SEMANTICO
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: tipoiz + ' NO SE PUEDE DIVIDIR DENTRO DE ' + tipoder,
+                    ambito: ambito.nombre
+                }));
             }
         }
         else if (this.tipooperador == tipo_1.operador.MODULO) {
@@ -89,6 +109,11 @@ var aritmetica = /** @class */ (function (_super) {
             }
             else {
                 //ERROR SEMANTICO
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'NO SE PUEDE RELIZAR EL MOD ENTRE ' + tipoiz + ' Y ' + tipoder,
+                    ambito: ambito.nombre
+                }));
             }
         }
         else if (this.tipooperador == tipo_1.operador.EXPONENTE) {
@@ -99,6 +124,11 @@ var aritmetica = /** @class */ (function (_super) {
             }
             else {
                 //ERROR SEMANTICO
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: tipoiz + ' NO SE PUEDE REALIZAR EXPONENTE CON ' + tipoder,
+                    ambito: ambito.nombre
+                }));
             }
         }
         return null;

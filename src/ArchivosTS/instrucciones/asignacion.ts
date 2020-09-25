@@ -2,6 +2,8 @@ import entorno from "../entorno/entorno";
 import { simbolo } from "../entorno/simbolo";
 import expresion from "../expresiones/expresion";
 import instruccion from "./instruccion";
+import {almacen} from '../../../src/app';
+import {errores} from '../../actions/ts.js';
 
 export class asignacion implements instruccion{
 
@@ -37,6 +39,11 @@ export class asignacion implements instruccion{
                 if(sim.getTipo()==tipovalor){
                     ambito.asignarValor(this.id,valorexpresion,sim.getTipo());
                 }else{
+                    almacen.dispatch(errores({
+                        tipo:'SEMANTICO',
+                        descripcion:'EL TIPO DE LA VARIABLE '+ sim.getId()+' NO ES IGUAL AL TIPO DEL VALOR',
+                        ambito:ambito.nombre
+                    }));
                     console.log("ERROR - EL TIPO DE LA VARIABLE "+sim.getId()+" NO ES IGUAL AL TIPO DEL VALOR");
                 }
 
@@ -51,11 +58,21 @@ export class asignacion implements instruccion{
 
         }else{
             //SIGNIFCA QUE ES UNA VARIABLE CONST Y ESTAS NO SE PUEDEN REASIGNAR
+            almacen.dispatch(errores({
+                tipo:'SEMANTICO',
+                descripcion:'VARIABLE CONST '+ sim.getId()+' NO SE PUEDE REASIGNAR',
+                ambito:ambito.nombre
+            }));
             console.log("ERROR - VARIABLE CONST: "+sim.getId()+" NO SE PUEDE REASIGNAR");
         }
 
 
     }else{
+        almacen.dispatch(errores({
+            tipo:'SEMANTICO',
+            descripcion:'VARIABLE '+this.id+' NO PUEDE SER ASIGNADA POR QUE NO EXISTE',
+            ambito:ambito.nombre
+        }));
         console.log("ERROR- VARIABLE: "+this.id+" NO PUEDE SER ASIGNADA POR QUE NO EXISTE");
     }
         return null;

@@ -2,6 +2,8 @@ import entorno from "../entorno/entorno";
 import { tipo_valor } from "../entorno/tipo";
 import expresion from "../expresiones/expresion";
 import instruccion from "./instruccion";
+import {almacen} from '../../../src/app';
+import {errores} from '../../actions/ts.js';
 
 export class instruccionifelse implements instruccion{
 
@@ -43,6 +45,11 @@ export class instruccionifelse implements instruccion{
             }
 
         }else{
+            almacen.dispatch(errores({
+                tipo:'SEMANTICO',
+                descripcion:'LA CONDICION '+ String(valorcondicion)+' , NO ES BOOLEANA',
+                ambito:ambito.nombre
+            }));
             console.log("ERROR - LA CONDICION "+ String(valorcondicion) +"NO ES BOOLEANA");
         }
 

@@ -23,7 +23,8 @@ const reducerGeneral=(state=codigoReducerDefaultState,action)=>{
             return{
                 ...state,
                 codigoconsola: '',
-                simbolos: []
+                simbolos: [],
+                errores: []
             }
         case 'ENTORNOFINAL':
             return{

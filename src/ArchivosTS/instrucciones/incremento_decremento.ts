@@ -2,6 +2,8 @@ import entorno from "../entorno/entorno";
 import simbolo from "../entorno/simbolo";
 import { operador, tipo_valor } from "../entorno/tipo";
 import instruccion from "./instruccion";
+import {almacen} from '../../../src/app';
+import {errores} from '../../actions/ts.js';
 
 export class incremento_decremento implements instruccion{
 
@@ -52,19 +54,43 @@ export class incremento_decremento implements instruccion{
                         }
                         return valornecesitado;
                     }else{
+                        almacen.dispatch(errores({
+                            tipo:'SEMANTICO',
+                            descripcion:'IDENTIFICADOR '+ this.id+' ESTA SIENDO USADA ANTES DE HABER SIDO ASIGNADA',
+                            ambito:ambito.nombre
+                        }));
                         console.log("ERROR - ID:"+this.id+" ESTA SIENDO USADA ANTES DE HABER SIDO ASIGNADA");
                     }
 
                 }else{
+                    almacen.dispatch(errores({
+                        tipo:'SEMANTICO',
+                        descripcion:'IDENTIFICADOR '+ this.id+' NO ES DE TIPO NUMBER',
+                        ambito:ambito.nombre
+                    }));
                     console.log("ERROR - ID: "+this.id+" NO ES DE TIPO NUMBER");
                 }
 
             }else{
+
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion:'NO SE PUEDE MODIFICAR: '+ this.id+' ES UNA VARIABLE CONST',
+                    ambito:ambito.nombre
+                }));
                 //SIGNIFICA QUE NO ES DE TIPO NUMBER O QUE ES UNA CONSTANTE, POR QUE NO SE PUEDE REASIGNAR
                 console.log("ERROR - NO SE PUEDE MODIFICAR: "+ this.id+" ES UNA VARIABLE CONST");
+
+                
             }
 
         }else{
+
+            almacen.dispatch(errores({
+                tipo:'SEMANTICO',
+                descripcion:'VARIABLE: '+ this.id+' NO ESTA DEFINIDA',
+                ambito:ambito.nombre
+            }));
             console.log("ERROR - VARIABLE: "+ this.id+" NO ESTA DEFINIDA");
         }
 
@@ -106,19 +132,39 @@ export class incremento_decremento implements instruccion{
                         }
 
                     }else{
+                        almacen.dispatch(errores({
+                            tipo:'SEMANTICO',
+                            descripcion:'IDENTIFICADOR: '+ this.id+' ESTA SIENDO USADA ANTES DE HABER SIDO ASIGNADA',
+                            ambito:ambito.nombre
+                        }));
                         console.log("ERROR - ID:"+this.id+" ESTA SIENDO USADA ANTES DE HABER SIDO ASIGNADA");
                     }
 
                 }else{
+                    almacen.dispatch(errores({
+                        tipo:'SEMANTICO',
+                        descripcion:'IDENTIFICADOR: '+ this.id+' NO ES DE TIPO NUMBER',
+                        ambito:ambito.nombre
+                    }));
                     console.log("ERROR - ID: "+this.id+" NO ES DE TIPO NUMBER");
                 }
 
             }else{
                 //SIGNIFICA QUE NO ES DE TIPO NUMBER O QUE ES UNA CONSTANTE, POR QUE NO SE PUEDE REASIGNAR
                 console.log("ERROR - NO SE PUEDE MODIFICAR: "+ this.id+" ES UNA VARIABLE CONST");
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion:'IDENTIFICADOR NO SE PUEDE MODIFICAR: '+ this.id+' ES UNA VARIABLE CONST',
+                    ambito:ambito.nombre
+                }));
             }
 
         }else{
+            almacen.dispatch(errores({
+                tipo:'SEMANTICO',
+                descripcion:'VARIABLE: '+ this.id+' NO ESTA DEFINIDA',
+                ambito:ambito.nombre
+            }));
             console.log("ERROR - VARIABLE: "+ this.id+" NO ESTA DEFINIDA");
         }
 

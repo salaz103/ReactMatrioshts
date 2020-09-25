@@ -2,6 +2,8 @@
 exports.__esModule = true;
 var entorno_1 = require("../entorno/entorno");
 var tipo_1 = require("../entorno/tipo");
+var app_1 = require("../../../src/app");
+var ts_js_1 = require("../../actions/ts.js");
 var instrucciondowhile = /** @class */ (function () {
     function instrucciondowhile(lista, exp) {
         this.lista_do = lista;
@@ -29,6 +31,11 @@ var instrucciondowhile = /** @class */ (function () {
             } while (this.condicion.obtenerValor(ambito).valueOf());
         }
         else {
+            app_1.almacen.dispatch(ts_js_1.errores({
+                tipo: 'SEMANTICO',
+                descripcion: 'LA EXPRESION EN EL DO-WHILE NO ES DE TIPO BOOLEANA',
+                ambito: ambito.nombre
+            }));
             console.log("ERROR - LA EXPRESION EN EL DO-WHILE NO ES DE TIPO BOOLEANA");
         }
         return null;

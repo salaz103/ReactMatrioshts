@@ -3,6 +3,8 @@ import simbolo from "../entorno/simbolo";
 import { tipo_valor, tipo_variable } from "../entorno/tipo";
 import instruccion from "./instruccion";
 import { variable } from "./variable";
+import {almacen} from '../../../src/app';
+import {errores} from '../../actions/ts.js';
 
 export class declaracion implements instruccion{
 
@@ -31,6 +33,11 @@ export class declaracion implements instruccion{
             //POR QUE SI EXISTE EN UN AMBITO SUPERIOR ESO NO NOS IMPORTA
             if(ambito.existeLocal(this.variables[i].id)){
                 //SI EXISTE LOCALMENTE ENTONCES NO LA PODEMOS DECLARAR
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion:'IDENTIFICADOR '+ this.variables[i].id+' YA EXISTE EN ESTE AMBITO',
+                    ambito:ambito.nombre
+                }));
                 console.log("ERROR- ID: "+this.variables[i].id+" YA EXISTE EN ESTE AMBITO "+ ambito.nombre);    
             }else{
 
@@ -65,6 +72,11 @@ export class declaracion implements instruccion{
                             ambito.agregarSimbolo(nuevosimbolo);
                             console.log("VARIABLE CONST: "+this.variables[i].id+" GUARDADA");
                             }else{
+                                almacen.dispatch(errores({
+                                    tipo:'SEMANTICO',
+                                    descripcion:'CONST '+ this.variables[i].id+' TIPO DATO Y VALOR NO SON SIMILARES',
+                                    ambito:ambito.nombre
+                                }));
                                 console.log("ERROR EN CONST: "+this.variables[i].id+" TIPO DATO Y VALOR NO SON SIMILARES");
                             }
 
@@ -73,6 +85,11 @@ export class declaracion implements instruccion{
 
 
                     }else{
+                        almacen.dispatch(errores({
+                            tipo:'SEMANTICO',
+                            descripcion:'CONST '+ this.variables[i].id+' NO ESTA INICIALIZADA',
+                            ambito:ambito.nombre
+                        }));
                         console.log("ERROR - CONST "+this.variables[i].id+ " NO ESTA INICIALIZADA");
                     }
 
@@ -115,6 +132,11 @@ export class declaracion implements instruccion{
                     ambito.agregarSimbolo(nuevosimbolo);
                     console.log("VARIABLE LET: "+this.variables[i].id+" GUARDADA");
                     }else{
+                        almacen.dispatch(errores({
+                            tipo:'SEMANTICO',
+                            descripcion:'VARIABLE LET '+ this.variables[i].id+' NO ES COMPATIBLE CON '+tipodato,
+                            ambito:ambito.nombre
+                        }));
                         console.log("ERROR - LET: "+this.variables[i].id+" NO ES COMPATIBLE CON "+tipodato);
                     }
 

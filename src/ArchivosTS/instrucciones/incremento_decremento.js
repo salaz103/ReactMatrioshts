@@ -1,6 +1,8 @@
 "use strict";
 exports.__esModule = true;
 var tipo_1 = require("../entorno/tipo");
+var app_1 = require("../../../src/app");
+var ts_js_1 = require("../../actions/ts.js");
 var incremento_decremento = /** @class */ (function () {
     function incremento_decremento(id, op) {
         this.id = id;
@@ -40,19 +42,39 @@ var incremento_decremento = /** @class */ (function () {
                         return valornecesitado;
                     }
                     else {
+                        app_1.almacen.dispatch(ts_js_1.errores({
+                            tipo: 'SEMANTICO',
+                            descripcion: 'IDENTIFICADOR ' + this.id + ' ESTA SIENDO USADA ANTES DE HABER SIDO ASIGNADA',
+                            ambito: ambito.nombre
+                        }));
                         console.log("ERROR - ID:" + this.id + " ESTA SIENDO USADA ANTES DE HABER SIDO ASIGNADA");
                     }
                 }
                 else {
+                    app_1.almacen.dispatch(ts_js_1.errores({
+                        tipo: 'SEMANTICO',
+                        descripcion: 'IDENTIFICADOR ' + this.id + ' NO ES DE TIPO NUMBER',
+                        ambito: ambito.nombre
+                    }));
                     console.log("ERROR - ID: " + this.id + " NO ES DE TIPO NUMBER");
                 }
             }
             else {
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'NO SE PUEDE MODIFICAR: ' + this.id + ' ES UNA VARIABLE CONST',
+                    ambito: ambito.nombre
+                }));
                 //SIGNIFICA QUE NO ES DE TIPO NUMBER O QUE ES UNA CONSTANTE, POR QUE NO SE PUEDE REASIGNAR
                 console.log("ERROR - NO SE PUEDE MODIFICAR: " + this.id + " ES UNA VARIABLE CONST");
             }
         }
         else {
+            app_1.almacen.dispatch(ts_js_1.errores({
+                tipo: 'SEMANTICO',
+                descripcion: 'VARIABLE: ' + this.id + ' NO ESTA DEFINIDA',
+                ambito: ambito.nombre
+            }));
             console.log("ERROR - VARIABLE: " + this.id + " NO ESTA DEFINIDA");
         }
         return null;
@@ -87,19 +109,39 @@ var incremento_decremento = /** @class */ (function () {
                         }
                     }
                     else {
+                        app_1.almacen.dispatch(ts_js_1.errores({
+                            tipo: 'SEMANTICO',
+                            descripcion: 'IDENTIFICADOR: ' + this.id + ' ESTA SIENDO USADA ANTES DE HABER SIDO ASIGNADA',
+                            ambito: ambito.nombre
+                        }));
                         console.log("ERROR - ID:" + this.id + " ESTA SIENDO USADA ANTES DE HABER SIDO ASIGNADA");
                     }
                 }
                 else {
+                    app_1.almacen.dispatch(ts_js_1.errores({
+                        tipo: 'SEMANTICO',
+                        descripcion: 'IDENTIFICADOR: ' + this.id + ' NO ES DE TIPO NUMBER',
+                        ambito: ambito.nombre
+                    }));
                     console.log("ERROR - ID: " + this.id + " NO ES DE TIPO NUMBER");
                 }
             }
             else {
                 //SIGNIFICA QUE NO ES DE TIPO NUMBER O QUE ES UNA CONSTANTE, POR QUE NO SE PUEDE REASIGNAR
                 console.log("ERROR - NO SE PUEDE MODIFICAR: " + this.id + " ES UNA VARIABLE CONST");
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'IDENTIFICADOR NO SE PUEDE MODIFICAR: ' + this.id + ' ES UNA VARIABLE CONST',
+                    ambito: ambito.nombre
+                }));
             }
         }
         else {
+            app_1.almacen.dispatch(ts_js_1.errores({
+                tipo: 'SEMANTICO',
+                descripcion: 'VARIABLE: ' + this.id + ' NO ESTA DEFINIDA',
+                ambito: ambito.nombre
+            }));
             console.log("ERROR - VARIABLE: " + this.id + " NO ESTA DEFINIDA");
         }
         return null;
