@@ -121,6 +121,7 @@ const graficar= require('../ArchivosTS/instrucciones/graficar');
 const instruccionfor= require('../ArchivosTS/instrucciones/instruccionfor');
 const instruccionbreak= require('../ArchivosTS/instrucciones/instruccionBreak');
 const instruccioncontinue= require('../ArchivosTS/instrucciones/instruccioncontinue');
+const funcion= require('../ArchivosTS/instrucciones/funcion');
   //*****************************OTROS*********************************
 const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
 const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;
@@ -128,6 +129,8 @@ const tipo_instruccion= require('../ArchivosTS/entorno/tipo').tipo_instruccion;
 const operador= require('../ArchivosTS/entorno/tipo').operador;
 const variable= require('../ArchivosTS/instrucciones/variable');
 const caso= require('../ArchivosTS/instrucciones/caso');
+const parametro= require('../ArchivosTS/instrucciones/parametro');
+
 %}
 
 
@@ -164,7 +167,7 @@ instruccion:  declaraciones RPUNTOCOMA{$$=$1;}
             | instruccionfor    {$$=$1;}
             | instruccionwhile {$$=$1;}
             | imprimir         {$$=$1;}
-            | declararfuncion 
+            | declararfuncion  {$$=$1;}
             | masmenos RPUNTOCOMA {$$=$1;}
             | RGRAFICAR RPARA RPARC RPUNTOCOMA
               {$$= new graficar.graficar();}
@@ -260,21 +263,28 @@ instruccionwhile:  RWHILE RPARA expresion RPARC RLLAVEA lista RLLAVEC
 
                  //FUNCION SIN TIPO DATO Y SIN PARAMETROS
 declararfuncion: RFUNCTION IDENTIFICADOR RPARA RPARC RLLAVEA lista RLLAVEC
+                 {$$= new funcion.funcion($2,$6,undefined,undefined);}
                //FUNCION CON TIPO DE DATO Y PARAMETROS
                | RFUNCTION IDENTIFICADOR RPARA parametros RPARC RDOSPUNTOS tipodato RLLAVEA lista RLLAVEC
+               {$$= new funcion.funcion($2,$9,$4,$6);}
                //FUNCION SIN TIPO DE DATO Y CON PARAMETROS
                | RFUNCTION IDENTIFICADOR RPARA parametros RPARC  RLLAVEA lista RLLAVEC
+               {$$= new funcion.funcion($2,$7,$4,undefined);}
                //FUNCION CON TIPO DE DATO Y SIN PARAMETROS
                | RFUNCTION IDENTIFICADOR RPARA RPARC RDOSPUNTOS tipodato RLLAVEA lista RLLAVEC
+                 {$$= new funcion.funcion($2,$8,undefined,$6);}
                  ;
 
 //LISTO
-parametros: parametros RCOMA parametro 
-          | parametro ;
+parametros: parametros RCOMA parametro {$1.push($3); $$=$1;}
+          | parametro {$$=[$1];} 
+          ;
 
 
 //LISTO
-parametro: IDENTIFICADOR RDOSPUNTOS tipodato ;
+parametro: IDENTIFICADOR RDOSPUNTOS tipodato 
+           {$$= new parametro.parametro($1,$3);}
+           ;
 
 
 tipodato:  
