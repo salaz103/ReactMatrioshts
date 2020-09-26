@@ -1,5 +1,5 @@
 import entorno from "../entorno/entorno";
-import { tipo_valor } from "../entorno/tipo";
+import { tipo_instruccion, tipo_valor } from "../entorno/tipo";
 import expresion from "../expresiones/expresion";
 import instruccion from "./instruccion";
 import {almacen} from '../../../src/app';
@@ -38,7 +38,13 @@ export class instrucciondowhile implements instruccion{
             do {
                 const nuevats= new entorno("do-while",ambito);
                 for (let i = 0; i < this.lista_do.length; i++) {
-                    this.lista_do[i].ejecutar(nuevats);
+                    let valor= this.lista_do[i].ejecutar(nuevats);
+
+                    if(valor && valor.valueOf()==tipo_instruccion.BREAK){
+                        return;
+                    }else if(valor && valor.valueOf()==tipo_instruccion.CONTINUE){
+                        break;
+                    }
                 }
                 
             } while (this.condicion.obtenerValor(ambito).valueOf());

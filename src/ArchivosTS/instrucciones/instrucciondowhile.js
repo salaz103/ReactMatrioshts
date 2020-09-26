@@ -26,7 +26,13 @@ var instrucciondowhile = /** @class */ (function () {
             do {
                 var nuevats = new entorno_1["default"]("do-while", ambito);
                 for (var i = 0; i < this.lista_do.length; i++) {
-                    this.lista_do[i].ejecutar(nuevats);
+                    var valor = this.lista_do[i].ejecutar(nuevats);
+                    if (valor && valor.valueOf() == tipo_1.tipo_instruccion.BREAK) {
+                        return;
+                    }
+                    else if (valor && valor.valueOf() == tipo_1.tipo_instruccion.CONTINUE) {
+                        break;
+                    }
                 }
             } while (this.condicion.obtenerValor(ambito).valueOf());
         }
