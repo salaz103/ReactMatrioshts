@@ -37,7 +37,8 @@ var llamarfuncion = /** @class */ (function () {
                     //ENTONCES PODEMOS MANDAR A EJECUTAR
                     //CREAMOS EL NUEVO AMBITO QUE APUNTA AL PADRE
                     var tsfuncion = new entorno_1["default"](funcion.nombre, ambito);
-                    funcion.ejecutar(tsfuncion);
+                    this.tipo = funcion.tipodato;
+                    return funcion.ejecutar(tsfuncion);
                 }
                 else {
                     //ERROR - LA FUNCION ESPERA funcion.parametros.length parametros y se recibieron 0

@@ -53,7 +53,8 @@ export class llamarfuncion implements instruccion{
                     //ENTONCES PODEMOS MANDAR A EJECUTAR
                     //CREAMOS EL NUEVO AMBITO QUE APUNTA AL PADRE
                     let tsfuncion= new entorno(funcion.nombre,ambito);
-                    funcion.ejecutar(tsfuncion);
+                    this.tipo=funcion.tipodato;
+                    return funcion.ejecutar(tsfuncion);
                 }else{
                     //ERROR - LA FUNCION ESPERA funcion.parametros.length parametros y se recibieron 0
                 }
