@@ -87,7 +87,7 @@ function renderTableData(ts) {
                <tr key={index}>
                   <td>{simbolo.id}</td>
                   <td>{simbolo.tipovalor}</td>
-                  <td>{Array.isArray(simbolo.valor)?"ARREGLO DE: "+simbolo.valor.length:simbolo.valor.valueOf()}</td>
+                  <td>{Array.isArray(simbolo.valor)? JSON.stringify(simbolo.valor):simbolo.valor.valueOf()}</td>
                   <td>{simbolo.reasignable?"LET":"CONST"}</td>
                </tr>
         ))
