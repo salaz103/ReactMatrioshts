@@ -1,3 +1,6 @@
+import { declaracion } from '../instrucciones/declaracion';
+import { declaracionfuncion } from '../instrucciones/declaracionfuncion';
+import { funcion } from './funcion';
 import simbolo from './simbolo';
 import {tipo_valor} from './tipo';
 
@@ -6,15 +9,21 @@ class entorno{
     apuntadorPadre:entorno;
     ts:simbolo[];
     nombre:string;
+    tablafunciones:declaracionfuncion[];
 
     constructor(nombre:string,ambitoPadre?:entorno){
         this.apuntadorPadre = ambitoPadre != null ? ambitoPadre : null;
         this.ts=[];
+        this.tablafunciones=[];
         this.nombre= nombre;
     }
 
     agregarSimbolo(nuevoSimbolo:simbolo){
         this.ts.push(nuevoSimbolo)
+    }
+
+    agregarFuncion(funcion:declaracionfuncion){
+        this.tablafunciones.push(funcion);
     }
 
     asignarValor(id:string,valor:object,tipo:tipo_valor){
@@ -71,6 +80,27 @@ class entorno{
             }
          }
 
+    }
+
+
+    existeFuncion(id:string):declaracionfuncion{
+
+        //RECORRIENDO LOS ENTORNOS
+        for (let entornoactual:entorno = this; entornoactual!=null ; entornoactual=entornoactual.apuntadorPadre) {
+            console.log("RECORRIENDO AMBITOS PARA BUSCAR FUNCION: ");
+            console.log(entornoactual);
+
+            //RECORRIENDO LA TABLA DE FUNCIONES DEL ENTORNO ACTUAL
+            for (let i = 0; i <entornoactual.tablafunciones.length; i++) {
+                if(entornoactual.tablafunciones[i].nombre ==id){
+                    //AQUI REGRESO LA DECLARACION DE FUNCION {function(...){..}}
+                    return entornoactual.tablafunciones[i];
+                }
+            }
+        } 
+
+        //SI REGRESA NULL ES POR QUE NO ENCONTRO LA FUNCION
+        return null;
     }
 
 }

@@ -121,7 +121,9 @@ const graficar= require('../ArchivosTS/instrucciones/graficar');
 const instruccionfor= require('../ArchivosTS/instrucciones/instruccionfor');
 const instruccionbreak= require('../ArchivosTS/instrucciones/instruccionBreak');
 const instruccioncontinue= require('../ArchivosTS/instrucciones/instruccioncontinue');
-const funcion= require('../ArchivosTS/instrucciones/funcion');
+const instruccionreturn= require('../ArchivosTS/instrucciones/instruccionreturn');
+const declaracionfuncion= require('../ArchivosTS/instrucciones/declaracionfuncion');
+const llamarfuncion= require('../ArchivosTS/instrucciones/llamarfuncion');
   //*****************************OTROS*********************************
 const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
 const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;
@@ -162,18 +164,19 @@ lista : lista instruccion {$1.push($2); $$=$1;}
       ;
 
 instruccion:  declaraciones RPUNTOCOMA{$$=$1;}
-            | instruccionif {$$=$1;}
+            | instruccionif     {$$=$1;}
             | instruccionswitch {$$=$1;}
             | instruccionfor    {$$=$1;}
             | instruccionwhile {$$=$1;}
             | imprimir         {$$=$1;}
             | declararfuncion  {$$=$1;}
+            | llamarfuncion RPUNTOCOMA {$$=$1;}
             | masmenos RPUNTOCOMA {$$=$1;}
             | RGRAFICAR RPARA RPARC RPUNTOCOMA
               {$$= new graficar.graficar();}
             | RBREAK RPUNTOCOMA {$$= new instruccionbreak.instruccionbreak(tipo_instruccion.BREAK);}
             | RCONTINUE RPUNTOCOMA {$$= new instruccioncontinue.instruccioncontinue(tipo_instruccion.CONTINUE);}
-            | instruccionreturn 
+            | instruccionreturn {$$=$1;}
             | asignacion  RPUNTOCOMA {$$=$1;}
             ;
 
@@ -263,17 +266,23 @@ instruccionwhile:  RWHILE RPARA expresion RPARC RLLAVEA lista RLLAVEC
 
                  //FUNCION SIN TIPO DATO Y SIN PARAMETROS
 declararfuncion: RFUNCTION IDENTIFICADOR RPARA RPARC RLLAVEA lista RLLAVEC
-                 {$$= new funcion.funcion($2,$6,undefined,undefined);}
+                 {$$= new declaracionfuncion.declaracionfuncion($2,$6,undefined,undefined);}
                //FUNCION CON TIPO DE DATO Y PARAMETROS
                | RFUNCTION IDENTIFICADOR RPARA parametros RPARC RDOSPUNTOS tipodato RLLAVEA lista RLLAVEC
-               {$$= new funcion.funcion($2,$9,$4,$6);}
+               {$$= new declaracionfuncion.declaracionfuncion($2,$9,$4,$7);}
                //FUNCION SIN TIPO DE DATO Y CON PARAMETROS
                | RFUNCTION IDENTIFICADOR RPARA parametros RPARC  RLLAVEA lista RLLAVEC
-               {$$= new funcion.funcion($2,$7,$4,undefined);}
+               {$$= new declaracionfuncion.declaracionfuncion($2,$7,$4,undefined);}
                //FUNCION CON TIPO DE DATO Y SIN PARAMETROS
                | RFUNCTION IDENTIFICADOR RPARA RPARC RDOSPUNTOS tipodato RLLAVEA lista RLLAVEC
-                 {$$= new funcion.funcion($2,$8,undefined,$6);}
+                 {$$= new declaracionfuncion.declaracionfuncion($2,$8,undefined,$6);}
                  ;
+
+llamarfuncion: IDENTIFICADOR RPARA RPARC 
+               {$$= new llamarfuncion.llamarfuncion($1,undefined);}
+               |IDENTIFICADOR RPARA listaexpresiones RPARC
+               {$$= new llamarfuncion.llamarfuncion($1,$3);}
+               ;
 
 //LISTO
 parametros: parametros RCOMA parametro {$1.push($3); $$=$1;}
@@ -304,12 +313,14 @@ imprimir  : RCONSOLE RPUNTO RLOG RPARA expresion RPARC RPUNTOCOMA {$$=new imprim
             ;  
 
 //LISTO
-instruccionreturn: RRETURN RPUNTOCOMA 
-                  |RRETURN expresion RPUNTOCOMA 
+instruccionreturn: RRETURN RPUNTOCOMA
+                   {$$= new instruccionreturn.instruccionreturn(undefined);}
+                  |RRETURN expresion RPUNTOCOMA
+                   {$$= new instruccionreturn.instruccionreturn($2);} 
                   ; 
 
-listaexpresiones: listaexpresiones RCOMA expresion
-                | expresion
+listaexpresiones: listaexpresiones RCOMA expresion {$1.push($3); $$=$1;}
+                | expresion {$$=[$1]}
                 ;
 
 expresion: 
@@ -345,5 +356,5 @@ expresion:
           |CADENACOMILLASIMPLE  {$$=new cadena.cadena($1,tipo_valor.STRING);}   
           |IDENTIFICADOR        {$$=new identificador.identificador($1);}  
           //LLAMADA A FUNCIONES 
-          | IDENTIFICADOR RPARA listaexpresiones RPARC 
+          | llamarfuncion       {$$=$1;}
           ;

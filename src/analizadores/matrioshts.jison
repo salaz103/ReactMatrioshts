@@ -138,6 +138,8 @@ instruccion: declaraciones RPUNTOCOMA
             | instruccionwhile {$$=$1;} //LISTO
             | imprimir {$$=$1;}  //LISTO
             | declararfuncion {$$=$1} //LISTO
+            | llamarfuncion RPUNTOCOMA
+             {$$=nodobase.nuevonodo('LFUNCION',[$1,$2],yylineno);}
             | masmenos RPUNTOCOMA 
              {$$=nodobase.nuevonodo('IMAS_MAS',[$1,$2],yylineno);} //LISTO
             | RGRAFICAR RPARA RPARC RPUNTOCOMA
@@ -231,7 +233,13 @@ declararfuncion: RFUNCTION IDENTIFICADOR RPARA RPARC RLLAVEA lista RLLAVEC
                //FUNCION CON TIPO DE DATO Y SIN PARAMETROS
                | RFUNCTION IDENTIFICADOR RPARA RPARC RDOSPUNTOS tipodato RLLAVEA lista RLLAVEC
                {$$= nodobase.nuevonodo('FUNCION',[$1,$2,$3,$4,$5,$6,$7,$8,$9],yylineno);}
-                 ;
+               ;
+
+llamarfuncion: IDENTIFICADOR RPARA RPARC 
+               {$$= nodobase.nuevonodo('LLAMADA_FUNCION1',[$1,$2,$3],yylineno);}
+               |IDENTIFICADOR RPARA listaexpresiones RPARC
+               {$$= nodobase.nuevonodo('LLAMADA_FUNCION2',[$1,$2,$3,$4],yylineno);}
+                ;
 
 //LISTO
 parametros: parametros RCOMA parametro {$1.hijos.push($3); $$=$1;}
@@ -301,6 +309,5 @@ expresion:
           |IDENTIFICADOR       {$$= nodobase.nuevonodo('IDENTIFICADOR',[$1],yylineno);}  //LISTO
           //LLAMADA A FUNCIONES 
           //LISTO
-          | IDENTIFICADOR RPARA listaexpresiones RPARC
-            {$$= nodobase.nuevonodo('LLAMADA_FUNCION',[$1,$2,$3,$4],yylineno);} 
+          | llamarfuncion {$$=$1;}
           ;

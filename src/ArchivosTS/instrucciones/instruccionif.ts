@@ -4,6 +4,7 @@ import expresion from "../expresiones/expresion";
 import instruccion from "./instruccion";
 import {almacen} from '../../../src/app';
 import {errores} from '../../actions/ts.js';
+import { instruccionreturn } from "./instruccionreturn";
 
 export class instruccionif implements instruccion{
 
@@ -21,18 +22,27 @@ export class instruccionif implements instruccion{
         //YA QUE TIENE QUE SER DE TIPO BOOLEAN
         const valorcondicion= this.exp.obtenerValor(ambito);
         const tipocondicion= this.exp.obtenerTipo(ambito);
+        /*console.log("VALOR CONDICION");
+        console.log(valorcondicion);
+        console.log("TIPO");
+        console.log(tipocondicion);*/
         if(tipocondicion==tipo_valor.BOOLEAN){
             let valorc= valorcondicion as Boolean;
             //SI ES BOOLEAN LA CONDICION ENTONCES SI SE PUEDE EJECUTAR
+            
             if(valorc.valueOf()){
                 const tsif= new entorno("if",ambito);
+                
                 for (let i = 0; i < this.instrucciones.length; i++) {
                     //AQUI TENEMOS QUE IR RECIBIENDO EL "VALOR" DE LAS INSTRUCCIONES
                     //QUE POR SER INSTRUCCIONES NO DEVUELVEN NADA, A EXCEPCION DE LOS BREAK O CONTINUE
                     let valori= this.instrucciones[i].ejecutar(tsif);
+                    
                     if(valori && valori.valueOf()==tipo_instruccion.BREAK){
                         return valori;
                     }else if(valori && valori.valueOf()==tipo_instruccion.CONTINUE){
+                        return valori;
+                    }else if(valori!=null){
                         return valori;
                     }
                     

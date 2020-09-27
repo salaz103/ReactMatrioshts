@@ -26,7 +26,16 @@ var instruccionelseif = /** @class */ (function () {
                 if (valorc.valueOf()) {
                     var tselseif = new entorno_1["default"]("ELSE-IF", ambito);
                     for (var i = 0; i < this.listainstrucciones.length; i++) {
-                        this.listainstrucciones[i].ejecutar(tselseif);
+                        var valori = this.listainstrucciones[i].ejecutar(tselseif);
+                        if (valori && valori.valueOf() == tipo_1.tipo_instruccion.BREAK) {
+                            return valori;
+                        }
+                        else if (valori && valori.valueOf() == tipo_1.tipo_instruccion.CONTINUE) {
+                            return valori;
+                        }
+                        else if (valori != null) {
+                            return valori;
+                        }
                     }
                 }
             }
@@ -47,12 +56,21 @@ var instruccionelseif = /** @class */ (function () {
                 if (valorc.valueOf()) {
                     var tselseif = new entorno_1["default"]("ELSE-IF", ambito);
                     for (var i = 0; i < this.listainstrucciones.length; i++) {
-                        this.listainstrucciones[i].ejecutar(tselseif);
+                        var valori = this.listainstrucciones[i].ejecutar(tselseif);
+                        if (valori && valori.valueOf() == tipo_1.tipo_instruccion.BREAK) {
+                            return valori;
+                        }
+                        else if (valori && valori.valueOf() == tipo_1.tipo_instruccion.CONTINUE) {
+                            return valori;
+                        }
+                        else if (valori != null) {
+                            return valori;
+                        }
                     }
                 }
                 else {
                     //AQUI ESTOY EJECUTANDO AL ELSE
-                    this.instruccionelseif.ejecutar(ambito);
+                    return this.instruccionelseif.ejecutar(ambito);
                 }
             }
             else {

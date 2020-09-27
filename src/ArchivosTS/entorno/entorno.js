@@ -4,10 +4,14 @@ var entorno = /** @class */ (function () {
     function entorno(nombre, ambitoPadre) {
         this.apuntadorPadre = ambitoPadre != null ? ambitoPadre : null;
         this.ts = [];
+        this.tablafunciones = [];
         this.nombre = nombre;
     }
     entorno.prototype.agregarSimbolo = function (nuevoSimbolo) {
         this.ts.push(nuevoSimbolo);
+    };
+    entorno.prototype.agregarFuncion = function (funcion) {
+        this.tablafunciones.push(funcion);
     };
     entorno.prototype.asignarValor = function (id, valor, tipo) {
         for (var entornoactual = this; entornoactual != null; entornoactual = entornoactual.apuntadorPadre) {
@@ -51,6 +55,22 @@ var entorno = /** @class */ (function () {
                 }
             }
         }
+    };
+    entorno.prototype.existeFuncion = function (id) {
+        //RECORRIENDO LOS ENTORNOS
+        for (var entornoactual = this; entornoactual != null; entornoactual = entornoactual.apuntadorPadre) {
+            console.log("RECORRIENDO AMBITOS PARA BUSCAR FUNCION: ");
+            console.log(entornoactual);
+            //RECORRIENDO LA TABLA DE FUNCIONES DEL ENTORNO ACTUAL
+            for (var i = 0; i < entornoactual.tablafunciones.length; i++) {
+                if (entornoactual.tablafunciones[i].nombre == id) {
+                    //AQUI REGRESO LA DECLARACION DE FUNCION {function(...){..}}
+                    return entornoactual.tablafunciones[i];
+                }
+            }
+        }
+        //SI REGRESA NULL ES POR QUE NO ENCONTRO LA FUNCION
+        return null;
     };
     return entorno;
 }());

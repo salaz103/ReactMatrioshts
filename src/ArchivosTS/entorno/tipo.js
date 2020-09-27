@@ -19,6 +19,7 @@ var tipo_instruccion;
 (function (tipo_instruccion) {
     tipo_instruccion["BREAK"] = "BREAK";
     tipo_instruccion["CONTINUE"] = "CONTINUE";
+    tipo_instruccion["RETURN"] = "RETURN";
 })(tipo_instruccion || (tipo_instruccion = {}));
 exports.tipo_instruccion = tipo_instruccion;
 var operador;

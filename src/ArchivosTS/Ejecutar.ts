@@ -1,6 +1,7 @@
 import entorno from './entorno/entorno';
 import {almacen} from '../../src/app';
 import {limpiarconsola,tsfinal} from '../actions/ts.js';
+import { declaracionfuncion } from './instrucciones/declaracionfuncion';
 
 
 
@@ -25,9 +26,21 @@ almacen.dispatch(tsfinal(Object(entornoGlobal)));
 
 function ejecutar(ast:any,entorno:entorno){
 
-    ast.forEach(instruccion => {
-        instruccion.ejecutar(entorno);
-    });
+    //PRIMERA PASADA, GUARDAR TODAS LAS FUNCIONES
+    for (let i = 0; i < ast.length; i++) {
+        if(ast[i] instanceof declaracionfuncion){
+            entorno.agregarFuncion(ast[i]);
+        }
+    }
+
+    //AHORA YA EJECUTO A EXCEPCION DE LAS FUNCIONES
+
+    for (let a = 0; a < ast.length; a++) {
+        if(ast[a] instanceof declaracionfuncion){
+            continue;
+        }
+        ast[a].ejecutar(entorno);     
+    }
 
 }
 

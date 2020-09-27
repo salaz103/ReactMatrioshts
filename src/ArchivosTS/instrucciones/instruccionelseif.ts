@@ -1,5 +1,5 @@
 import entorno from "../entorno/entorno";
-import { tipo_valor } from "../entorno/tipo";
+import { tipo_instruccion, tipo_valor } from "../entorno/tipo";
 import expresion from "../expresiones/expresion";
 import instruccion from "./instruccion";
 
@@ -36,7 +36,15 @@ export class instruccionelseif implements instruccion{
                 if(valorc.valueOf()){
                     const tselseif= new entorno("ELSE-IF",ambito);
                     for (let i = 0; i < this.listainstrucciones.length; i++) {
-                        this.listainstrucciones[i].ejecutar(tselseif);                     
+                        let valori= this.listainstrucciones[i].ejecutar(tselseif); 
+                        
+                        if(valori && valori.valueOf()==tipo_instruccion.BREAK){
+                            return valori;
+                        }else if(valori && valori.valueOf()==tipo_instruccion.CONTINUE){
+                            return valori;
+                        }else if(valori!=null){
+                            return valori;
+                        }
                     }
                 }
 
@@ -61,11 +69,19 @@ export class instruccionelseif implements instruccion{
                 if(valorc.valueOf()){
                     const tselseif= new entorno("ELSE-IF",ambito);
                     for (let i = 0; i < this.listainstrucciones.length; i++) {
-                        this.listainstrucciones[i].ejecutar(tselseif);                     
+                        let valori=this.listainstrucciones[i].ejecutar(tselseif);
+                        
+                        if(valori && valori.valueOf()==tipo_instruccion.BREAK){
+                            return valori;
+                        }else if(valori && valori.valueOf()==tipo_instruccion.CONTINUE){
+                            return valori;
+                        }else if(valori!=null){
+                            return valori;
+                        }
                     }
                 }else{
                     //AQUI ESTOY EJECUTANDO AL ELSE
-                    this.instruccionelseif.ejecutar(ambito);
+                     return this.instruccionelseif.ejecutar(ambito);
                 }
 
 

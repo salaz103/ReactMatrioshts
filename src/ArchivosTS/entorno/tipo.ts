@@ -13,7 +13,8 @@ enum tipo_variable{
 
 enum tipo_instruccion{
     BREAK= "BREAK",
-    CONTINUE="CONTINUE"
+    CONTINUE="CONTINUE",
+    RETURN="RETURN"
 }
 
 enum operador{

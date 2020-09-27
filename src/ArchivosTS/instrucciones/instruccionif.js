@@ -14,6 +14,10 @@ var instruccionif = /** @class */ (function () {
         //YA QUE TIENE QUE SER DE TIPO BOOLEAN
         var valorcondicion = this.exp.obtenerValor(ambito);
         var tipocondicion = this.exp.obtenerTipo(ambito);
+        /*console.log("VALOR CONDICION");
+        console.log(valorcondicion);
+        console.log("TIPO");
+        console.log(tipocondicion);*/
         if (tipocondicion == tipo_1.tipo_valor.BOOLEAN) {
             var valorc = valorcondicion;
             //SI ES BOOLEAN LA CONDICION ENTONCES SI SE PUEDE EJECUTAR
@@ -27,6 +31,9 @@ var instruccionif = /** @class */ (function () {
                         return valori;
                     }
                     else if (valori && valori.valueOf() == tipo_1.tipo_instruccion.CONTINUE) {
+                        return valori;
+                    }
+                    else if (valori != null) {
                         return valori;
                     }
                 }

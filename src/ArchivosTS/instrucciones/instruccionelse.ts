@@ -1,4 +1,5 @@
 import entorno from "../entorno/entorno";
+import { tipo_instruccion } from "../entorno/tipo";
 import instruccion from "./instruccion";
 
 export class instruccionelse implements instruccion{
@@ -15,7 +16,16 @@ export class instruccionelse implements instruccion{
         const tselse= new entorno("ELSE",ambito);
         //ENTONCES AQUI SOLO EJECUTO LAS INSTRUCCIONES
         for (let i = 0; i < this.listaelse.length; i++) {
-            this.listaelse[i].ejecutar(tselse);
+            let valori= this.listaelse[i].ejecutar(tselse);
+
+            if(valori && valori.valueOf()==tipo_instruccion.BREAK){
+                return valori;
+            }else if(valori && valori.valueOf()==tipo_instruccion.CONTINUE){
+                return valori;
+            }else if(valori!=null){
+                return valori;
+            }
+           
         }
         return null;
     }

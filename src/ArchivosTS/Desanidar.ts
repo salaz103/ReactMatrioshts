@@ -290,6 +290,22 @@ function desanidar(ast:typeof nodobase):string{
     }else if(ast.tipo=='GRAFICAR'){
         let recolector= 'graficar_ts();\n';
         return recolector;
+    }else if(ast.tipo=='LLAMADA_FUNCION1'){
+        let recolector= '';
+        let id= ast.hijos[0];
+        recolector= id+"()";
+        return recolector;
+    }else if(ast.tipo=='LLAMADA_FUNCION2'){
+        let recolector= '';
+        let id= ast.hijos[0];
+        let lista= desanidar(ast.hijos[2]);
+        recolector= id+"("+lista+")";
+        return recolector;
+    }else if(ast.tipo=='LFUNCION'){
+        let recolector='';
+        let funcion = desanidar(ast.hijos[0]);
+        recolector= funcion+";\n";
+        return recolector;
     }
     
 //****************************EXPRESIONES***********************/
@@ -417,13 +433,6 @@ function desanidar(ast:typeof nodobase):string{
         recolector= "!"+operando;
         return recolector;
 
-    }else if(ast.tipo=='LLAMADA_FUNCION'){
-        let recolector='';
-        let id= ast.hijos[0];
-        let parametros= desanidar(ast.hijos[2]);
-        recolector= id +"("+parametros+")";
-        return recolector;
-
     }else if(ast.tipo=='PAREXPRESION'){
         let recolector='';
         let expresion= desanidar(ast.hijos[1]);
@@ -432,7 +441,6 @@ function desanidar(ast:typeof nodobase):string{
         return recolector;
 
     }
-
 
 // ****************LISTAS - NODOS INTERMEDIOS*********************
     else if(ast.tipo=='LISTA_CASOS'){

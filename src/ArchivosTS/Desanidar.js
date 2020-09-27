@@ -283,6 +283,25 @@ function desanidar(ast) {
         var recolector = 'graficar_ts();\n';
         return recolector;
     }
+    else if (ast.tipo == 'LLAMADA_FUNCION1') {
+        var recolector = '';
+        var id = ast.hijos[0];
+        recolector = id + "()";
+        return recolector;
+    }
+    else if (ast.tipo == 'LLAMADA_FUNCION2') {
+        var recolector = '';
+        var id = ast.hijos[0];
+        var lista = desanidar(ast.hijos[2]);
+        recolector = id + "(" + lista + ")";
+        return recolector;
+    }
+    else if (ast.tipo == 'LFUNCION') {
+        var recolector = '';
+        var funcion = desanidar(ast.hijos[0]);
+        recolector = funcion + ";\n";
+        return recolector;
+    }
     //****************************EXPRESIONES***********************/
     else if (ast.tipo == 'NEGATIVO') {
         var recolector = '';
@@ -392,13 +411,6 @@ function desanidar(ast) {
         var recolector = '';
         var operando = desanidar(ast.hijos[1]);
         recolector = "!" + operando;
-        return recolector;
-    }
-    else if (ast.tipo == 'LLAMADA_FUNCION') {
-        var recolector = '';
-        var id = ast.hijos[0];
-        var parametros = desanidar(ast.hijos[2]);
-        recolector = id + "(" + parametros + ")";
         return recolector;
     }
     else if (ast.tipo == 'PAREXPRESION') {
