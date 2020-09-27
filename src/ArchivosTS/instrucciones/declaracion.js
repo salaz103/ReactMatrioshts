@@ -140,6 +140,46 @@ var declaracion = /** @class */ (function () {
                     //4. LET ID:TIPODATO=EXPRESION; AQUI TOCA VALIDAD SI EL TIPO DE DATO ES IGUAL A LA EXPRESION
                     if (this.variables[i].arreglo) {
                         //SI ENTRO AQUI ES POR QUE ES UN ARREGLO LET 
+                        if (this.variables[i].tipodato == undefined) {
+                            //SI EL TIPO DE DATO ES UNDEFINED ENTONCES SOLO TRAE ID Y VALOR
+                            //SIGNIFICA QUE EL ARREGLO SERA DE CUALQUIER TIPO
+                            //SOLO GUARDO SUS VALORES 
+                            var arreglovalores = [];
+                            for (var a = 0; a < this.variables[i].listae.length; a++) {
+                                arreglovalores.push(this.variables[i].listae[a]);
+                            }
+                            var nuevosimbolo = new simbolo_1["default"](this.variables[i].id, true, tipo_1.tipo_valor.ANY, new Object(arreglovalores));
+                            ambito.agregarSimbolo(nuevosimbolo);
+                            //console.log(nuevosimbolo);
+                            /*ambito.agregarSimbolo(nuevosimbolo);
+                            console.log("VARIABLE CONST: "+this.variables[i].id+" GUARDADA");*/
+                        }
+                        else {
+                            //SI TRAE UN TIPO DE DATO, HAY QUE VALIDAR QUE TODOS LOS VALORES EN EL ARREGLO SEAN DEL MISMO TIPO
+                            var iguales = true;
+                            for (var a = 0; a < this.variables[i].listae.length; a++) {
+                                if (this.variables[i].listae[a].obtenerTipo(ambito) == this.variables[i].tipodato) {
+                                    iguales = true;
+                                }
+                                else {
+                                    iguales = false;
+                                    break;
+                                }
+                            }
+                            if (iguales) {
+                                //SI SON TODOS IGUALES ENTONCES LO GUARDO
+                                var arreglovalores = [];
+                                for (var a = 0; a < this.variables[i].listae.length; a++) {
+                                    arreglovalores.push(this.variables[i].listae[a]);
+                                }
+                                var nuevosimbolo = new simbolo_1["default"](this.variables[i].id, true, this.variables[i].tipodato, new Object(arreglovalores));
+                                ambito.agregarSimbolo(nuevosimbolo);
+                                //console.log(nuevosimbolo);
+                            }
+                            else {
+                                //ERROR
+                            }
+                        }
                     }
                     else {
                         ///SI ENTRO AQUI ES POR QUE ES UNA VARIABLE LET "PLANA"

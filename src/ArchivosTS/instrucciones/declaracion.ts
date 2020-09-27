@@ -167,6 +167,47 @@ export class declaracion implements instruccion{
                         //SI ENTRO AQUI ES POR QUE ES UN ARREGLO LET 
 
 
+                        if(this.variables[i].tipodato==undefined){
+                            //SI EL TIPO DE DATO ES UNDEFINED ENTONCES SOLO TRAE ID Y VALOR
+                            //SIGNIFICA QUE EL ARREGLO SERA DE CUALQUIER TIPO
+                            //SOLO GUARDO SUS VALORES 
+                            let arreglovalores=[];
+                            for (let a = 0; a < this.variables[i].listae.length; a++) {
+                                arreglovalores.push(this.variables[i].listae[a]);
+                            }
+
+                            const nuevosimbolo= new simbolo(this.variables[i].id,true,tipo_valor.ANY,new Object(arreglovalores));
+                            ambito.agregarSimbolo(nuevosimbolo);
+                            //console.log(nuevosimbolo);
+                            /*ambito.agregarSimbolo(nuevosimbolo);
+                            console.log("VARIABLE CONST: "+this.variables[i].id+" GUARDADA");*/
+                        }else{
+                            //SI TRAE UN TIPO DE DATO, HAY QUE VALIDAR QUE TODOS LOS VALORES EN EL ARREGLO SEAN DEL MISMO TIPO
+                            let iguales=true;
+                            for (let a = 0; a < this.variables[i].listae.length; a++) {
+                                if(this.variables[i].listae[a].obtenerTipo(ambito)==this.variables[i].tipodato){
+                                    iguales=true
+                                }else{
+                                    iguales=false;
+                                    break;
+                                }
+                            }
+                            if(iguales){
+                                //SI SON TODOS IGUALES ENTONCES LO GUARDO
+                                let arreglovalores=[];
+                            for (let a = 0; a < this.variables[i].listae.length; a++) {
+                                arreglovalores.push(this.variables[i].listae[a]);
+                            }
+
+                            const nuevosimbolo= new simbolo(this.variables[i].id,true,this.variables[i].tipodato,new Object(arreglovalores));
+                            ambito.agregarSimbolo(nuevosimbolo);
+                            //console.log(nuevosimbolo);
+                            }else{
+                                //ERROR
+                            }
+
+                        }
+
 
 
                     }else{
