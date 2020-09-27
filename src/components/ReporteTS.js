@@ -70,7 +70,7 @@ function graficar_ts(arreglosim){
                 <td>{simbolo.nombre}</td>
                 <td>{simbolo.tipo}</td>
                 <td>{simbolo.ambito}</td>
-                <td>{simbolo.valor.valueOf()}</td>
+                <td>{Array.isArray(simbolo.valor)? JSON.stringify(simbolo.valor):simbolo.valor.valueOf()}</td>
                 <td>{simbolo.reasignable?"LET":"CONST"}</td>
                 </tr>
          ))
@@ -81,7 +81,6 @@ function graficar_ts(arreglosim){
 
 function renderTableData(ts) {
 
-    
     if(ts){
         return ts.map((simbolo, index) => (
                <tr key={index}>
