@@ -287,6 +287,9 @@ break;
 case 79:
 this.$= nodobase.nuevonodo('PAREXPRESION',[$$[$0-2],$$[$0-1],$$[$0]],yylineno);
 break;
+case 80:
+this.$= nodobase.nuevonodo('TERNARIO',[$$[$0-4],$$[$0-3],$$[$0-2],$$[$0-1],$$[$0]],yylineno);
+break;
 case 81:
 this.$= nodobase.nuevonodo('NUMERO',[$$[$0]],yylineno);
 break;

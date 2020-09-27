@@ -20,7 +20,7 @@ const ReporteTS= (props)=>(
         </tr>
         {console.log(props.entornos.entornos.ts)}
          {renderTableData(props.entornos.entornos.ts)}
-         {funciones(props.entornos.entornos.tablafunciones)}
+         { funciones(props.entornos.entornos.tablafunciones) }
         </tbody>
        </table>
 
@@ -102,7 +102,7 @@ function renderTableData(ts) {
              <tr key={index}>
                 <td>{funcion.nombre}</td>
                 <td>{funcion.tipodato}</td>
-                <td>Parametros: {funcion.parametros?funcion.parametros:"0"}</td>
+                <td>Parametros: {funcion.parametros!=null?funcion.parametros.length:"0"}</td>
                 <td>Funcion</td>
              </tr>
       ))

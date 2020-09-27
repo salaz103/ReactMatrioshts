@@ -300,7 +300,8 @@ expresion:
           |RNOT expresion                  {$$= nodobase.nuevonodo('NOT',[$1,$2],yylineno);}     //LISTO
           /*RESTANTES*/
           |RPARA expresion RPARC  {$$= nodobase.nuevonodo('PAREXPRESION',[$1,$2,$3],yylineno);}//LISTO
-          |expresion RINTERROGACION expresion RDOSPUNTOS expresion
+          |expresion RINTERROGACION expresion RDOSPUNTOS expresion //LISTO
+           {$$= nodobase.nuevonodo('TERNARIO',[$1,$2,$3,$4,$5],yylineno);}
           |NUM                    {$$= nodobase.nuevonodo('NUMERO',[$1],yylineno);} //LISTO
           |RTRUE                  {$$= nodobase.nuevonodo('TRUE',[$1],yylineno);}   //LISTO
           |RFALSE                 {$$= nodobase.nuevonodo('FALSE',[$1],yylineno);}  //LISTO

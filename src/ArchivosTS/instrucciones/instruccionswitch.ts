@@ -1,4 +1,5 @@
 import entorno from "../entorno/entorno";
+import { tipo_instruccion } from "../entorno/tipo";
 import expresion from "../expresiones/expresion";
 import { caso } from "./caso";
 import instruccion from "./instruccion";
@@ -19,10 +20,10 @@ export class instruccionswitch implements instruccion{
         //PRIMERO OBTENEMOS EL VALOR DE LA EXPRESION DEL SWITCH
         const valorswitch= this.exp.obtenerValor(ambito);
         const tipovalorswitch= this.exp.obtenerTipo(ambito);
-                console.log("VALOR DEL SWITCH ACTUAL");
+                /*console.log("VALOR DEL SWITCH ACTUAL");
                 console.log(valorswitch);
                 console.log("VALOR DEL TIPO DEL SWITCH");
-                console.log(tipovalorswitch);
+                console.log(tipovalorswitch);*/
         //CREAMOS LA NUEVA TS Y LE PASAMOS EL PADRE
         const ts_switch= new entorno("switch",ambito);
         let evaluarDefault:boolean=true;
@@ -43,10 +44,20 @@ export class instruccionswitch implements instruccion{
                     if(JSON.stringify(valorswitch)==JSON.stringify(valorcaso)){
                         //SI LOS VALORES SON IGUALES
                         //ENTONCES RECORRO LAS INSTRUCCIONES DE ESTE CASO Y TERMINO
-                        this.casos[i].listainstrucciones.forEach(instruccion => {
+                        /*this.casos[i].listainstrucciones.forEach(instruccion => {
                             instruccion.ejecutar(ts_switch);
-                        });
-                        evaluarDefault=false;
+                        });*/
+                        for (let a = 0; a < this.casos[i].listainstrucciones.length; a++) {
+                            let valori= this.casos[i].listainstrucciones[a].ejecutar(ts_switch);
+
+                            if(valori && valori.valueOf()==tipo_instruccion.BREAK){
+                                return valori;
+                            }else if(valori!=null){
+                                return valori;
+                            }
+                            
+                        }
+                        //evaluarDefault=false;
                     }
 
                 }else{
@@ -64,9 +75,19 @@ export class instruccionswitch implements instruccion{
         //SI LA BANDERA evaluarDefault viene TRUE ES POR QUE NINGUNO DE LOS CASOS FUE EL ADECUADO
             //Y SE VA A EJECUTAR LAS INSTRUCCIONES DEL CASO DEFAULT
             if(evaluarDefault){
-                casoDefault.listainstrucciones.forEach(instruccion => {
+               /* casoDefault.listainstrucciones.forEach(instruccion => {
                     instruccion.ejecutar(ts_switch);
-                });
+                });*/
+                for (let i = 0; i < casoDefault.listainstrucciones.length; i++) {
+                   
+                    let valori= casoDefault.listainstrucciones[i].ejecutar(ts_switch);
+
+                            if(valori && valori.valueOf()==tipo_instruccion.BREAK){
+                                return valori;
+                            }else if(valori!=null){
+                                return valori;
+                            }
+                }
             }
 
         return null;

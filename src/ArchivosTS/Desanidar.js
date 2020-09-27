@@ -419,6 +419,14 @@ function desanidar(ast) {
         recolector = "(" + expresion + ")";
         return recolector;
     }
+    else if (ast.tipo == 'TERNARIO') {
+        var recolector = '';
+        var condicion = desanidar(ast.hijos[0]);
+        var expt = desanidar(ast.hijos[2]);
+        var expf = desanidar(ast.hijos[4]);
+        recolector = condicion + "?" + expt + ":" + expf;
+        return recolector;
+    }
     // ****************LISTAS - NODOS INTERMEDIOS*********************
     else if (ast.tipo == 'LISTA_CASOS') {
         var recolector_2 = '';

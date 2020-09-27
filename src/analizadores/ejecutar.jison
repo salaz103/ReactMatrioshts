@@ -105,6 +105,7 @@ const relacional= require('../ArchivosTS/expresiones/operaciones/relacional');
 const logica= require('../ArchivosTS/expresiones/operaciones/logica');
 const unaria= require('../ArchivosTS/expresiones/operaciones/unaria');
 const identificador= require('../ArchivosTS/expresiones/identificador');
+const operadorternario= require('../ArchivosTS/expresiones/operadorternario');
   //***********************INSTRUCCIONES***************************
 const imprimir= require('../ArchivosTS/instrucciones/imprimir');
 const declaracion= require('../ArchivosTS/instrucciones/declaracion');
@@ -240,9 +241,9 @@ casos: casos caso {$1.push($2); $$=$1;}
       | caso {$$=[$1];}
       ; 
 
-caso:   RCASE expresion RDOSPUNTOS lista RBREAK RPUNTOCOMA
+caso:   RCASE expresion RDOSPUNTOS lista
         {$$= new caso.caso($2,$4);}
-      | RDEFAULT RDOSPUNTOS lista RBREAK RPUNTOCOMA
+      | RDEFAULT RDOSPUNTOS lista 
         {$$= new caso.caso(undefined,$3);}
         ;
 
@@ -349,6 +350,7 @@ expresion:
           /*RESTANTES*/
           |RPARA expresion RPARC  {$$=$2;}
           |expresion RINTERROGACION expresion RDOSPUNTOS expresion
+          {$$= new operadorternario.operadorternario($1,$3,$5);}
           |NUM                  {$$=new numero.numero(Number($1),tipo_valor.NUMBER);}  
           |RTRUE                {$$=new valorLogico.valorLogico("TRUE",tipo_valor.BOOLEAN);} 
           |RFALSE               {$$=new valorLogico.valorLogico("FALSE",tipo_valor.BOOLEAN);}  

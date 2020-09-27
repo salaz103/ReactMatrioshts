@@ -440,6 +440,13 @@ function desanidar(ast:typeof nodobase):string{
 
         return recolector;
 
+    }else if(ast.tipo=='TERNARIO'){
+        let recolector='';
+        let condicion= desanidar(ast.hijos[0]);
+        let expt= desanidar(ast.hijos[2]);
+        let expf= desanidar(ast.hijos[4]);
+        recolector= condicion+"?"+expt+":"+expf;
+        return recolector;
     }
 
 // ****************LISTAS - NODOS INTERMEDIOS*********************
