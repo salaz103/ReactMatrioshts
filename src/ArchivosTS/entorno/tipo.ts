@@ -3,7 +3,8 @@
     STRING ="STRING",
     BOOLEAN ="BOOLEAN",
     TYPE ="TYPE",
-    VOID="VOID"
+    VOID="VOID",
+    ANY="ANY"
 }
 
 enum tipo_variable{

@@ -125,6 +125,7 @@ const instruccioncontinue= require('../ArchivosTS/instrucciones/instruccionconti
 const instruccionreturn= require('../ArchivosTS/instrucciones/instruccionreturn');
 const declaracionfuncion= require('../ArchivosTS/instrucciones/declaracionfuncion');
 const llamarfuncion= require('../ArchivosTS/instrucciones/llamarfuncion');
+const declaracionarreglo= require('../ArchivosTS/instrucciones/declaracionarreglo');
   //*****************************OTROS*********************************
 const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
 const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;
@@ -168,6 +169,7 @@ instruccion:  declaraciones RPUNTOCOMA{$$=$1;}
             | instruccionif     {$$=$1;}
             | instruccionswitch {$$=$1;}
             | instruccionfor    {$$=$1;}
+            | declaracionarreglo {$$=$1;}
             | instruccionwhile {$$=$1;}
             | imprimir         {$$=$1;}
             | declararfuncion  {$$=$1;}
@@ -191,6 +193,8 @@ masmenos: IDENTIFICADOR RMASMAS
 declaraciones: tipovariable listavariables  {$$=new declaracion.declaracion($1,$2);} ;
 
 
+
+
 //LISTO
 listavariables:   listavariables RCOMA variable {$1.push($3); $$=$1;} 
                 | variable {$$=[$1];}
@@ -199,13 +203,17 @@ listavariables:   listavariables RCOMA variable {$1.push($3); $$=$1;}
 
 //LISTO          
 variable:  IDENTIFICADOR RDOSPUNTOS tipodato RIGUAL expresion 
-            {$$=new variable.variable($1,@1.first_line,@1.first_column,$3,$5);}
+            {$$=new variable.variable(false,$1,@1.first_line,@1.first_column,$3,$5);}
          | IDENTIFICADOR RIGUAL expresion
-           {$$=new variable.variable($1,@1.first_line,@1.first_column,undefined,$3);}    
+           {$$=new variable.variable(false,$1,@1.first_line,@1.first_column,undefined,$3);}    
          | IDENTIFICADOR RDOSPUNTOS tipodato
-           {$$=new variable.variable($1,@1.first_line,@1.first_column,$3,undefined);} 
+           {$$=new variable.variable(false,$1,@1.first_line,@1.first_column,$3,undefined);} 
          | IDENTIFICADOR 
-           {$$=new variable.variable($1,@1.first_line,@1.first_column);} 
+           {$$=new variable.variable(false,$1,@1.first_line,@1.first_column);}
+         | IDENTIFICADOR RDOSPUNTOS tipodato RCORCHETEA RCORCHETEC RIGUAL RCORCHETEA listaexpresiones RCORCHETEC
+           {$$= new variable.variable(true,$1,@1.first_line,@1.first_column,$3,undefined,$8);} 
+         | IDENTIFICADOR RIGUAL RCORCHETEA listaexpresiones RCORCHETEC
+           {$$= new variable.variable(true,$1,@1.first_line,@1.first_column,undefined,undefined,$4);} 
          ;
 
 //LISTO

@@ -8,15 +8,19 @@ export class variable{
     exp:expresion;
     linea:number;
     columna:number;
+    listae:expresion[];
+    arreglo:boolean;
 
+    constructor(a:boolean,id:string,l:number,c:number)
+    constructor(a:boolean,id:string,l:number,c:number,tipodato?:tipo_valor)
+    constructor(a:boolean,id:string,l:number,c:number,tipodato?:tipo_valor,exp?:expresion)
+    constructor(a:boolean,id:string,l:number,c:number,tipodato?:tipo_valor,exp?:expresion,listaexpresiones?:expresion[]){
 
-    constructor(id:string,l:number,c:number)
-    constructor(id:string,l:number,c:number,tipodato?:tipo_valor)
-    constructor(id:string,l:number,c:number,tipodato?:tipo_valor,exp?:expresion){
-
+        this.arreglo= a;
         this.id=id;
         this.tipodato=tipodato;
         this.exp=exp;
+        this.listae=listaexpresiones;
 
         //POSICION
         this.linea=l;

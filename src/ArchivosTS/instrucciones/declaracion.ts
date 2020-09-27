@@ -47,51 +47,107 @@ export class declaracion implements instruccion{
                 if(this.tipovariable==tipo_variable.CONST){
                     //SI ENTRO AQUI ES POR QUE LAS VARIABLES O VARIABLE SON CONST
                     //LAS VARIABLES CONST TIENEN QUE VENIR CON UN VALOR OBLIGATORIO
-                    if(this.variables[i].exp!=undefined){
-                        //SI SON DIFERENTES DE UNDEFINED, SIGNIFICA QUE SI TRAEN UN VALOR
-                        //EN LAS CONST HAY DOS FORMAS DE DECLARAR
-                        //1. const id=expresion
-                        //2. const id:tipodato=expresion
+
+                    //ANTES VOY A PREGUNTAR SI ES UN ARREGLO O NO
+                    if(this.variables[i].arreglo){
+                        //SI ENTRO AQUI ES POR QUE ES UN ARREGLO CONST
+                        //AQUI COMIENZO A VALIDAR LO QUE TENGA QUE VALIDAR SI ES UN ARREGLO
+
                         if(this.variables[i].tipodato==undefined){
                             //SI EL TIPO DE DATO ES UNDEFINED ENTONCES SOLO TRAE ID Y VALOR
-                            //HAY QUE PONERLE EL TIPO DE DATO DE LA EXPRESION
-                            const valor= this.variables[i].exp.obtenerValor(ambito);
-                            const tipo= this.variables[i].exp.obtenerTipo(ambito);
-                            const nuevosimbolo= new simbolo(this.variables[i].id,false,tipo,valor);
+                            //SIGNIFICA QUE EL ARREGLO SERA DE CUALQUIER TIPO
+                            //SOLO GUARDO SUS VALORES 
+                            let arreglovalores=[];
+                            for (let a = 0; a < this.variables[i].listae.length; a++) {
+                                arreglovalores.push(this.variables[i].listae[a]);
+                            }
+
+                            const nuevosimbolo= new simbolo(this.variables[i].id,false,tipo_valor.ANY,new Object(arreglovalores));
                             ambito.agregarSimbolo(nuevosimbolo);
-                            console.log("VARIABLE CONST: "+this.variables[i].id+" GUARDADA");
+                            //console.log(nuevosimbolo);
+                            /*ambito.agregarSimbolo(nuevosimbolo);
+                            console.log("VARIABLE CONST: "+this.variables[i].id+" GUARDADA");*/
                         }else{
-                            //DE LO CONTRARIO SIGNIFICA QUE VIENE UN TIPO DE DATO
-                            //ENTONCES AQUI LO QUE TOCA HACER ES VERIFICAR SI EL TIPO DE DATO ENTRANTE
-                            //ES IGUAL AL TIPO DE DATO DE LA EXPRESION
-                            const valor= this.variables[i].exp.obtenerValor(ambito);
-                            const tipo= this.variables[i].exp.obtenerTipo(ambito);
-                            if(this.variables[i].tipodato==tipo){
-                                //SI SON LOS MISMOS TIPOS DE DATO ENTONCES GUARDAMOS EL SIMBOLO
-                            const nuevosimbolo= new simbolo(this.variables[i].id,false,tipo,valor);
+                            //SI TRAE UN TIPO DE DATO, HAY QUE VALIDAR QUE TODOS LOS VALORES EN EL ARREGLO SEAN DEL MISMO TIPO
+                            let iguales=true;
+                            for (let a = 0; a < this.variables[i].listae.length; a++) {
+                                if(this.variables[i].listae[a].obtenerTipo(ambito)==this.variables[i].tipodato){
+                                    iguales=true
+                                }else{
+                                    iguales=false;
+                                    break;
+                                }
+                            }
+                            if(iguales){
+                                //SI SON TODOS IGUALES ENTONCES LO GUARDO
+                                let arreglovalores=[];
+                            for (let a = 0; a < this.variables[i].listae.length; a++) {
+                                arreglovalores.push(this.variables[i].listae[a]);
+                            }
+
+                            const nuevosimbolo= new simbolo(this.variables[i].id,false,this.variables[i].tipodato,new Object(arreglovalores));
                             ambito.agregarSimbolo(nuevosimbolo);
-                            console.log("VARIABLE CONST: "+this.variables[i].id+" GUARDADA");
+                            //console.log(nuevosimbolo);
                             }else{
-                                almacen.dispatch(errores({
-                                    tipo:'SEMANTICO',
-                                    descripcion:'CONST '+ this.variables[i].id+' TIPO DATO Y VALOR NO SON SIMILARES',
-                                    ambito:ambito.nombre
-                                }));
-                                console.log("ERROR EN CONST: "+this.variables[i].id+" TIPO DATO Y VALOR NO SON SIMILARES");
+                                //ERROR
                             }
 
                         }
 
 
-
                     }else{
-                        almacen.dispatch(errores({
-                            tipo:'SEMANTICO',
-                            descripcion:'CONST '+ this.variables[i].id+' NO ESTA INICIALIZADA',
-                            ambito:ambito.nombre
-                        }));
-                        console.log("ERROR - CONST "+this.variables[i].id+ " NO ESTA INICIALIZADA");
+                        //SI ENTRO AQUI ES POR QUE ES UNA VARIABLE CONST "PLANA"
+                        
+                        if(this.variables[i].exp!=undefined){
+                            //SI SON DIFERENTES DE UNDEFINED, SIGNIFICA QUE SI TRAEN UN VALOR
+                            //EN LAS CONST HAY DOS FORMAS DE DECLARAR
+                            //1. const id=expresion
+                            //2. const id:tipodato=expresion
+                            if(this.variables[i].tipodato==undefined){
+                                //SI EL TIPO DE DATO ES UNDEFINED ENTONCES SOLO TRAE ID Y VALOR
+                                //HAY QUE PONERLE EL TIPO DE DATO DE LA EXPRESION
+                                const valor= this.variables[i].exp.obtenerValor(ambito);
+                                const tipo= this.variables[i].exp.obtenerTipo(ambito);
+                                const nuevosimbolo= new simbolo(this.variables[i].id,false,tipo,valor);
+                                ambito.agregarSimbolo(nuevosimbolo);
+                                console.log("VARIABLE CONST: "+this.variables[i].id+" GUARDADA");
+                            }else{
+                                //DE LO CONTRARIO SIGNIFICA QUE VIENE UN TIPO DE DATO
+                                //ENTONCES AQUI LO QUE TOCA HACER ES VERIFICAR SI EL TIPO DE DATO ENTRANTE
+                                //ES IGUAL AL TIPO DE DATO DE LA EXPRESION
+                                const valor= this.variables[i].exp.obtenerValor(ambito);
+                                const tipo= this.variables[i].exp.obtenerTipo(ambito);
+                                if(this.variables[i].tipodato==tipo){
+                                    //SI SON LOS MISMOS TIPOS DE DATO ENTONCES GUARDAMOS EL SIMBOLO
+                                const nuevosimbolo= new simbolo(this.variables[i].id,false,tipo,valor);
+                                ambito.agregarSimbolo(nuevosimbolo);
+                                console.log("VARIABLE CONST: "+this.variables[i].id+" GUARDADA");
+                                }else{
+                                    almacen.dispatch(errores({
+                                        tipo:'SEMANTICO',
+                                        descripcion:'CONST '+ this.variables[i].id+' TIPO DATO Y VALOR NO SON SIMILARES',
+                                        ambito:ambito.nombre
+                                    }));
+                                    console.log("ERROR EN CONST: "+this.variables[i].id+" TIPO DATO Y VALOR NO SON SIMILARES");
+                                }
+    
+                            }
+    
+    
+    
+                        }else{
+                            almacen.dispatch(errores({
+                                tipo:'SEMANTICO',
+                                descripcion:'CONST '+ this.variables[i].id+' NO ESTA INICIALIZADA',
+                                ambito:ambito.nombre
+                            }));
+                            console.log("ERROR - CONST "+this.variables[i].id+ " NO ESTA INICIALIZADA");
+                        }
+
                     }
+
+
+                    
 
 
                 }else if(this.tipovariable==tipo_variable.LET){
@@ -105,43 +161,60 @@ export class declaracion implements instruccion{
                     //3. LET ID=EXPRESION; //AQUI HAY QUE PONERLE EL TIPO DE DATO QUE EL MISMO DE LA EXPRESION
                     //4. LET ID:TIPODATO=EXPRESION; AQUI TOCA VALIDAD SI EL TIPO DE DATO ES IGUAL A LA EXPRESION
                 
-                if(this.variables[i].tipodato==undefined && this.variables[i].exp==undefined){
-                    const nuevosimbolo= new simbolo(this.variables[i].id,true,undefined,undefined);
-                    ambito.agregarSimbolo(nuevosimbolo);
-                    console.log("VARIABLE LET: "+this.variables[i].id+" GUARDADA");
-                }else if(this.variables[i].tipodato!=undefined && this.variables[i].exp==undefined){
-                    const tipodato= this.variables[i].tipodato;
-                    const nuevosimbolo= new simbolo(this.variables[i].id,true,tipodato,undefined);
-                    ambito.agregarSimbolo(nuevosimbolo);
-                    console.log("VARIABLE LET: "+this.variables[i].id+" GUARDADA");
+                
+                    if(this.variables[i].arreglo){
 
-                }else if(this.variables[i].tipodato==undefined && this.variables[i].exp!=undefined){
-                    const valor= this.variables[i].exp.obtenerValor(ambito);
-                    const tipodato= this.variables[i].exp.obtenerTipo(ambito);
-                    const nuevosimbolo= new simbolo(this.variables[i].id,true,tipodato,valor);
-                    ambito.agregarSimbolo(nuevosimbolo);
-                    console.log("VARIABLE LET: "+this.variables[i].id+" GUARDADA");
+                        //SI ENTRO AQUI ES POR QUE ES UN ARREGLO LET 
 
-                }else if(this.variables[i].tipodato!=undefined && this.variables[i].exp!=undefined){
-                    //SOLO HAY QUE VERIFICAR SI EL TIPO DE DATO ENTRANTE ES IGUAL A LA DE LA EXPRESION
-                    const valor= this.variables[i].exp.obtenerValor(ambito);
-                    const tipodato= this.variables[i].exp.obtenerTipo(ambito);
 
-                    if(this.variables[i].tipodato==tipodato){
-                    const nuevosimbolo= new simbolo(this.variables[i].id,true,tipodato,valor);
-                    ambito.agregarSimbolo(nuevosimbolo);
-                    console.log("VARIABLE LET: "+this.variables[i].id+" GUARDADA");
+
+
                     }else{
-                        almacen.dispatch(errores({
-                            tipo:'SEMANTICO',
-                            descripcion:'VARIABLE LET '+ this.variables[i].id+' NO ES COMPATIBLE CON '+tipodato,
-                            ambito:ambito.nombre
-                        }));
-                        console.log("ERROR - LET: "+this.variables[i].id+" NO ES COMPATIBLE CON "+tipodato);
-                    }
+                        ///SI ENTRO AQUI ES POR QUE ES UNA VARIABLE LET "PLANA"
 
-                    
-                }
+
+
+                        if(this.variables[i].tipodato==undefined && this.variables[i].exp==undefined){
+                            const nuevosimbolo= new simbolo(this.variables[i].id,true,undefined,undefined);
+                            ambito.agregarSimbolo(nuevosimbolo);
+                            console.log("VARIABLE LET: "+this.variables[i].id+" GUARDADA");
+                        }else if(this.variables[i].tipodato!=undefined && this.variables[i].exp==undefined){
+                            const tipodato= this.variables[i].tipodato;
+                            const nuevosimbolo= new simbolo(this.variables[i].id,true,tipodato,undefined);
+                            ambito.agregarSimbolo(nuevosimbolo);
+                            console.log("VARIABLE LET: "+this.variables[i].id+" GUARDADA");
+        
+                        }else if(this.variables[i].tipodato==undefined && this.variables[i].exp!=undefined){
+                            const valor= this.variables[i].exp.obtenerValor(ambito);
+                            const tipodato= this.variables[i].exp.obtenerTipo(ambito);
+                            const nuevosimbolo= new simbolo(this.variables[i].id,true,tipodato,valor);
+                            ambito.agregarSimbolo(nuevosimbolo);
+                            console.log("VARIABLE LET: "+this.variables[i].id+" GUARDADA");
+        
+                        }else if(this.variables[i].tipodato!=undefined && this.variables[i].exp!=undefined){
+                            //SOLO HAY QUE VERIFICAR SI EL TIPO DE DATO ENTRANTE ES IGUAL A LA DE LA EXPRESION
+                            const valor= this.variables[i].exp.obtenerValor(ambito);
+                            const tipodato= this.variables[i].exp.obtenerTipo(ambito);
+        
+                            if(this.variables[i].tipodato==tipodato){
+                            const nuevosimbolo= new simbolo(this.variables[i].id,true,tipodato,valor);
+                            ambito.agregarSimbolo(nuevosimbolo);
+                            console.log("VARIABLE LET: "+this.variables[i].id+" GUARDADA");
+                            }else{
+                                almacen.dispatch(errores({
+                                    tipo:'SEMANTICO',
+                                    descripcion:'VARIABLE LET '+ this.variables[i].id+' NO ES COMPATIBLE CON '+tipodato,
+                                    ambito:ambito.nombre
+                                }));
+                                console.log("ERROR - LET: "+this.variables[i].id+" NO ES COMPATIBLE CON "+tipodato);
+                            }
+        
+                            
+                        }
+
+
+
+                    }
 
 
 

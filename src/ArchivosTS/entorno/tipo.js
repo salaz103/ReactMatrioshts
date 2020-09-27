@@ -7,6 +7,7 @@ var tipo_valor;
     tipo_valor["BOOLEAN"] = "BOOLEAN";
     tipo_valor["TYPE"] = "TYPE";
     tipo_valor["VOID"] = "VOID";
+    tipo_valor["ANY"] = "ANY";
 })(tipo_valor || (tipo_valor = {}));
 exports.tipo_valor = tipo_valor;
 var tipo_variable;
