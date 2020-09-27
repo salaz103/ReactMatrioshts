@@ -27,8 +27,32 @@ var llamarfuncion = /** @class */ (function () {
                DE LOS PARAMETROS DE LA FUNCIÓN
         */
         if (funcion) {
+            var tsfuncion = new entorno_1["default"](funcion.nombre, ambito);
             //AQUI TENDRIA QUE VALIDARSE SI ES UNA FUNCION HIJA, ES DECIR, SI EN SU NOMBRE
             //TRAE UN _ PARA IR A EJECUTAR AL PADRE Y TRAER ESOS VALORES A LA TS PARA EJECUTAR A LA HIJA
+            if (funcion.nombre.includes("_")) {
+                //SI ES UNA FUNCION HEREDADA
+                var nombres = funcion.nombre.split("_");
+                var nombrepadre = nombres[nombres.length - 2];
+                var funcionPadre = ambito.existeFuncion(nombrepadre);
+                if (funcionPadre) {
+                    //SIGNIFICA QUE SI EXISTE LA FUNCION PADRE
+                    /*console.log("PADRE:");
+                    console.log(funcionPadre);*/
+                    //CREAR UNA TABLA PADRE PARA EJECUTAR TODAS LAS INSTRUCCIONES
+                    var tspadre_1 = new entorno_1["default"](nombrepadre, ambito);
+                    funcionPadre.listainstrucciones.forEach(function (instruccion) {
+                        instruccion.ejecutar(tspadre_1);
+                    });
+                    /*console.log("PADRE YA EJECUTADO:");
+                    console.log(tspadre);*/
+                    tsfuncion.apuntadorPadre = tspadre_1;
+                }
+                else {
+                    //ERROR - LA FUNCION PADRE NO EXISTE
+                    return null;
+                }
+            }
             if (this.parametros == undefined) {
                 //SIGNIFICA QUE LA FUNCION ENTRANTE NO TIENE PARAMETROS
                 //POR LO QUE LA FUNCION GUARDADA NO DEBERIA DE TENER PARAMETROS
@@ -36,7 +60,7 @@ var llamarfuncion = /** @class */ (function () {
                     //SIGNIFICA QUE LA FUNCION TAMPOCO TRAE PARAMETROS
                     //ENTONCES PODEMOS MANDAR A EJECUTAR
                     //CREAMOS EL NUEVO AMBITO QUE APUNTA AL PADRE
-                    var tsfuncion = new entorno_1["default"](funcion.nombre, ambito);
+                    //let tsfuncion= new entorno(funcion.nombre,ambito);
                     this.tipo = funcion.tipodato;
                     return funcion.ejecutar(tsfuncion);
                 }
@@ -58,7 +82,7 @@ var llamarfuncion = /** @class */ (function () {
                         //SI TODO ESTA CORRECTO ENTONCES LO QUE DEBEMOS HACER ES EN UNA NUEVA TS
                         //ALMACENAR LOS PARAMETROS DE LA FUNCION GUARDADA CON EL VALOR DE LOS ENTRANTES
                         this.tipo = funcion.tipodato;
-                        var tsfuncion = new entorno_1["default"](funcion.nombre, ambito);
+                        //let tsfuncion= new entorno(funcion.nombre,ambito);
                         for (var i = 0; i < this.parametros.length; i++) {
                             var valor = this.parametros[i].obtenerValor(ambito);
                             var simbolonuevo = new simbolo_1["default"](funcion.parametros[i].id, true, funcion.parametros[i].tipo, valor);
