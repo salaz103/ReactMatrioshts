@@ -171,6 +171,10 @@ variable: IDENTIFICADOR RDOSPUNTOS tipodato RIGUAL expresion {$$= nodobase.nuevo
          | IDENTIFICADOR RIGUAL expresion    {$$= nodobase.nuevonodo('VARIABLE_CON_EXPRESION',[$1,$2,$3],yylineno);}
          | IDENTIFICADOR RDOSPUNTOS tipodato {$$= nodobase.nuevonodo('VARIABLE_SIN_EXPRESION',[$1,$2,$3],yylineno);}
          | IDENTIFICADOR {$$= nodobase.nuevonodo('VARIABLE_ID',[$1],yylineno);}
+         | IDENTIFICADOR RDOSPUNTOS tipodato RCORCHETEA RCORCHETEC RIGUAL RCORCHETEA listaexpresiones RCORCHETEC
+           {$$= nodobase.nuevonodo('ARREGLO_COMPLETO',[$1,$2,$3,$4,$5,$6,$7,$8,$9],yylineno);}
+         | IDENTIFICADOR RIGUAL RCORCHETEA listaexpresiones RCORCHETEC
+           {$$= nodobase.nuevonodo('ARREGLO',[$1,$2,$3,$4,$5],yylineno);}
          ;
 
 //LISTO

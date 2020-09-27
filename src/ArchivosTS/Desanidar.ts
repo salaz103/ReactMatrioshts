@@ -593,6 +593,19 @@ function desanidar(ast:typeof nodobase):string{
         let lista= desanidar(ast.hijos[2]);
         recolector= 'default:\n   '+lista;
         return recolector;
+    }else if(ast.tipo=='ARREGLO_COMPLETO'){
+        let recolector='';
+        let id= ast.hijos[0];
+        let tipodato= desanidar(ast.hijos[2]);
+        let lista= desanidar(ast.hijos[7]);
+        recolector= id+":"+tipodato+"[] = ["+lista+"]";
+        return recolector;
+    }else if(ast.tipo=='ARREGLO'){
+        let recolector='';
+        let id= ast.hijos[0];
+        let lista= desanidar(ast.hijos[3]);
+        recolector= id+"= ["+lista+"]";
+        return recolector;
     }
 //**************NODOS HOJA, SUS HIJOS YA NO TRAEN MAS HIJOS************************
     else if(ast.tipo=='COMILLA_DOBLE'){
