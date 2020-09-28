@@ -57,6 +57,7 @@ export class nativa implements instruccion{
                                 arreglo.valor.push(this.listaexpresiones[a]);
                             }
                             //DEVULEVO EL NUEVO LENGTH
+                            this.tipo=tipo_valor.NUMBER;
                             return new Number(arreglo.valor.length);
                         }else{
                             //ERROR, LOS VALORES QUE QUIERE INGRESAR NO SON DEL MISMO TIPO QUE EL ARREGLO
@@ -73,7 +74,7 @@ export class nativa implements instruccion{
                     let a:expresion=arreglo.valor.pop();
                     let valor= a.obtenerValor(ambito);
                     let tipo= a.obtenerTipo(ambito);
-                    this.tipo==tipo;
+                    this.tipo=tipo;
                     return valor;
                 }else if(this.instruccion==tipo_instruccion.LENGTH){
                     this.tipo=tipo_valor.NUMBER;

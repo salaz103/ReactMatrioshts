@@ -44,6 +44,7 @@ var nativa = /** @class */ (function () {
                                 arreglo.valor.push(this.listaexpresiones[a]);
                             }
                             //DEVULEVO EL NUEVO LENGTH
+                            this.tipo = tipo_1.tipo_valor.NUMBER;
                             return new Number(arreglo.valor.length);
                         }
                         else {
@@ -58,7 +59,7 @@ var nativa = /** @class */ (function () {
                     var a = arreglo.valor.pop();
                     var valor = a.obtenerValor(ambito);
                     var tipo = a.obtenerTipo(ambito);
-                    this.tipo == tipo;
+                    this.tipo = tipo;
                     return valor;
                 }
                 else if (this.instruccion == tipo_1.tipo_instruccion.LENGTH) {
