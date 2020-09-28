@@ -298,7 +298,7 @@ expresion:
           |expresion RMAS expresion    {$$= nodobase.nuevonodo('MAS',[$1,$2,$3],yylineno);}  //LISTO
           |expresion RMENOS expresion  {$$= nodobase.nuevonodo('MENOS',[$1,$2,$3],yylineno);} //LISTO
           |expresion RPOR expresion    {$$= nodobase.nuevonodo('POR',[$1,$2,$3],yylineno);} //LISTO
-          |expresion RDIVISION expresion {$$= nodobase.nuevonodo('DIVISON',[$1,$2,$3],yylineno);} //LISTO
+          |expresion RDIVISION expresion {$$= nodobase.nuevonodo('DIVISION',[$1,$2,$3],yylineno);} //LISTO
           |expresion RMODULO expresion   {$$= nodobase.nuevonodo('MODULO',[$1,$2,$3],yylineno);}  //LISTO
           |expresion REXPONENTE expresion {$$= nodobase.nuevonodo('EXPONENTE',[$1,$2,$3],yylineno);} //LISTO
           /*|IDENTIFICADOR RMASMAS

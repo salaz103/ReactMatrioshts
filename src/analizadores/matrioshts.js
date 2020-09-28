@@ -267,7 +267,7 @@ case 72:
 this.$= nodobase.nuevonodo('POR',[$$[$0-2],$$[$0-1],$$[$0]],yylineno);
 break;
 case 73:
-this.$= nodobase.nuevonodo('DIVISON',[$$[$0-2],$$[$0-1],$$[$0]],yylineno);
+this.$= nodobase.nuevonodo('DIVISION',[$$[$0-2],$$[$0-1],$$[$0]],yylineno);
 break;
 case 74:
 this.$= nodobase.nuevonodo('MODULO',[$$[$0-2],$$[$0-1],$$[$0]],yylineno);
