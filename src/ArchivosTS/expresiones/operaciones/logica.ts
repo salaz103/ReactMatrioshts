@@ -2,6 +2,8 @@ import entorno from "../../entorno/entorno";
 import { operador, tipo_valor } from "../../entorno/tipo";
 import expresion from "../expresion";
 import operacion from "./operacion";
+import {almacen} from '../../../../src/app';
+import {errores} from '../../../actions/ts.js';
 
 export class logica extends operacion implements expresion{
 
@@ -29,6 +31,11 @@ export class logica extends operacion implements expresion{
                 return new Boolean(res);
             }else{
                 //ERROR SEMANTICO
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion:'OPERADOR && SOLO ACEPTA BOOLEAN',
+                    ambito:ambito.nombre
+                }));
             }
             
     
@@ -42,6 +49,11 @@ export class logica extends operacion implements expresion{
             return new Boolean(res);
             }else{
                 //ERROR SEMANTICO
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion:'OPERADOR OR SOLO ACEPTA BOOLEAN',
+                    ambito:ambito.nombre
+                }));
             }
 
         }

@@ -4,6 +4,8 @@ import { tipo_valor } from "../entorno/tipo";
 import expresion from "../expresiones/expresion";
 import instruccion from "./instruccion";
 import { instruccionreturn } from "./instruccionreturn";
+import {almacen} from '../../../src/app';
+import {errores} from '../../actions/ts.js';
 
 export class llamarfuncion implements instruccion{
 
@@ -61,6 +63,11 @@ export class llamarfuncion implements instruccion{
                     tsfuncion.apuntadorPadre=tspadre;
                 }else{
                     //ERROR - LA FUNCION PADRE NO EXISTE
+                    almacen.dispatch(errores({
+                        tipo:'SEMANTICO',
+                        descripcion:'FUNCION PADRE NO EXISTE',
+                        ambito:ambito.nombre
+                    }));
                     return null;
                 }
 
@@ -81,6 +88,11 @@ export class llamarfuncion implements instruccion{
                     return funcion.ejecutar(tsfuncion);
                 }else{
                     //ERROR - LA FUNCION ESPERA funcion.parametros.length parametros y se recibieron 0
+                    almacen.dispatch(errores({
+                        tipo:'SEMANTICO',
+                        descripcion:'FUNCION ESPERA '+funcion.parametros.length+' Y SE RECIBIERON 0',
+                        ambito:ambito.nombre
+                    }));
                 }
 
 
@@ -127,6 +139,11 @@ export class llamarfuncion implements instruccion{
 
                 }else{
                     //ERROR- LA FUNCION funcion.nombre no requiere parametros
+                    almacen.dispatch(errores({
+                        tipo:'SEMANTICO',
+                        descripcion:'LA FUNCION '+ funcion.nombre+' NO REQUIERE PARAMETROS',
+                        ambito:ambito.nombre
+                    }));
                 }
 
 
@@ -137,6 +154,11 @@ export class llamarfuncion implements instruccion{
 
         }else{
             //ERROR - LA FUNCION NO EXISTE
+            almacen.dispatch(errores({
+                tipo:'SEMANTICO',
+                descripcion:'FUNCION'+this.nombrefuncion+ ' NO EXISTE',
+                ambito:ambito.nombre
+            }));
         }
         return null;
     }

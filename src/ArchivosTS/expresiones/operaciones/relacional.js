@@ -15,6 +15,8 @@ var __extends = (this && this.__extends) || (function () {
 exports.__esModule = true;
 var tipo_1 = require("../../entorno/tipo");
 var operacion_1 = require("./operacion");
+var app_1 = require("../../../../src/app");
+var ts_js_1 = require("../../../actions/ts.js");
 var relacional = /** @class */ (function (_super) {
     __extends(relacional, _super);
     function relacional(expiz, op, expder) {
@@ -34,6 +36,11 @@ var relacional = /** @class */ (function (_super) {
             }
             else {
                 //ERROR SEMANTICO
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'OPERADOR > NECESITA OPERANDOS NUMBER',
+                    ambito: ambito.nombre
+                }));
             }
         }
         else if (this.tipooperador == tipo_1.operador.MENORQUE) {
@@ -44,6 +51,11 @@ var relacional = /** @class */ (function (_super) {
             }
             else {
                 //ERROR SEMANTICO
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'OPERADOR < NECESITA OPERANDOS NUMBER',
+                    ambito: ambito.nombre
+                }));
             }
         }
         else if (this.tipooperador == tipo_1.operador.MAYORIGUALQUE) {
@@ -54,6 +66,11 @@ var relacional = /** @class */ (function (_super) {
             }
             else {
                 //ERROR SEMANTICO
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'OPERADOR >= NECESITA OPERANDOS NUMBER',
+                    ambito: ambito.nombre
+                }));
             }
         }
         else if (this.tipooperador == tipo_1.operador.MENORIGUALQUE) {
@@ -64,6 +81,11 @@ var relacional = /** @class */ (function (_super) {
             }
             else {
                 //ERROR SEMANTICO
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'OPERADOR <= NECESITA OPERANDOS NUMBER',
+                    ambito: ambito.nombre
+                }));
             }
         }
         else if (this.tipooperador == tipo_1.operador.DIFERENTEQUE) {
@@ -79,6 +101,11 @@ var relacional = /** @class */ (function (_super) {
             }
             else {
                 //ERROR SEMANTICO
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'OPERADOR != NECESITA OPERANDOS NUMBER O STRING',
+                    ambito: ambito.nombre
+                }));
             }
         }
         else if (this.tipooperador == tipo_1.operador.IGUALQUE) {
@@ -94,6 +121,11 @@ var relacional = /** @class */ (function (_super) {
             }
             else {
                 //ERROR SEMANTICO
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'OPERADOR == NECESITA OPERANDOS NUMBER O STRING',
+                    ambito: ambito.nombre
+                }));
             }
         }
         return null;

@@ -2,6 +2,8 @@ import entorno from "../entorno/entorno";
 import { tipo_instruccion, tipo_valor } from "../entorno/tipo";
 import expresion from "../expresiones/expresion";
 import instruccion from "./instruccion";
+import {almacen} from '../../../src/app';
+import {errores} from '../../actions/ts.js';
 
 export class nativa implements instruccion{
 
@@ -61,6 +63,11 @@ export class nativa implements instruccion{
                             return new Number(arreglo.valor.length);
                         }else{
                             //ERROR, LOS VALORES QUE QUIERE INGRESAR NO SON DEL MISMO TIPO QUE EL ARREGLO
+                            almacen.dispatch(errores({
+                                tipo:'SEMANTICO',
+                                descripcion:'ARREGLO '+arreglo.id+' ES DE OTRO TIPO, NO SE GUARDARAN VALORES',
+                                ambito:ambito.nombre
+                            }));
                         }
 
                     }
@@ -84,6 +91,11 @@ export class nativa implements instruccion{
 
         }else{
             //ERROR - VARIABLE this.id NO EXISTE
+            almacen.dispatch(errores({
+                tipo:'SEMANTICO',
+                descripcion: this.id+' NO EXISTE, NO SE HARA PUSH',
+                ambito:ambito.nombre
+            }));
         }
 
 

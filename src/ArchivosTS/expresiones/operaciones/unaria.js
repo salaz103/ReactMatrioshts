@@ -1,6 +1,8 @@
 "use strict";
 exports.__esModule = true;
 var tipo_1 = require("../../entorno/tipo");
+var app_1 = require("../../../../src/app");
+var ts_js_1 = require("../../../actions/ts.js");
 var unaria = /** @class */ (function () {
     function unaria(op, expder) {
         this.expresionderecha = expder;
@@ -18,6 +20,11 @@ var unaria = /** @class */ (function () {
             }
             else {
                 //ERROR SEMANTICO
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'OPERADOR NEGATIVO SOLO ES APLICABLE A NUMBER',
+                    ambito: ambito.nombre
+                }));
             }
         }
         else if (this.tipooperador == tipo_1.operador.NOT) {
@@ -29,6 +36,11 @@ var unaria = /** @class */ (function () {
             }
             else {
                 //ERROR SEMANTICO
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'NOT ES SOLO APLICABLE A BOOLEAN',
+                    ambito: ambito.nombre
+                }));
             }
         }
         return null;

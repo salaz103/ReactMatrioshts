@@ -90,6 +90,11 @@ export class declaracion implements instruccion{
                             //console.log(nuevosimbolo);
                             }else{
                                 //ERROR
+                                almacen.dispatch(errores({
+                                    tipo:'SEMANTICO',
+                                    descripcion:'ARREGLO '+this.variables[i].id +' NO TODAS SUS ENTRADAS SON DEL MISMO TIPO',
+                                    ambito:ambito.nombre
+                                }));
                             }
 
                         }
@@ -203,7 +208,11 @@ export class declaracion implements instruccion{
                             ambito.agregarSimbolo(nuevosimbolo);
                             //console.log(nuevosimbolo);
                             }else{
-                                //ERROR
+                                almacen.dispatch(errores({
+                                    tipo:'SEMANTICO',
+                                    descripcion:'ARREGLO '+this.variables[i].id +' NO TODAS SUS ENTRADAS SON DEL MISMO TIPO',
+                                    ambito:ambito.nombre
+                                }));
                             }
 
                         }

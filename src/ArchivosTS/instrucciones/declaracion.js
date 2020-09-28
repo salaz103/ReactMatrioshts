@@ -77,6 +77,11 @@ var declaracion = /** @class */ (function () {
                             }
                             else {
                                 //ERROR
+                                app_1.almacen.dispatch(ts_js_1.errores({
+                                    tipo: 'SEMANTICO',
+                                    descripcion: 'ARREGLO ' + this.variables[i].id + ' NO TODAS SUS ENTRADAS SON DEL MISMO TIPO',
+                                    ambito: ambito.nombre
+                                }));
                             }
                         }
                     }
@@ -177,7 +182,11 @@ var declaracion = /** @class */ (function () {
                                 //console.log(nuevosimbolo);
                             }
                             else {
-                                //ERROR
+                                app_1.almacen.dispatch(ts_js_1.errores({
+                                    tipo: 'SEMANTICO',
+                                    descripcion: 'ARREGLO ' + this.variables[i].id + ' NO TODAS SUS ENTRADAS SON DEL MISMO TIPO',
+                                    ambito: ambito.nombre
+                                }));
                             }
                         }
                     }

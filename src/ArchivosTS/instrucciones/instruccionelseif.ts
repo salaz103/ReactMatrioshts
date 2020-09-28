@@ -2,6 +2,8 @@ import entorno from "../entorno/entorno";
 import { tipo_instruccion, tipo_valor } from "../entorno/tipo";
 import expresion from "../expresiones/expresion";
 import instruccion from "./instruccion";
+import {almacen} from '../../../src/app';
+import {errores} from '../../actions/ts.js';
 
 export class instruccionelseif implements instruccion{
 
@@ -52,6 +54,11 @@ export class instruccionelseif implements instruccion{
 
             }else{
                 //ERROR SEMANTICO EN EL IF-ELSE, LA CONDICION NO ES BOOLEANA
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion:'CONDICION EN IF-ELSE NO ES BOOLEANA',
+                    ambito:ambito.nombre
+                }));
             }
 
 
@@ -88,6 +95,11 @@ export class instruccionelseif implements instruccion{
 
             }else{
                 //ERROR SEMANTICO EN EL IF-ELSE, LA CONDICION NO ES BOOLEANA
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion:'CONDICION EN IF-ELSE NO ES BOOLEANA',
+                    ambito:ambito.nombre
+                }));
             }
 
 

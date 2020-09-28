@@ -1,6 +1,8 @@
 import entorno from "../../entorno/entorno";
 import { operador, tipo_valor } from "../../entorno/tipo";
 import expresion from "../expresion";
+import {almacen} from '../../../../src/app';
+import {errores} from '../../../actions/ts.js';
 
 export class unaria implements expresion{
 
@@ -27,6 +29,11 @@ export class unaria implements expresion{
                 return new Number(d);
             }else{
                 //ERROR SEMANTICO
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion:'OPERADOR NEGATIVO SOLO ES APLICABLE A NUMBER',
+                    ambito:ambito.nombre
+                }));
             }
             
     
@@ -39,6 +46,11 @@ export class unaria implements expresion{
             return new Boolean(res);
             }else{
                 //ERROR SEMANTICO
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion:'NOT ES SOLO APLICABLE A BOOLEAN',
+                    ambito:ambito.nombre
+                }));
             }
 
         }

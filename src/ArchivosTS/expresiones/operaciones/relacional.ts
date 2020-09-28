@@ -2,6 +2,8 @@ import entorno from "../../entorno/entorno";
 import { operador, tipo_valor } from "../../entorno/tipo";
 import expresion from "../expresion";
 import operacion from "./operacion";
+import {almacen} from '../../../../src/app';
+import {errores} from '../../../actions/ts.js';
 
 export class relacional extends operacion implements expresion{
 
@@ -27,6 +29,11 @@ export class relacional extends operacion implements expresion{
                 return new Boolean(res);
             }else{
                 //ERROR SEMANTICO
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion:'OPERADOR > NECESITA OPERANDOS NUMBER',
+                    ambito:ambito.nombre
+                }));
             }
             
         
@@ -39,6 +46,11 @@ export class relacional extends operacion implements expresion{
                 return new Boolean(res);
             }else{
                 //ERROR SEMANTICO
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion:'OPERADOR < NECESITA OPERANDOS NUMBER',
+                    ambito:ambito.nombre
+                }));
             }
 
         }else if(this.tipooperador==operador.MAYORIGUALQUE){
@@ -49,6 +61,11 @@ export class relacional extends operacion implements expresion{
                 return new Boolean(res);
             }else{
                 //ERROR SEMANTICO
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion:'OPERADOR >= NECESITA OPERANDOS NUMBER',
+                    ambito:ambito.nombre
+                }));
             }
            
 
@@ -60,6 +77,11 @@ export class relacional extends operacion implements expresion{
                 return new Boolean(res);
             }else{
                 //ERROR SEMANTICO
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion:'OPERADOR <= NECESITA OPERANDOS NUMBER',
+                    ambito:ambito.nombre
+                }));
             }
 
         }else if(this.tipooperador==operador.DIFERENTEQUE){
@@ -74,6 +96,11 @@ export class relacional extends operacion implements expresion{
                 return new Boolean(res);
             }else{
                 //ERROR SEMANTICO
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion:'OPERADOR != NECESITA OPERANDOS NUMBER O STRING',
+                    ambito:ambito.nombre
+                }));
             }
             
 
@@ -89,7 +116,11 @@ export class relacional extends operacion implements expresion{
                 return new Boolean(res);
             }else{
                 //ERROR SEMANTICO
-
+                almacen.dispatch(errores({
+                    tipo:'SEMANTICO',
+                    descripcion:'OPERADOR == NECESITA OPERANDOS NUMBER O STRING',
+                    ambito:ambito.nombre
+                }));
             }
 
         }

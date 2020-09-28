@@ -15,6 +15,8 @@ var __extends = (this && this.__extends) || (function () {
 exports.__esModule = true;
 var tipo_1 = require("../../entorno/tipo");
 var operacion_1 = require("./operacion");
+var app_1 = require("../../../../src/app");
+var ts_js_1 = require("../../../actions/ts.js");
 var logica = /** @class */ (function (_super) {
     __extends(logica, _super);
     function logica(expiz, op, expder) {
@@ -36,6 +38,11 @@ var logica = /** @class */ (function (_super) {
             }
             else {
                 //ERROR SEMANTICO
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'OPERADOR && SOLO ACEPTA BOOLEAN',
+                    ambito: ambito.nombre
+                }));
             }
         }
         else if (this.tipooperador == tipo_1.operador.OR) {
@@ -48,6 +55,11 @@ var logica = /** @class */ (function (_super) {
             }
             else {
                 //ERROR SEMANTICO
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'OPERADOR OR SOLO ACEPTA BOOLEAN',
+                    ambito: ambito.nombre
+                }));
             }
         }
         return null;

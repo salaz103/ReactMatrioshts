@@ -1,6 +1,8 @@
 import entorno from "../entorno/entorno";
 import { tipo_valor } from "../entorno/tipo";
 import expresion from "./expresion";
+import {almacen} from '../../../src/app';
+import {errores} from '../../actions/ts.js';
 
 export class operadorternario implements expresion{
 
@@ -37,6 +39,11 @@ export class operadorternario implements expresion{
 
         }else{
             //ERROR - LA CONDICION DEBE SER BOOLEANA
+            almacen.dispatch(errores({
+                tipo:'SEMANTICO',
+                descripcion:'LA CONDICION EN EL OPERADOR TERNARIO NO ES BOOLEANA',
+                ambito:ambito.nombre
+            }));
             return null;
         }
     }

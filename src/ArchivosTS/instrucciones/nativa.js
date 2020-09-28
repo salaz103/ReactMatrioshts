@@ -1,6 +1,8 @@
 "use strict";
 exports.__esModule = true;
 var tipo_1 = require("../entorno/tipo");
+var app_1 = require("../../../src/app");
+var ts_js_1 = require("../../actions/ts.js");
 var nativa = /** @class */ (function () {
     function nativa(nombre, i, lista) {
         this.id = nombre;
@@ -49,6 +51,11 @@ var nativa = /** @class */ (function () {
                         }
                         else {
                             //ERROR, LOS VALORES QUE QUIERE INGRESAR NO SON DEL MISMO TIPO QUE EL ARREGLO
+                            app_1.almacen.dispatch(ts_js_1.errores({
+                                tipo: 'SEMANTICO',
+                                descripcion: 'ARREGLO ' + arreglo.id + ' ES DE OTRO TIPO, NO SE GUARDARAN VALORES',
+                                ambito: ambito.nombre
+                            }));
                         }
                     }
                 }
@@ -70,6 +77,11 @@ var nativa = /** @class */ (function () {
         }
         else {
             //ERROR - VARIABLE this.id NO EXISTE
+            app_1.almacen.dispatch(ts_js_1.errores({
+                tipo: 'SEMANTICO',
+                descripcion: this.id + ' NO EXISTE, NO SE HARA PUSH',
+                ambito: ambito.nombre
+            }));
         }
         return null;
     };

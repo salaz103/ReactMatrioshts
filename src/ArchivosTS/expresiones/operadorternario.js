@@ -1,6 +1,8 @@
 "use strict";
 exports.__esModule = true;
 var tipo_1 = require("../entorno/tipo");
+var app_1 = require("../../../src/app");
+var ts_js_1 = require("../../actions/ts.js");
 var operadorternario = /** @class */ (function () {
     function operadorternario(c, et, ef) {
         this.condicion = c;
@@ -28,6 +30,11 @@ var operadorternario = /** @class */ (function () {
         }
         else {
             //ERROR - LA CONDICION DEBE SER BOOLEANA
+            app_1.almacen.dispatch(ts_js_1.errores({
+                tipo: 'SEMANTICO',
+                descripcion: 'LA CONDICION EN EL OPERADOR TERNARIO NO ES BOOLEANA',
+                ambito: ambito.nombre
+            }));
             return null;
         }
     };

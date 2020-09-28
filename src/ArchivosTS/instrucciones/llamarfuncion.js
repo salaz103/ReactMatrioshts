@@ -2,6 +2,8 @@
 exports.__esModule = true;
 var entorno_1 = require("../entorno/entorno");
 var simbolo_1 = require("../entorno/simbolo");
+var app_1 = require("../../../src/app");
+var ts_js_1 = require("../../actions/ts.js");
 var llamarfuncion = /** @class */ (function () {
     function llamarfuncion(id, lista) {
         this.nombrefuncion = id;
@@ -50,6 +52,11 @@ var llamarfuncion = /** @class */ (function () {
                 }
                 else {
                     //ERROR - LA FUNCION PADRE NO EXISTE
+                    app_1.almacen.dispatch(ts_js_1.errores({
+                        tipo: 'SEMANTICO',
+                        descripcion: 'FUNCION PADRE NO EXISTE',
+                        ambito: ambito.nombre
+                    }));
                     return null;
                 }
             }
@@ -66,6 +73,11 @@ var llamarfuncion = /** @class */ (function () {
                 }
                 else {
                     //ERROR - LA FUNCION ESPERA funcion.parametros.length parametros y se recibieron 0
+                    app_1.almacen.dispatch(ts_js_1.errores({
+                        tipo: 'SEMANTICO',
+                        descripcion: 'FUNCION ESPERA ' + funcion.parametros.length + ' Y SE RECIBIERON 0',
+                        ambito: ambito.nombre
+                    }));
                 }
             }
             else {
@@ -101,11 +113,21 @@ var llamarfuncion = /** @class */ (function () {
                 }
                 else {
                     //ERROR- LA FUNCION funcion.nombre no requiere parametros
+                    app_1.almacen.dispatch(ts_js_1.errores({
+                        tipo: 'SEMANTICO',
+                        descripcion: 'LA FUNCION ' + funcion.nombre + ' NO REQUIERE PARAMETROS',
+                        ambito: ambito.nombre
+                    }));
                 }
             }
         }
         else {
             //ERROR - LA FUNCION NO EXISTE
+            app_1.almacen.dispatch(ts_js_1.errores({
+                tipo: 'SEMANTICO',
+                descripcion: 'FUNCION' + this.nombrefuncion + ' NO EXISTE',
+                ambito: ambito.nombre
+            }));
         }
         return null;
     };

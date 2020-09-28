@@ -2,6 +2,8 @@
 exports.__esModule = true;
 var entorno_1 = require("../entorno/entorno");
 var tipo_1 = require("../entorno/tipo");
+var app_1 = require("../../../src/app");
+var ts_js_1 = require("../../actions/ts.js");
 var instruccionelseif = /** @class */ (function () {
     function instruccionelseif(cond, lista, instr) {
         this.condicion = cond;
@@ -41,6 +43,11 @@ var instruccionelseif = /** @class */ (function () {
             }
             else {
                 //ERROR SEMANTICO EN EL IF-ELSE, LA CONDICION NO ES BOOLEANA
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'CONDICION EN IF-ELSE NO ES BOOLEANA',
+                    ambito: ambito.nombre
+                }));
             }
         }
         else {
@@ -75,6 +82,11 @@ var instruccionelseif = /** @class */ (function () {
             }
             else {
                 //ERROR SEMANTICO EN EL IF-ELSE, LA CONDICION NO ES BOOLEANA
+                app_1.almacen.dispatch(ts_js_1.errores({
+                    tipo: 'SEMANTICO',
+                    descripcion: 'CONDICION EN IF-ELSE NO ES BOOLEANA',
+                    ambito: ambito.nombre
+                }));
             }
         }
         return null;
