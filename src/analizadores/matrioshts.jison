@@ -29,6 +29,9 @@
 "function"            return 'RFUNCTION';
 "console"             return 'RCONSOLE';
 "log"                 return 'RLOG';
+"push"                return 'RPUSH';
+"pop"                 return 'RPOP';
+"length"              return 'RLENGTH';
 //DECLARACION DE VARIABLES
 "let"                 return 'RLET';
 "const"               return 'RCONST';
@@ -138,6 +141,8 @@ instruccion: declaraciones RPUNTOCOMA
             | instruccionwhile {$$=$1;} //LISTO
             | imprimir {$$=$1;}  //LISTO
             | declararfuncion {$$=$1} //LISTO
+            | nativa RPUNTOCOMA //LISTO
+             {$$=nodobase.nuevonodo('NATIVA',[$1,$2],yylineno);}
             | llamarfuncion RPUNTOCOMA
              {$$=nodobase.nuevonodo('LFUNCION',[$1,$2],yylineno);}
             | masmenos RPUNTOCOMA 
@@ -156,6 +161,14 @@ masmenos: IDENTIFICADOR RMASMAS
          |IDENTIFICADOR RMENOSMENOS
          {$$=nodobase.nuevonodo('MENOS_MENOS',[$1,$2],yylineno);}
          ;
+
+nativa: IDENTIFICADOR RPUNTO RPUSH RPARA listaexpresiones RPARC
+        {$$=nodobase.nuevonodo('PUSH',[$1,$2,$3,$4,$5,$6],yylineno);}
+       |IDENTIFICADOR RPUNTO RPOP RPARA RPARC
+        {$$=nodobase.nuevonodo('POP',[$1,$2,$3,$4,$5],yylineno);}
+       |IDENTIFICADOR RPUNTO RLENGTH
+        {$$=nodobase.nuevonodo('LENGTH',[$1,$2,$3],yylineno);}
+       ;
 
 //LISTO
 declaraciones: tipovariable listavariables {$$=nodobase.nuevonodo('DECLARACION_VARIABLE',[$1,$2],yylineno);};
@@ -315,4 +328,5 @@ expresion:
           //LLAMADA A FUNCIONES 
           //LISTO
           | llamarfuncion {$$=$1;}
+          | nativa        {$$=$1;}
           ;

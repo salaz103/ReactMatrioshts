@@ -306,6 +306,11 @@ function desanidar(ast:typeof nodobase):string{
         let funcion = desanidar(ast.hijos[0]);
         recolector= funcion+";\n";
         return recolector;
+    }else if(ast.tipo=='NATIVA'){
+        let recolector='';
+        let nativa = desanidar(ast.hijos[0]);
+        recolector= nativa+";\n";
+        return recolector;
     }
     
 //****************************EXPRESIONES***********************/
@@ -605,6 +610,24 @@ function desanidar(ast:typeof nodobase):string{
         let id= ast.hijos[0];
         let lista= desanidar(ast.hijos[3]);
         recolector= id+"= ["+lista+"]";
+        return recolector;
+    }else if(ast.tipo=='PUSH'){
+        let recolector='';
+        let id= ast.hijos[0];
+        let lista= desanidar(ast.hijos[4]);
+        recolector= id+".push("+lista+")";
+        return recolector;
+
+    }else if(ast.tipo=='POP'){
+        let recolector='';
+        let id= ast.hijos[0];
+        recolector= id+".pop()";
+        return recolector;
+
+    }else if(ast.tipo=='LENGTH'){
+        let recolector='';
+        let id= ast.hijos[0];
+        recolector= id+".length";
         return recolector;
     }
 //**************NODOS HOJA, SUS HIJOS YA NO TRAEN MAS HIJOS************************

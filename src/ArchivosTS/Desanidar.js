@@ -302,6 +302,12 @@ function desanidar(ast) {
         recolector = funcion + ";\n";
         return recolector;
     }
+    else if (ast.tipo == 'NATIVA') {
+        var recolector = '';
+        var nativa = desanidar(ast.hijos[0]);
+        recolector = nativa + ";\n";
+        return recolector;
+    }
     //****************************EXPRESIONES***********************/
     else if (ast.tipo == 'NEGATIVO') {
         var recolector = '';
@@ -593,6 +599,25 @@ function desanidar(ast) {
         var id = ast.hijos[0];
         var lista = desanidar(ast.hijos[3]);
         recolector = id + "= [" + lista + "]";
+        return recolector;
+    }
+    else if (ast.tipo == 'PUSH') {
+        var recolector = '';
+        var id = ast.hijos[0];
+        var lista = desanidar(ast.hijos[4]);
+        recolector = id + ".push(" + lista + ")";
+        return recolector;
+    }
+    else if (ast.tipo == 'POP') {
+        var recolector = '';
+        var id = ast.hijos[0];
+        recolector = id + ".pop()";
+        return recolector;
+    }
+    else if (ast.tipo == 'LENGTH') {
+        var recolector = '';
+        var id = ast.hijos[0];
+        recolector = id + ".length";
         return recolector;
     }
     //**************NODOS HOJA, SUS HIJOS YA NO TRAEN MAS HIJOS************************
