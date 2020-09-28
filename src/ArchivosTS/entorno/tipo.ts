@@ -4,7 +4,8 @@
     BOOLEAN ="BOOLEAN",
     TYPE ="TYPE",
     VOID="VOID",
-    ANY="ANY"
+    ANY="ANY",
+    ARRAy= "ARRAY"
 }
 
 enum tipo_variable{
@@ -15,7 +16,10 @@ enum tipo_variable{
 enum tipo_instruccion{
     BREAK= "BREAK",
     CONTINUE="CONTINUE",
-    RETURN="RETURN"
+    RETURN="RETURN",
+    PUSH="PUSH",
+    POP="POP",
+    LENGTH="LENGTH"
 }
 
 enum operador{

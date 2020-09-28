@@ -29,6 +29,9 @@
 "function"            return 'RFUNCTION';
 "console"             return 'RCONSOLE';
 "log"                 return 'RLOG';
+"push"                return 'RPUSH';
+"pop"                 return 'RPOP';
+"length"              return 'RLENGTH';
 //DECLARACION DE VARIABLES
 "let"                 return 'RLET';
 "const"               return 'RCONST';
@@ -126,6 +129,7 @@ const instruccionreturn= require('../ArchivosTS/instrucciones/instruccionreturn'
 const declaracionfuncion= require('../ArchivosTS/instrucciones/declaracionfuncion');
 const llamarfuncion= require('../ArchivosTS/instrucciones/llamarfuncion');
 const declaracionarreglo= require('../ArchivosTS/instrucciones/declaracionarreglo');
+const nativa= require('../ArchivosTS/instrucciones/nativa');
   //*****************************OTROS*********************************
 const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
 const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;
@@ -174,6 +178,7 @@ instruccion:  declaraciones RPUNTOCOMA{$$=$1;}
             | imprimir         {$$=$1;}
             | declararfuncion  {$$=$1;}
             | llamarfuncion RPUNTOCOMA {$$=$1;}
+            | nativa RPUNTOCOMA {$$=$1;}
             | masmenos RPUNTOCOMA {$$=$1;}
             | RGRAFICAR RPARA RPARC RPUNTOCOMA
               {$$= new graficar.graficar();}
@@ -188,6 +193,14 @@ masmenos: IDENTIFICADOR RMASMAS
          |IDENTIFICADOR RMENOSMENOS
          {$$= new incremento_decremento.incremento_decremento($1,operador.DECREMENTO);}
          ;
+
+nativa: IDENTIFICADOR RPUNTO RPUSH RPARA listaexpresiones RPARC
+        {$$= new nativa.nativa($1,tipo_instruccion.PUSH,$5);}
+       |IDENTIFICADOR RPUNTO RPOP RPARA RPARC
+       {$$= new nativa.nativa($1,tipo_instruccion.POP,undefined);}
+       |IDENTIFICADOR RPUNTO RLENGTH
+       {$$= new nativa.nativa($1,tipo_instruccion.LENGTH,undefined);}
+       ;
 
 //LISTO
 declaraciones: tipovariable listavariables  {$$=new declaracion.declaracion($1,$2);} ;
@@ -314,6 +327,8 @@ tipodato:
           |RBOOLEAN {$$=tipo_valor.BOOLEAN;}
           //LISTO
           |RVOID   {$$=tipo_valor.VOID;}
+
+          |RARRAY  {$$=tipo_valor.ARRAY;}
           ;
 
 
@@ -367,4 +382,5 @@ expresion:
           |IDENTIFICADOR        {$$=new identificador.identificador($1);}  
           //LLAMADA A FUNCIONES 
           | llamarfuncion       {$$=$1;}
+          | nativa              {$$=$1;}
           ;
