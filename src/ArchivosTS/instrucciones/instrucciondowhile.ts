@@ -44,6 +44,8 @@ export class instrucciondowhile implements instruccion{
                         return;
                     }else if(valor && valor.valueOf()==tipo_instruccion.CONTINUE){
                         break;
+                    }else if(valor!=null){
+                        return valor;
                     }
                 }
                 

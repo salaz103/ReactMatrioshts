@@ -40,7 +40,7 @@ var instruccionswitch = /** @class */ (function () {
                         for (var a = 0; a < this.casos[i].listainstrucciones.length; a++) {
                             var valori = this.casos[i].listainstrucciones[a].ejecutar(ts_switch);
                             if (valori && valori.valueOf() == tipo_1.tipo_instruccion.BREAK) {
-                                return valori;
+                                return;
                             }
                             else if (valori != null) {
                                 return valori;

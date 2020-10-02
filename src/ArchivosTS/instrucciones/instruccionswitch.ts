@@ -51,7 +51,7 @@ export class instruccionswitch implements instruccion{
                             let valori= this.casos[i].listainstrucciones[a].ejecutar(ts_switch);
 
                             if(valori && valori.valueOf()==tipo_instruccion.BREAK){
-                                return valori;
+                                return;
                             }else if(valori!=null){
                                 return valori;
                             }

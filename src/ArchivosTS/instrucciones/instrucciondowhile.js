@@ -33,6 +33,9 @@ var instrucciondowhile = /** @class */ (function () {
                     else if (valor && valor.valueOf() == tipo_1.tipo_instruccion.CONTINUE) {
                         break;
                     }
+                    else if (valor != null) {
+                        return valor;
+                    }
                 }
             } while (this.condicion.obtenerValor(ambito).valueOf());
         }

@@ -17,6 +17,8 @@ export class relacional extends operacion implements expresion{
         const valorizquierdo= this.expresionizquierda.obtenerValor(ambito);
         const valorderecha= this.expresionderecha.obtenerValor(ambito);
 
+        /*console.log(valorizquierdo.valueOf());
+        console.log(valorderecha.valueOf());*/
         const tipoiz= this.expresionizquierda.obtenerTipo(ambito);
         const tipoder= this.expresionderecha.obtenerTipo(ambito);
 
@@ -94,6 +96,10 @@ export class relacional extends operacion implements expresion{
                 const res= String(valorizquierdo) != String(valorderecha);
                 this.tipo=tipo_valor.BOOLEAN;
                 return new Boolean(res);
+            }else if(tipoiz== tipo_valor.BOOLEAN && tipoder==tipo_valor.BOOLEAN){
+                const res= valorizquierdo.valueOf() != valorderecha.valueOf();
+                this.tipo= tipo_valor.BOOLEAN;
+                return new Boolean(res);
             }else{
                 //ERROR SEMANTICO
                 almacen.dispatch(errores({
@@ -114,7 +120,16 @@ export class relacional extends operacion implements expresion{
                 const res= String(valorizquierdo) == String(valorderecha);
                 this.tipo=tipo_valor.BOOLEAN;
                 return new Boolean(res);
-            }else{
+            }else if(tipoiz== tipo_valor.BOOLEAN && tipoder==tipo_valor.BOOLEAN){
+                /*const r1= Boolean(valorizquierdo);
+                console.log(r1);
+                const r2= Boolean(valorderecha);
+                console.log(r2);*/
+                const res= valorizquierdo.valueOf() == valorderecha.valueOf();
+                this.tipo= tipo_valor.BOOLEAN;
+                return new Boolean(res);
+            }
+            else{
                 //ERROR SEMANTICO
                 almacen.dispatch(errores({
                     tipo:'SEMANTICO',

@@ -25,6 +25,8 @@ var relacional = /** @class */ (function (_super) {
     relacional.prototype.obtenerValor = function (ambito) {
         var valorizquierdo = this.expresionizquierda.obtenerValor(ambito);
         var valorderecha = this.expresionderecha.obtenerValor(ambito);
+        /*console.log(valorizquierdo.valueOf());
+        console.log(valorderecha.valueOf());*/
         var tipoiz = this.expresionizquierda.obtenerTipo(ambito);
         var tipoder = this.expresionderecha.obtenerTipo(ambito);
         //PRIMERO VEMOS SI ES >,<,>=,<=,!=,==
@@ -99,6 +101,11 @@ var relacional = /** @class */ (function (_super) {
                 this.tipo = tipo_1.tipo_valor.BOOLEAN;
                 return new Boolean(res);
             }
+            else if (tipoiz == tipo_1.tipo_valor.BOOLEAN && tipoder == tipo_1.tipo_valor.BOOLEAN) {
+                var res = valorizquierdo.valueOf() != valorderecha.valueOf();
+                this.tipo = tipo_1.tipo_valor.BOOLEAN;
+                return new Boolean(res);
+            }
             else {
                 //ERROR SEMANTICO
                 app_1.almacen.dispatch(ts_js_1.errores({
@@ -116,6 +123,15 @@ var relacional = /** @class */ (function (_super) {
             }
             else if (tipoiz == tipo_1.tipo_valor.STRING && tipoder == tipo_1.tipo_valor.STRING) {
                 var res = String(valorizquierdo) == String(valorderecha);
+                this.tipo = tipo_1.tipo_valor.BOOLEAN;
+                return new Boolean(res);
+            }
+            else if (tipoiz == tipo_1.tipo_valor.BOOLEAN && tipoder == tipo_1.tipo_valor.BOOLEAN) {
+                /*const r1= Boolean(valorizquierdo);
+                console.log(r1);
+                const r2= Boolean(valorderecha);
+                console.log(r2);*/
+                var res = valorizquierdo.valueOf() == valorderecha.valueOf();
                 this.tipo = tipo_1.tipo_valor.BOOLEAN;
                 return new Boolean(res);
             }
