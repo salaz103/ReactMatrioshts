@@ -24,6 +24,13 @@ var entorno = /** @class */ (function () {
             }
         }
     };
+    entorno.prototype.getEntornoGlobal = function () {
+        for (var e = this; e != null; e = e.apuntadorPadre) {
+            if (e.apuntadorPadre == null) {
+                return e;
+            }
+        }
+    };
     entorno.prototype.existe = function (id) {
         //RECORRIENDO LOS ENTORNOS
         for (var entornoactual = this; entornoactual != null; entornoactual = entornoactual.apuntadorPadre) {

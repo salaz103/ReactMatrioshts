@@ -29,7 +29,10 @@ var llamarfuncion = /** @class */ (function () {
                DE LOS PARAMETROS DE LA FUNCIÓN
         */
         if (funcion) {
-            var tsfuncion = new entorno_1["default"](funcion.nombre, ambito);
+            ///AQUI EL NUEVO ENTORNO NO DEBERIA DE APUNTAR AL ENTORNO PADRE INMEDIATO
+            //SI NO QUE TIENE QUE APUNTAR AL AMBITO GLOBAL
+            var global_1 = ambito.getEntornoGlobal();
+            var tsfuncion = new entorno_1["default"](funcion.nombre, global_1);
             //AQUI TENDRIA QUE VALIDARSE SI ES UNA FUNCION HIJA, ES DECIR, SI EN SU NOMBRE
             //TRAE UN _ PARA IR A EJECUTAR AL PADRE Y TRAER ESOS VALORES A LA TS PARA EJECUTAR A LA HIJA
             if (funcion.nombre.includes("_")) {

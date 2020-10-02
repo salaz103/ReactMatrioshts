@@ -41,7 +41,12 @@ export class llamarfuncion implements instruccion{
         */
         if(funcion){
 
-            let tsfuncion= new entorno(funcion.nombre,ambito);
+
+            ///AQUI EL NUEVO ENTORNO NO DEBERIA DE APUNTAR AL ENTORNO PADRE INMEDIATO
+            //SI NO QUE TIENE QUE APUNTAR AL AMBITO GLOBAL
+            let global:entorno= ambito.getEntornoGlobal();
+
+            let tsfuncion= new entorno(funcion.nombre,global);
             //AQUI TENDRIA QUE VALIDARSE SI ES UNA FUNCION HIJA, ES DECIR, SI EN SU NOMBRE
             //TRAE UN _ PARA IR A EJECUTAR AL PADRE Y TRAER ESOS VALORES A LA TS PARA EJECUTAR A LA HIJA
             if(funcion.nombre.includes("_")){

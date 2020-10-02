@@ -14,12 +14,13 @@ var instruccionfor = /** @class */ (function () {
         var tsfor = new entorno_1["default"]("FOR", ambito);
         this.primerainstruccion.ejecutar(tsfor);
         while (this.expresion.obtenerValor(tsfor).valueOf()) {
+            var tsinstrucciones = new entorno_1["default"]("CONTENIDO_FOR", tsfor);
             for (var i = 0; i < this.listainstrucciones.length; i++) {
                 //AQUI VAMOS EJECUTANDO CADA UNA DE LAS INSTRUCCIONES
                 //SABEMOS QUE TODAS LAS INSTRUCCIONES DEVUELVEN NULO
                 //LAS INSTRUCCIONES SOLO EJECUTAN, PERO SI VINIERA ALGUN VALOR
                 // EN ESTE CASO PUEDE SER BREAK O CONTINUE
-                var resultado = this.listainstrucciones[i].ejecutar(tsfor);
+                var resultado = this.listainstrucciones[i].ejecutar(tsinstrucciones);
                 if (resultado && resultado.valueOf() == tipo_1.tipo_instruccion.BREAK) {
                     //SI VIENE UNA INSTRUCCION BREAK, NO SEGUIMOS EL FOR
                     return resultado;
@@ -29,8 +30,8 @@ var instruccionfor = /** @class */ (function () {
                     //SALIR DONDE ESTEMOS EN EL CICLO FOR Y EJECUTAR LA SIGUIENTE PASADA
                     break;
                 }
-                /*console.log("RESULTADO DE UNA PASADA EN FOR:");
-                console.log(resultado);*/
+                //console.log("RESULTADO DE UNA PASADA EN FOR:");
+                //console.log(resultado);            
             }
             this.tercerainstruccion.ejecutar(tsfor);
         }

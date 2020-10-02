@@ -40,6 +40,14 @@ class entorno{
 
     }
 
+    getEntornoGlobal(){
+        for (let e:entorno = this; e!=null; e= e.apuntadorPadre) {
+            if(e.apuntadorPadre==null){
+                return e
+            }
+        }
+    }
+
     existe(id:string):boolean{
 
         //RECORRIENDO LOS ENTORNOS
