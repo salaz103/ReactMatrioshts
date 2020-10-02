@@ -93,7 +93,8 @@ var llamarfuncion = /** @class */ (function () {
                         //AHORA HAY QUE VALIDAR QUE EL TIPO DE DATO DE LOS PARAMETROS ENTRANTES SEAN IGUAL
                         //AL TIPO DE DATO DE LOS PARAMETROS DE LA FUNCION
                         /**************   VALIDACION 3 PENDIENTE******************/
-                        var entornonuevo = [];
+                        //let entornonuevo:simbolo[]=[];
+                        var entornonuevo = new entorno_1["default"]("intermedio", ambito);
                         //SI TODO ESTA CORRECTO ENTONCES LO QUE DEBEMOS HACER ES EN UNA NUEVA TS
                         //ALMACENAR LOS PARAMETROS DE LA FUNCION GUARDADA CON EL VALOR DE LOS ENTRANTES
                         this.tipo = funcion.tipodato;
@@ -101,10 +102,11 @@ var llamarfuncion = /** @class */ (function () {
                         for (var i = 0; i < this.parametros.length; i++) {
                             var valor = this.parametros[i].obtenerValor(ambito);
                             var simbolonuevo = new simbolo_1["default"](funcion.parametros[i].id, true, funcion.parametros[i].tipo, valor);
-                            //entornonuevo.agregarSimbolo(simbolonuevo);
-                            entornonuevo.push(simbolonuevo);
+                            entornonuevo.agregarSimbolo(simbolonuevo);
+                            //entornonuevo.push(simbolonuevo);
                         }
-                        tsfuncion.ts = entornonuevo;
+                        //tsfuncion.ts=entornonuevo;
+                        tsfuncion.tablasimbolos = entornonuevo.tablasimbolos;
                         //AHORA QUE YA TENGO LA NUEVA TS CON SUS SIMBOLOS Y VALORES
                         //YA PUEDO MANDAR A EJECUTARLA
                         //PERO LA TENGO QUE DEVOLVER
