@@ -47,24 +47,29 @@ export class llamarfuncion implements instruccion{
             let global:entorno= ambito.getEntornoGlobal();
 
             let tsfuncion= new entorno(funcion.nombre,global);
-            //AQUI TENDRIA QUE VALIDARSE SI ES UNA FUNCION HIJA, ES DECIR, SI EN SU NOMBRE
-            //TRAE UN _ PARA IR A EJECUTAR AL PADRE Y TRAER ESOS VALORES A LA TS PARA EJECUTAR A LA HIJA
+            
+
+
             if(funcion.nombre.includes("_")){
+                //SI EL NOMBRE DE LA FUNCION TIENE GUION BAJO, QUIERE DECIR QUE ES UNA FUNCION HEREDADA
+                //Y LA EJECUCION DE ESTA NUEVA FUNCION SE LE TIENE QUE PASAR EL ENTORNO PADRE (AMBITO)
+                tsfuncion.apuntadorPadre=ambito;
+                /*
                 //SI ES UNA FUNCION HEREDADA
                 let nombres= funcion.nombre.split("_");
                 let nombrepadre= nombres[nombres.length-2];
                 let funcionPadre= ambito.existeFuncion(nombrepadre); 
                 if(funcionPadre){
                     //SIGNIFICA QUE SI EXISTE LA FUNCION PADRE
-                    /*console.log("PADRE:");
-                    console.log(funcionPadre);*/
+                    //console.log("PADRE:");
+                    //console.log(funcionPadre);
                     //CREAR UNA TABLA PADRE PARA EJECUTAR TODAS LAS INSTRUCCIONES
                     let tspadre= new entorno(nombrepadre,ambito);
                     funcionPadre.listainstrucciones.forEach(instruccion => {
                         instruccion.ejecutar(tspadre);
                     });
-                    /*console.log("PADRE YA EJECUTADO:");
-                    console.log(tspadre);*/
+                    //console.log("PADRE YA EJECUTADO:");
+                    //console.log(tspadre);
                     tsfuncion.apuntadorPadre=tspadre;
                 }else{
                     //ERROR - LA FUNCION PADRE NO EXISTE
@@ -74,7 +79,7 @@ export class llamarfuncion implements instruccion{
                         ambito:ambito.nombre
                     }));
                     return null;
-                }
+                }*/
 
             }
 
