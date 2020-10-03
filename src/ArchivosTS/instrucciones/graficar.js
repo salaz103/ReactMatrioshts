@@ -8,19 +8,34 @@ var graficar = /** @class */ (function () {
     graficar.prototype.ejecutar = function (ambito) {
         //EL EJECUTAR DE ESTA FUNCION VA A SER ENVIAR EL AMBITO DONDE ESTA A LA STORE 
         //DEL PROYECTO Y AHI VAMOS A RECORRER AMBITOS Y TS
-        //AQUI SOLO ESTOY RECORRIENDO LA TS
         var simbolos = [];
-        for (var entornoactual = ambito; entornoactual != null; entornoactual = entornoactual.apuntadorPadre) {
-            for (var i = 0; i < entornoactual.ts.length; i++) {
+        var _loop_1 = function (entornoactual) {
+            entornoactual.tablasimbolos.forEach(function (simbolo) {
                 simbolos.push({
-                    nombre: entornoactual.ts[i].id,
-                    tipo: entornoactual.ts[i].tipovalor,
+                    nombre: simbolo.id,
+                    tipo: simbolo.tipovalor,
                     ambito: entornoactual.nombre,
-                    /*valor: Array.isArray(entornoactual.ts[i])? JSON.stringify(entornoactual.ts[i]):entornoactual.ts[i].valor,*/
-                    valor: entornoactual.ts[i].valor,
-                    reasignable: entornoactual.ts[i].reasignable
+                    valor: simbolo.valor,
+                    reasignable: simbolo.reasignable
                 });
-            }
+            });
+        };
+        //AQUI SOLO ESTOY RECORRIENDO LA TS
+        /*
+         for (let entornoactual:entorno = ambito; entornoactual !=null ; entornoactual=entornoactual.apuntadorPadre) {
+             for (let i = 0; i <entornoactual.ts.length; i++) {
+                 simbolos.push({
+                     nombre:entornoactual.ts[i].id,
+                     tipo: entornoactual.ts[i].tipovalor,
+                     ambito: entornoactual.nombre,
+                     //valor: Array.isArray(entornoactual.ts[i])? JSON.stringify(entornoactual.ts[i]):entornoactual.ts[i].valor,
+                     valor: entornoactual.ts[i].valor,
+                     reasignable: entornoactual.ts[i].reasignable
+                 });
+             }
+         }*/
+        for (var entornoactual = ambito; entornoactual != null; entornoactual = entornoactual.apuntadorPadre) {
+            _loop_1(entornoactual);
         }
         //AHORA QUE YA TENGO EL ARREGLO DE OBJETOS, VOY A INGRESAR ESTE ARREGLO
         //AL ARREGLO DE MI STORE

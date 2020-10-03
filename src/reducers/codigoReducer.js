@@ -2,7 +2,8 @@ const codigoReducerDefaultState={
     codigografo:'digraph G{}',
     codigoconsola:'',
     textot:'',
-    entornos:{},
+    simbolosfinales:[],
+    funcionesfinales:[],
     simbolos:[],
     errores:[],
     s:'date'
@@ -35,7 +36,8 @@ const reducerGeneral=(state=codigoReducerDefaultState,action)=>{
         case 'ENTORNOFINAL':
             return{
                 ...state,
-                entornos: action.entorno
+                simbolosfinales: action.simbolosfinales,
+                funcionesfinales: action.funcionesfinales
             }
         case 'ENTORNOACTUAL':
             return{

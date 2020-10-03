@@ -7,10 +7,10 @@ import {tipo_valor} from './tipo';
 class entorno{
 
     apuntadorPadre:entorno;
-    ts:simbolo[];
+    //ts:simbolo[];
     tablasimbolos: Map<String,simbolo>
     nombre:string;
-    tablafunciones:declaracionfuncion[];
+    //tablafunciones:declaracionfuncion[];
     tablaf: Map<String,declaracionfuncion>
 
     constructor(nombre:string,ambitoPadre?:entorno){

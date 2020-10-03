@@ -17,9 +17,10 @@ export const limpiarconsola=()=>({
     type:'LIMPIAR_CONSOLA',
 });
 
-export const tsfinal=(entorno)=>({
+export const tsfinal=(simbolosfinales,funcionesfinales)=>({
     type:'ENTORNOFINAL',
-    entorno
+    simbolosfinales,
+    funcionesfinales
 });
 
 export const reportets=(simbolosactuales)=>({

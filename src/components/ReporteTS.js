@@ -18,9 +18,9 @@ const ReporteTS= (props)=>(
         <th>Valor</th>
         <th>Tipo Variable</th>
         </tr>
-        {console.log(props.entornos.entornos.ts)}
-         {renderTableData(props.entornos.entornos.ts)}
-         { funciones(props.entornos.entornos.tablafunciones) }
+        {/*console.log(props.funcionesfinales)*/}
+         {renderTableData(props.simbolosfinales)}
+         { funciones(props.funcionesfinales) }
         </tbody>
        </table>
 
@@ -112,7 +112,8 @@ function renderTableData(ts) {
 
 const mapStatetoProps= (state)=>{
     return{
-      entornos: state.storecodigo,
+      simbolosfinales: state.storecodigo.simbolosfinales,
+      funcionesfinales: state.storecodigo.funcionesfinales,
       simbolos:  state.storecodigo.simbolos
     };
 };

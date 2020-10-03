@@ -12,9 +12,20 @@ function inicioEjecucion(ast) {
     console.log("Recibiendo el AST para EJECUTAR:");
     console.log(ast);
     ejecutar(ast, entornoGlobal);
-    console.log("MI ENTORNO FINAL, CON TODAS LAS VARIABLES");
-    console.log(entornoGlobal);
-    app_1.almacen.dispatch(ts_js_1.tsfinal(Object(entornoGlobal)));
+    //console.log("MI ENTORNO FINAL, CON TODAS LAS VARIABLES");
+    //console.log(entornoGlobal.tablasimbolos);
+    var ts = entornoGlobal.tablasimbolos;
+    var tf = entornoGlobal.tablaf;
+    var simbolosfinales = [];
+    var funcionesfinales = [];
+    ts.forEach(function (element) {
+        simbolosfinales.push(element);
+    });
+    tf.forEach(function (funcion) {
+        funcionesfinales.push(funcion);
+    });
+    //console.log(simbolosfinales);
+    app_1.almacen.dispatch(ts_js_1.tsfinal(simbolosfinales, funcionesfinales));
 }
 function ejecutar(ast, entorno) {
     //PRIMERA PASADA, GUARDAR TODAS LAS FUNCIONES

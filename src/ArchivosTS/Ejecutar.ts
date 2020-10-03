@@ -15,10 +15,24 @@ const entornoGlobal= new entorno("global",);
 console.log("Recibiendo el AST para EJECUTAR:");
 console.log(ast);
 ejecutar(ast,entornoGlobal);
-console.log("MI ENTORNO FINAL, CON TODAS LAS VARIABLES");
-console.log(entornoGlobal);
+//console.log("MI ENTORNO FINAL, CON TODAS LAS VARIABLES");
+//console.log(entornoGlobal.tablasimbolos);
+let ts= entornoGlobal.tablasimbolos;
+let tf= entornoGlobal.tablaf;
+let simbolosfinales=[];
+let funcionesfinales=[];
 
-almacen.dispatch(tsfinal(Object(entornoGlobal)));
+ts.forEach(element => {
+    simbolosfinales.push(element);
+});
+
+tf.forEach(funcion => {
+    funcionesfinales.push(funcion);
+});
+
+//console.log(simbolosfinales);
+
+almacen.dispatch(tsfinal(simbolosfinales,funcionesfinales));
 
 
 }
