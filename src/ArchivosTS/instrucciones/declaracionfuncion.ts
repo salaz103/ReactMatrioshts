@@ -25,7 +25,8 @@ export class declaracionfuncion implements instruccion{
         for (let i = 0; i < this.listainstrucciones.length; i++) {
             
             if(this.listainstrucciones[i] instanceof instruccionreturn){
-                return this.listainstrucciones[i].ejecutar(ambito);
+                let valreturn= this.listainstrucciones[i].ejecutar(ambito);
+                return valreturn;
             }else{
                 let valor=this.listainstrucciones[i].ejecutar(ambito);
                 if(valor!=null){

@@ -22,7 +22,9 @@ export class instruccionelse implements instruccion{
                 return valori;
             }else if(valori && valori.valueOf()==tipo_instruccion.CONTINUE){
                 return valori;
-            }else if(valori!=null){
+            }else if(valori!=null && valori.valueOf()==tipo_instruccion.RETURN){
+                return valori;
+            }else if(valori==null && valori.valueOf()==tipo_instruccion.RETURN){
                 return valori;
             }
            
