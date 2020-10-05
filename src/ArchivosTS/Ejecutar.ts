@@ -30,7 +30,8 @@ tf.forEach(funcion => {
     funcionesfinales.push(funcion);
 });
 
-//console.log(simbolosfinales);
+console.log(simbolosfinales);
+console.log(funcionesfinales);
 
 almacen.dispatch(tsfinal(simbolosfinales,funcionesfinales));
 

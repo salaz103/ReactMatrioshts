@@ -9,7 +9,7 @@ var instruccionreturn = /** @class */ (function () {
     instruccionreturn.prototype.ejecutar = function (ambito) {
         if (this.exp == undefined) {
             //SIGNIFICA QUE ES UN RETURN SIN EXPRESION
-            return null;
+            return new Object(this.tipo);
         }
         else {
             ///SIGNIFICA QUE ES UN RETURN CON EXPRESION

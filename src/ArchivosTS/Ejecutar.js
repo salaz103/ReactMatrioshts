@@ -24,7 +24,8 @@ function inicioEjecucion(ast) {
     tf.forEach(function (funcion) {
         funcionesfinales.push(funcion);
     });
-    //console.log(simbolosfinales);
+    console.log(simbolosfinales);
+    console.log(funcionesfinales);
     app_1.almacen.dispatch(ts_js_1.tsfinal(simbolosfinales, funcionesfinales));
 }
 function ejecutar(ast, entorno) {
