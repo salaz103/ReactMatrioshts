@@ -35,10 +35,7 @@ var instruccionelseif = /** @class */ (function () {
                         else if (valori && valori.valueOf() == tipo_1.tipo_instruccion.CONTINUE) {
                             return valori;
                         }
-                        else if (valori != null && valori.valueOf() == tipo_1.tipo_instruccion.RETURN) {
-                            return valori;
-                        }
-                        else if (valori == null && valori.valueOf() == tipo_1.tipo_instruccion.RETURN) {
+                        else if (valori != null) {
                             return valori;
                         }
                     }

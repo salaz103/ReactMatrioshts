@@ -13,8 +13,7 @@ var declaracionfuncion = /** @class */ (function () {
         //AQUI YA SE REALIZARON LAS VALIDACIONES Y EL AMBITO QUE ESTAMOS RECIBIENDO ES EL NUEVO
         for (var i = 0; i < this.listainstrucciones.length; i++) {
             if (this.listainstrucciones[i] instanceof instruccionreturn_1.instruccionreturn) {
-                var valreturn = this.listainstrucciones[i].ejecutar(ambito);
-                return valreturn;
+                return this.listainstrucciones[i].ejecutar(ambito);
             }
             else {
                 var valor = this.listainstrucciones[i].ejecutar(ambito);

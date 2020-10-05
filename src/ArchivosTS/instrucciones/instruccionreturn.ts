@@ -19,7 +19,8 @@ export class instruccionreturn implements instruccion{
         
         if(this.exp==undefined){
             //SIGNIFICA QUE ES UN RETURN SIN EXPRESION
-            return new Object(this.tipo);
+            //return new Object(this.tipo);
+            return this;
         }else{
             ///SIGNIFICA QUE ES UN RETURN CON EXPRESION
             //LO PRIMERO QUE TENGO QUE HACER ES EVALUAR ESA EXPRESION
