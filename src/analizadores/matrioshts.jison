@@ -184,10 +184,15 @@ variable: IDENTIFICADOR RDOSPUNTOS tipodato RIGUAL expresion {$$= nodobase.nuevo
          | IDENTIFICADOR RIGUAL expresion    {$$= nodobase.nuevonodo('VARIABLE_CON_EXPRESION',[$1,$2,$3],yylineno);}
          | IDENTIFICADOR RDOSPUNTOS tipodato {$$= nodobase.nuevonodo('VARIABLE_SIN_EXPRESION',[$1,$2,$3],yylineno);}
          | IDENTIFICADOR {$$= nodobase.nuevonodo('VARIABLE_ID',[$1],yylineno);}
-         | IDENTIFICADOR RDOSPUNTOS tipodato RCORCHETEA RCORCHETEC RIGUAL RCORCHETEA listaexpresiones RCORCHETEC
-           {$$= nodobase.nuevonodo('ARREGLO_COMPLETO',[$1,$2,$3,$4,$5,$6,$7,$8,$9],yylineno);}
+          //////********ARREGLOS******//////
+         | IDENTIFICADOR RDOSPUNTOS tipodato RIGUAL RCORCHETEA listaexpresiones RCORCHETEC
+           {$$= nodobase.nuevonodo('ARREGLO_COMPLETO1',[$1,$2,$3,$4,$5,$6,$7],yylineno);}
+         | IDENTIFICADOR RDOSPUNTOS tipodato RIGUAL RCORCHETEA  RCORCHETEC
+           {$$= nodobase.nuevonodo('ARREGLO_COMPLETO2',[$1,$2,$3,$4,$5,$6],yylineno);}
          | IDENTIFICADOR RIGUAL RCORCHETEA listaexpresiones RCORCHETEC
            {$$= nodobase.nuevonodo('ARREGLO',[$1,$2,$3,$4,$5],yylineno);}
+         | IDENTIFICADOR RIGUAL RCORCHETEA  RCORCHETEC
+           {$$= nodobase.nuevonodo('ARREGLO2',[$1,$2,$3,$4],yylineno);}
          ;
 
 //LISTO
@@ -276,6 +281,13 @@ tipodato:
           |RBOOLEAN {$$= nodobase.nuevonodo('BOOLEAN',[$1],yylineno);}
           //LISTO
           |RVOID   {$$= nodobase.nuevonodo('VOID',[$1],yylineno);}
+
+          |RSTRING RCORCHETEA RCORCHETEC
+           {$$= nodobase.nuevonodo('STRING[]',[$1],yylineno);}
+          |RNUMBER RCORCHETEA RCORCHETEC
+           {$$= nodobase.nuevonodo('NUMBER[]',[$1],yylineno);}
+          |RBOOLEAN RCORCHETEA RCORCHETEC
+           {$$= nodobase.nuevonodo('BOOLEAN[]',[$1],yylineno);}
           ;
 
 

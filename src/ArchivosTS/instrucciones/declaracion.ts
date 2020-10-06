@@ -35,7 +35,7 @@ export class declaracion implements instruccion{
                 //SI EXISTE LOCALMENTE ENTONCES NO LA PODEMOS DECLARAR
                 almacen.dispatch(errores({
                     tipo:'SEMANTICO',
-                    descripcion:'IDENTIFICADOR '+ this.variables[i].id+' YA EXISTE EN ESTE AMBITO',
+                    descripcion:'IDENTIFICADOR '+ this.variables[i].id+' YA EXISTE EN AMBITO '+ ambito.nombre,
                     ambito:ambito.nombre
                 }));
                 console.log("ERROR- ID: "+this.variables[i].id+" YA EXISTE EN ESTE AMBITO "+ ambito.nombre);    
@@ -54,13 +54,17 @@ export class declaracion implements instruccion{
                         //AQUI COMIENZO A VALIDAR LO QUE TENGA QUE VALIDAR SI ES UN ARREGLO
 
                         if(this.variables[i].tipodato==undefined){
-                            //SI EL TIPO DE DATO ES UNDEFINED ENTONCES SOLO TRAE ID Y VALOR
+                            //SI EL TIPO DE DATO ES UNDEFINED ENTONCES SOLO TRAE ID Y PUEDE QUE TRAIGA O NO VALORES
                             //SIGNIFICA QUE EL ARREGLO SERA DE CUALQUIER TIPO
-                            //SOLO GUARDO SUS VALORES 
+                            
+                            
                             let arreglovalores=[];
-                            for (let a = 0; a < this.variables[i].listae.length; a++) {
-                                arreglovalores.push(this.variables[i].listae[a]);
+                            if(this.variables[i].listae!=undefined){
+                                for (let a = 0; a < this.variables[i].listae.length; a++) {
+                                    arreglovalores.push(this.variables[i].listae[a]);
+                                }
                             }
+                            
 
                             const nuevosimbolo= new simbolo(this.variables[i].id,false,tipo_valor.ANY,new Object(arreglovalores));
                             ambito.agregarSimbolo(nuevosimbolo);
@@ -68,8 +72,15 @@ export class declaracion implements instruccion{
                             /*ambito.agregarSimbolo(nuevosimbolo);
                             console.log("VARIABLE CONST: "+this.variables[i].id+" GUARDADA");*/
                         }else{
-                            //SI TRAE UN TIPO DE DATO, HAY QUE VALIDAR QUE TODOS LOS VALORES EN EL ARREGLO SEAN DEL MISMO TIPO
-                            let iguales=true;
+                            //SI TRAE UN TIPO DE DATO
+                            //HAY 2 TIPOS DE OPCIONES
+                            //1. TRAIGA EXPRESIONES
+                            //2. NO TRAIGA EXPRESIONES
+
+                            //SI TRAE EXPRESIONES HAY QUE VALIDAR QUE TODAS SEAN DEL MISMO TIPO
+                            if(this.variables[i].listae!=undefined){
+
+                                let iguales=true;
                             for (let a = 0; a < this.variables[i].listae.length; a++) {
                                 if(this.variables[i].listae[a].obtenerTipo(ambito)==this.variables[i].tipodato){
                                     iguales=true
@@ -96,6 +107,15 @@ export class declaracion implements instruccion{
                                     ambito:ambito.nombre
                                 }));
                             }
+
+                            }else{
+                                //SI NO TRAE EXPRESIONES ENTONCES SOLO GUARDAMOS EL TIPO DE DATO
+                                 let arreglovalores=[];
+                                 const nuevosimbolo= new simbolo(this.variables[i].id,false,this.variables[i].tipodato,new Object(arreglovalores));
+                                 ambito.agregarSimbolo(nuevosimbolo);
+                            }
+                            
+                            
 
                         }
 
@@ -176,9 +196,12 @@ export class declaracion implements instruccion{
                             //SI EL TIPO DE DATO ES UNDEFINED ENTONCES SOLO TRAE ID Y VALOR
                             //SIGNIFICA QUE EL ARREGLO SERA DE CUALQUIER TIPO
                             //SOLO GUARDO SUS VALORES 
+
                             let arreglovalores=[];
-                            for (let a = 0; a < this.variables[i].listae.length; a++) {
-                                arreglovalores.push(this.variables[i].listae[a]);
+                            if(this.variables[i].listae!=undefined){
+                                for (let a = 0; a < this.variables[i].listae.length; a++) {
+                                    arreglovalores.push(this.variables[i].listae[a]);
+                                }
                             }
 
                             const nuevosimbolo= new simbolo(this.variables[i].id,true,tipo_valor.ANY,new Object(arreglovalores));
@@ -188,7 +211,9 @@ export class declaracion implements instruccion{
                             console.log("VARIABLE CONST: "+this.variables[i].id+" GUARDADA");*/
                         }else{
                             //SI TRAE UN TIPO DE DATO, HAY QUE VALIDAR QUE TODOS LOS VALORES EN EL ARREGLO SEAN DEL MISMO TIPO
-                            let iguales=true;
+
+                            if(this.variables[i].listae!=undefined){
+                                let iguales=true;
                             for (let a = 0; a < this.variables[i].listae.length; a++) {
                                 if(this.variables[i].listae[a].obtenerTipo(ambito)==this.variables[i].tipodato){
                                     iguales=true
@@ -214,9 +239,14 @@ export class declaracion implements instruccion{
                                     ambito:ambito.nombre
                                 }));
                             }
-
+                        }else{
+                            //SI NO TRAE TIPO DE DATO, SOLO GUARDAMOS EL SIMBOLO CON EL TIPO DE DATO
+                            let arreglovalores=[];
+                            const nuevosimbolo= new simbolo(this.variables[i].id,true,this.variables[i].tipodato,new Object(arreglovalores));
+                            ambito.agregarSimbolo(nuevosimbolo);
                         }
-
+                            
+                        }
 
 
                     }else{
@@ -265,8 +295,6 @@ export class declaracion implements instruccion{
 
 
                     }
-
-
 
                     
                 }

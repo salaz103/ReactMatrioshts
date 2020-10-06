@@ -24,7 +24,7 @@ var declaracion = /** @class */ (function () {
                 //SI EXISTE LOCALMENTE ENTONCES NO LA PODEMOS DECLARAR
                 app_1.almacen.dispatch(ts_js_1.errores({
                     tipo: 'SEMANTICO',
-                    descripcion: 'IDENTIFICADOR ' + this.variables[i].id + ' YA EXISTE EN ESTE AMBITO',
+                    descripcion: 'IDENTIFICADOR ' + this.variables[i].id + ' YA EXISTE EN AMBITO ' + ambito.nombre,
                     ambito: ambito.nombre
                 }));
                 console.log("ERROR- ID: " + this.variables[i].id + " YA EXISTE EN ESTE AMBITO " + ambito.nombre);
@@ -40,12 +40,13 @@ var declaracion = /** @class */ (function () {
                         //SI ENTRO AQUI ES POR QUE ES UN ARREGLO CONST
                         //AQUI COMIENZO A VALIDAR LO QUE TENGA QUE VALIDAR SI ES UN ARREGLO
                         if (this.variables[i].tipodato == undefined) {
-                            //SI EL TIPO DE DATO ES UNDEFINED ENTONCES SOLO TRAE ID Y VALOR
+                            //SI EL TIPO DE DATO ES UNDEFINED ENTONCES SOLO TRAE ID Y PUEDE QUE TRAIGA O NO VALORES
                             //SIGNIFICA QUE EL ARREGLO SERA DE CUALQUIER TIPO
-                            //SOLO GUARDO SUS VALORES 
                             var arreglovalores = [];
-                            for (var a = 0; a < this.variables[i].listae.length; a++) {
-                                arreglovalores.push(this.variables[i].listae[a]);
+                            if (this.variables[i].listae != undefined) {
+                                for (var a = 0; a < this.variables[i].listae.length; a++) {
+                                    arreglovalores.push(this.variables[i].listae[a]);
+                                }
                             }
                             var nuevosimbolo = new simbolo_1["default"](this.variables[i].id, false, tipo_1.tipo_valor.ANY, new Object(arreglovalores));
                             ambito.agregarSimbolo(nuevosimbolo);
@@ -54,34 +55,46 @@ var declaracion = /** @class */ (function () {
                             console.log("VARIABLE CONST: "+this.variables[i].id+" GUARDADA");*/
                         }
                         else {
-                            //SI TRAE UN TIPO DE DATO, HAY QUE VALIDAR QUE TODOS LOS VALORES EN EL ARREGLO SEAN DEL MISMO TIPO
-                            var iguales = true;
-                            for (var a = 0; a < this.variables[i].listae.length; a++) {
-                                if (this.variables[i].listae[a].obtenerTipo(ambito) == this.variables[i].tipodato) {
-                                    iguales = true;
+                            //SI TRAE UN TIPO DE DATO
+                            //HAY 2 TIPOS DE OPCIONES
+                            //1. TRAIGA EXPRESIONES
+                            //2. NO TRAIGA EXPRESIONES
+                            //SI TRAE EXPRESIONES HAY QUE VALIDAR QUE TODAS SEAN DEL MISMO TIPO
+                            if (this.variables[i].listae != undefined) {
+                                var iguales = true;
+                                for (var a = 0; a < this.variables[i].listae.length; a++) {
+                                    if (this.variables[i].listae[a].obtenerTipo(ambito) == this.variables[i].tipodato) {
+                                        iguales = true;
+                                    }
+                                    else {
+                                        iguales = false;
+                                        break;
+                                    }
+                                }
+                                if (iguales) {
+                                    //SI SON TODOS IGUALES ENTONCES LO GUARDO
+                                    var arreglovalores = [];
+                                    for (var a = 0; a < this.variables[i].listae.length; a++) {
+                                        arreglovalores.push(this.variables[i].listae[a]);
+                                    }
+                                    var nuevosimbolo = new simbolo_1["default"](this.variables[i].id, false, this.variables[i].tipodato, new Object(arreglovalores));
+                                    ambito.agregarSimbolo(nuevosimbolo);
+                                    //console.log(nuevosimbolo);
                                 }
                                 else {
-                                    iguales = false;
-                                    break;
+                                    //ERROR
+                                    app_1.almacen.dispatch(ts_js_1.errores({
+                                        tipo: 'SEMANTICO',
+                                        descripcion: 'ARREGLO ' + this.variables[i].id + ' NO TODAS SUS ENTRADAS SON DEL MISMO TIPO',
+                                        ambito: ambito.nombre
+                                    }));
                                 }
-                            }
-                            if (iguales) {
-                                //SI SON TODOS IGUALES ENTONCES LO GUARDO
-                                var arreglovalores = [];
-                                for (var a = 0; a < this.variables[i].listae.length; a++) {
-                                    arreglovalores.push(this.variables[i].listae[a]);
-                                }
-                                var nuevosimbolo = new simbolo_1["default"](this.variables[i].id, false, this.variables[i].tipodato, new Object(arreglovalores));
-                                ambito.agregarSimbolo(nuevosimbolo);
-                                //console.log(nuevosimbolo);
                             }
                             else {
-                                //ERROR
-                                app_1.almacen.dispatch(ts_js_1.errores({
-                                    tipo: 'SEMANTICO',
-                                    descripcion: 'ARREGLO ' + this.variables[i].id + ' NO TODAS SUS ENTRADAS SON DEL MISMO TIPO',
-                                    ambito: ambito.nombre
-                                }));
+                                //SI NO TRAE EXPRESIONES ENTONCES SOLO GUARDAMOS EL TIPO DE DATO
+                                var arreglovalores = [];
+                                var nuevosimbolo = new simbolo_1["default"](this.variables[i].id, false, this.variables[i].tipodato, new Object(arreglovalores));
+                                ambito.agregarSimbolo(nuevosimbolo);
                             }
                         }
                     }
@@ -150,8 +163,10 @@ var declaracion = /** @class */ (function () {
                             //SIGNIFICA QUE EL ARREGLO SERA DE CUALQUIER TIPO
                             //SOLO GUARDO SUS VALORES 
                             var arreglovalores = [];
-                            for (var a = 0; a < this.variables[i].listae.length; a++) {
-                                arreglovalores.push(this.variables[i].listae[a]);
+                            if (this.variables[i].listae != undefined) {
+                                for (var a = 0; a < this.variables[i].listae.length; a++) {
+                                    arreglovalores.push(this.variables[i].listae[a]);
+                                }
                             }
                             var nuevosimbolo = new simbolo_1["default"](this.variables[i].id, true, tipo_1.tipo_valor.ANY, new Object(arreglovalores));
                             ambito.agregarSimbolo(nuevosimbolo);
@@ -161,32 +176,40 @@ var declaracion = /** @class */ (function () {
                         }
                         else {
                             //SI TRAE UN TIPO DE DATO, HAY QUE VALIDAR QUE TODOS LOS VALORES EN EL ARREGLO SEAN DEL MISMO TIPO
-                            var iguales = true;
-                            for (var a = 0; a < this.variables[i].listae.length; a++) {
-                                if (this.variables[i].listae[a].obtenerTipo(ambito) == this.variables[i].tipodato) {
-                                    iguales = true;
+                            if (this.variables[i].listae != undefined) {
+                                var iguales = true;
+                                for (var a = 0; a < this.variables[i].listae.length; a++) {
+                                    if (this.variables[i].listae[a].obtenerTipo(ambito) == this.variables[i].tipodato) {
+                                        iguales = true;
+                                    }
+                                    else {
+                                        iguales = false;
+                                        break;
+                                    }
+                                }
+                                if (iguales) {
+                                    //SI SON TODOS IGUALES ENTONCES LO GUARDO
+                                    var arreglovalores = [];
+                                    for (var a = 0; a < this.variables[i].listae.length; a++) {
+                                        arreglovalores.push(this.variables[i].listae[a]);
+                                    }
+                                    var nuevosimbolo = new simbolo_1["default"](this.variables[i].id, true, this.variables[i].tipodato, new Object(arreglovalores));
+                                    ambito.agregarSimbolo(nuevosimbolo);
+                                    //console.log(nuevosimbolo);
                                 }
                                 else {
-                                    iguales = false;
-                                    break;
+                                    app_1.almacen.dispatch(ts_js_1.errores({
+                                        tipo: 'SEMANTICO',
+                                        descripcion: 'ARREGLO ' + this.variables[i].id + ' NO TODAS SUS ENTRADAS SON DEL MISMO TIPO',
+                                        ambito: ambito.nombre
+                                    }));
                                 }
-                            }
-                            if (iguales) {
-                                //SI SON TODOS IGUALES ENTONCES LO GUARDO
-                                var arreglovalores = [];
-                                for (var a = 0; a < this.variables[i].listae.length; a++) {
-                                    arreglovalores.push(this.variables[i].listae[a]);
-                                }
-                                var nuevosimbolo = new simbolo_1["default"](this.variables[i].id, true, this.variables[i].tipodato, new Object(arreglovalores));
-                                ambito.agregarSimbolo(nuevosimbolo);
-                                //console.log(nuevosimbolo);
                             }
                             else {
-                                app_1.almacen.dispatch(ts_js_1.errores({
-                                    tipo: 'SEMANTICO',
-                                    descripcion: 'ARREGLO ' + this.variables[i].id + ' NO TODAS SUS ENTRADAS SON DEL MISMO TIPO',
-                                    ambito: ambito.nombre
-                                }));
+                                //SI NO TRAE TIPO DE DATO, SOLO GUARDAMOS EL SIMBOLO CON EL TIPO DE DATO
+                                var arreglovalores = [];
+                                var nuevosimbolo = new simbolo_1["default"](this.variables[i].id, true, this.variables[i].tipodato, new Object(arreglovalores));
+                                ambito.agregarSimbolo(nuevosimbolo);
                             }
                         }
                     }

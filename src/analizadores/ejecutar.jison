@@ -223,10 +223,15 @@ variable:  IDENTIFICADOR RDOSPUNTOS tipodato RIGUAL expresion
            {$$=new variable.variable(false,$1,@1.first_line,@1.first_column,$3,undefined);} 
          | IDENTIFICADOR 
            {$$=new variable.variable(false,$1,@1.first_line,@1.first_column);}
-         | IDENTIFICADOR RDOSPUNTOS tipodato RCORCHETEA RCORCHETEC RIGUAL RCORCHETEA listaexpresiones RCORCHETEC
-           {$$= new variable.variable(true,$1,@1.first_line,@1.first_column,$3,undefined,$8);} 
+         ///*****ARREGLOS****////
+         | IDENTIFICADOR RDOSPUNTOS tipodato RIGUAL RCORCHETEA listaexpresiones RCORCHETEC
+           {$$= new variable.variable(true,$1,@1.first_line,@1.first_column,$3,undefined,$6);}
+         | IDENTIFICADOR RDOSPUNTOS tipodato RIGUAL RCORCHETEA  RCORCHETEC 
+           {$$= new variable.variable(true,$1,@1.first_line,@1.first_column,$3,undefined,undefined);}  
          | IDENTIFICADOR RIGUAL RCORCHETEA listaexpresiones RCORCHETEC
-           {$$= new variable.variable(true,$1,@1.first_line,@1.first_column,undefined,undefined,$4);} 
+           {$$= new variable.variable(true,$1,@1.first_line,@1.first_column,undefined,undefined,$4);}
+         | IDENTIFICADOR RIGUAL RCORCHETEA  RCORCHETEC
+           {$$= new variable.variable(true,$1,@1.first_line,@1.first_column,undefined,undefined,undefined);}
          ;
 
 //LISTO
@@ -329,6 +334,14 @@ tipodato:
           |RVOID   {$$=tipo_valor.VOID;}
 
           |RARRAY  {$$=tipo_valor.ARRAY;}
+
+          |RSTRING RCORCHETEA RCORCHETEC
+          {$$=tipo_valor.STRING;}
+
+          |RNUMBER RCORCHETEA RCORCHETEC
+          {$$=tipo_valor.NUMBER;}
+          |RBOOLEAN RCORCHETEA RCORCHETEC
+          {$$=tipo_valor.BOOLEAN;}
           ;
 
 

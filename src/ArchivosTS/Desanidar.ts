@@ -598,18 +598,29 @@ function desanidar(ast:typeof nodobase):string{
         let lista= desanidar(ast.hijos[2]);
         recolector= 'default:\n   '+lista;
         return recolector;
-    }else if(ast.tipo=='ARREGLO_COMPLETO'){
+    }else if(ast.tipo=='ARREGLO_COMPLETO1'){
         let recolector='';
         let id= ast.hijos[0];
         let tipodato= desanidar(ast.hijos[2]);
-        let lista= desanidar(ast.hijos[7]);
-        recolector= id+":"+tipodato+"[] = ["+lista+"]";
+        let lista= desanidar(ast.hijos[5]);
+        recolector= id+":"+tipodato+" = ["+lista+"]";
+        return recolector;
+    }else if(ast.tipo=='ARREGLO_COMPLETO2'){
+        let recolector='';
+        let id= ast.hijos[0];
+        let tipodato= desanidar(ast.hijos[2]);
+        recolector= id+":"+tipodato+" = [ ]";
         return recolector;
     }else if(ast.tipo=='ARREGLO'){
         let recolector='';
         let id= ast.hijos[0];
         let lista= desanidar(ast.hijos[3]);
         recolector= id+"= ["+lista+"]";
+        return recolector;
+    }else if(ast.tipo=='ARREGLO2'){
+        let recolector='';
+        let id= ast.hijos[0];
+        recolector= id+"= [ ]";
         return recolector;
     }else if(ast.tipo=='PUSH'){
         let recolector='';
@@ -652,11 +663,20 @@ function desanidar(ast:typeof nodobase):string{
     }else if(ast.tipo=='STRING'){
         let valor= ast.hijos[0];
         return valor;
+    }else if(ast.tipo=='STRING[]'){
+        let valor= ast.hijos[0]+"[]";
+        return valor;
     }else if(ast.tipo=='NUMBER'){
         let valor= ast.hijos[0];
         return valor;
+    }else if(ast.tipo=='NUMBER[]'){
+        let valor= ast.hijos[0]+"[]";
+        return valor;
     }else if(ast.tipo=='BOOLEAN'){
         let valor= ast.hijos[0];
+        return valor;
+    }else if(ast.tipo=='BOOLEAN[]'){
+        let valor= ast.hijos[0]+"[]";
         return valor;
     }else if(ast.tipo=='VOID'){
         let valor= ast.hijos[0];

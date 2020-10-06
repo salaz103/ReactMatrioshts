@@ -586,12 +586,19 @@ function desanidar(ast) {
         recolector = 'default:\n   ' + lista;
         return recolector;
     }
-    else if (ast.tipo == 'ARREGLO_COMPLETO') {
+    else if (ast.tipo == 'ARREGLO_COMPLETO1') {
         var recolector = '';
         var id = ast.hijos[0];
         var tipodato = desanidar(ast.hijos[2]);
-        var lista = desanidar(ast.hijos[7]);
-        recolector = id + ":" + tipodato + "[] = [" + lista + "]";
+        var lista = desanidar(ast.hijos[5]);
+        recolector = id + ":" + tipodato + " = [" + lista + "]";
+        return recolector;
+    }
+    else if (ast.tipo == 'ARREGLO_COMPLETO2') {
+        var recolector = '';
+        var id = ast.hijos[0];
+        var tipodato = desanidar(ast.hijos[2]);
+        recolector = id + ":" + tipodato + " = [ ]";
         return recolector;
     }
     else if (ast.tipo == 'ARREGLO') {
@@ -599,6 +606,12 @@ function desanidar(ast) {
         var id = ast.hijos[0];
         var lista = desanidar(ast.hijos[3]);
         recolector = id + "= [" + lista + "]";
+        return recolector;
+    }
+    else if (ast.tipo == 'ARREGLO2') {
+        var recolector = '';
+        var id = ast.hijos[0];
+        recolector = id + "= [ ]";
         return recolector;
     }
     else if (ast.tipo == 'PUSH') {
@@ -649,12 +662,24 @@ function desanidar(ast) {
         var valor = ast.hijos[0];
         return valor;
     }
+    else if (ast.tipo == 'STRING[]') {
+        var valor = ast.hijos[0] + "[]";
+        return valor;
+    }
     else if (ast.tipo == 'NUMBER') {
         var valor = ast.hijos[0];
         return valor;
     }
+    else if (ast.tipo == 'NUMBER[]') {
+        var valor = ast.hijos[0] + "[]";
+        return valor;
+    }
     else if (ast.tipo == 'BOOLEAN') {
         var valor = ast.hijos[0];
+        return valor;
+    }
+    else if (ast.tipo == 'BOOLEAN[]') {
+        var valor = ast.hijos[0] + "[]";
         return valor;
     }
     else if (ast.tipo == 'VOID') {
