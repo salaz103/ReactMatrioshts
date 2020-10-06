@@ -5,6 +5,8 @@ import instruccion from "./instruccion";
 import {almacen} from '../../../src/app';
 import {errores} from '../../actions/ts.js';
 import { instruccionreturn } from "./instruccionreturn";
+import { instruccionbreak } from "./instruccionBreak";
+import { instruccioncontinue } from "./instruccioncontinue";
 
 export class instruccionif implements instruccion{
 
@@ -35,16 +37,21 @@ export class instruccionif implements instruccion{
                 
                 for (let i = 0; i < this.instrucciones.length; i++) {
                     //AQUI TENEMOS QUE IR RECIBIENDO EL "VALOR" DE LAS INSTRUCCIONES
-                    //QUE POR SER INSTRUCCIONES NO DEVUELVEN NADA, A EXCEPCION DE LOS BREAK O CONTINUE
+                    //QUE POR SER INSTRUCCIONES NO DEVUELVEN NADA
+                    //A EXCEPCION DEL BREAK, CONTINUE Y RETURN
                     let valori= this.instrucciones[i].ejecutar(tsif);
                     
-                    if(valori && valori.valueOf()==tipo_instruccion.BREAK){
+                    if(valori instanceof instruccionbreak || valori instanceof instruccioncontinue || valori instanceof instruccionreturn){
+                        return valori;
+                    }
+
+                    /*if(valori && valori.valueOf()==tipo_instruccion.BREAK){
                         return valori;
                     }else if(valori && valori.valueOf()==tipo_instruccion.CONTINUE){
                         return valori;
                     }else if(valori!=null){
                         return valori;
-                    }
+                    }*/
                     
                     
                 }

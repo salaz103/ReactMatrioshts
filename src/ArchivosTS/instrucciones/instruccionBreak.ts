@@ -12,7 +12,7 @@ export class instruccionbreak implements instruccion{
 
 
     ejecutar(ambito: entorno): object {
-            return new Object(this.tipo);
+            return this;
     }
     
 }

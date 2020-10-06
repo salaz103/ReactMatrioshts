@@ -1,7 +1,8 @@
 "use strict";
 exports.__esModule = true;
 var entorno_1 = require("../entorno/entorno");
-var tipo_1 = require("../entorno/tipo");
+var instruccionBreak_1 = require("./instruccionBreak");
+var instruccionreturn_1 = require("./instruccionreturn");
 var instruccionswitch = /** @class */ (function () {
     function instruccionswitch(ex, casos) {
         this.exp = ex;
@@ -39,12 +40,17 @@ var instruccionswitch = /** @class */ (function () {
                         });*/
                         for (var a = 0; a < this.casos[i].listainstrucciones.length; a++) {
                             var valori = this.casos[i].listainstrucciones[a].ejecutar(ts_switch);
-                            if (valori && valori.valueOf() == tipo_1.tipo_instruccion.BREAK) {
+                            if (valori instanceof (instruccionBreak_1.instruccionbreak)) {
                                 return;
                             }
-                            else if (valori != null) {
+                            else if (valori instanceof instruccionreturn_1.instruccionreturn) {
                                 return valori;
                             }
+                            /*if(valori && valori.valueOf()==tipo_instruccion.BREAK){
+                                return;
+                            }else if(valori!=null){
+                                return valori;
+                            }*/
                         }
                         //evaluarDefault=false;
                     }
@@ -67,12 +73,17 @@ var instruccionswitch = /** @class */ (function () {
              });*/
             for (var i = 0; i < casoDefault.listainstrucciones.length; i++) {
                 var valori = casoDefault.listainstrucciones[i].ejecutar(ts_switch);
-                if (valori && valori.valueOf() == tipo_1.tipo_instruccion.BREAK) {
+                if (valori instanceof (instruccionBreak_1.instruccionbreak)) {
+                    return;
+                }
+                else if (valori instanceof instruccionreturn_1.instruccionreturn) {
                     return valori;
                 }
-                else if (valori != null) {
+                /*if(valori && valori.valueOf()==tipo_instruccion.BREAK){
                     return valori;
-                }
+                }else if(valori!=null){
+                    return valori;
+                }*/
             }
         }
         return null;

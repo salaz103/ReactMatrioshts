@@ -4,6 +4,9 @@ import expresion from "../expresiones/expresion";
 import instruccion from "./instruccion";
 import {almacen} from '../../../src/app';
 import {errores} from '../../actions/ts.js';
+import { instruccionbreak } from "./instruccionBreak";
+import { instruccionreturn } from "./instruccionreturn";
+import { instruccioncontinue } from "./instruccioncontinue";
 
 export class instruccionwhile implements instruccion{
 
@@ -33,10 +36,18 @@ export class instruccionwhile implements instruccion{
                 const tswhile=new entorno("WHILE",ambito);
                 for (let i = 0; i < this.lista.length; i++) {
 
-                    let tipoinstruccion=this.lista[i].ejecutar(tswhile);
+                    let resultado=this.lista[i].ejecutar(tswhile);
 
                     //AQUI REVISAMOS SI EL VALOR DE LA INSTRUCCION ES, BREAK, CONTINUE O RETURN
-                    if(tipoinstruccion && tipoinstruccion.valueOf()==tipo_instruccion.BREAK){
+                    
+                    if(resultado instanceof(instruccionbreak) || resultado instanceof(instruccionreturn)){
+                        return resultado;
+                    }else if(resultado instanceof instruccioncontinue){
+                        break;
+                    }
+                    
+                    
+                    /*if(tipoinstruccion && tipoinstruccion.valueOf()==tipo_instruccion.BREAK){
                         //SI DENTRO DEL WHILE VIENE UN BREAK ENTONCES NOS SALIMOS DEL MISMO
                         return;   
 
@@ -44,7 +55,7 @@ export class instruccionwhile implements instruccion{
                         //SI VIENE CONTINUE DENTRO DEL WHILE, ENTONCES VOLVEMOS A EJECUTAR EL WHILE
                         //EN ESTE CASO USAMOS BREAK PARA SALIRNOS DE LAS INSTRUCCIONES QUE ESTAMOS RECORRIENDO
                         break;
-                    }
+                    }*/
                 }
             }
 

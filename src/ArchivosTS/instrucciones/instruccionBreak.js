@@ -5,7 +5,7 @@ var instruccionbreak = /** @class */ (function () {
         this.tipo = t;
     }
     instruccionbreak.prototype.ejecutar = function (ambito) {
-        return new Object(this.tipo);
+        return this;
     };
     return instruccionbreak;
 }());

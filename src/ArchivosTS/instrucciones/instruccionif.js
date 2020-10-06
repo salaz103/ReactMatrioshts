@@ -4,6 +4,9 @@ var entorno_1 = require("../entorno/entorno");
 var tipo_1 = require("../entorno/tipo");
 var app_1 = require("../../../src/app");
 var ts_js_1 = require("../../actions/ts.js");
+var instruccionreturn_1 = require("./instruccionreturn");
+var instruccionBreak_1 = require("./instruccionBreak");
+var instruccioncontinue_1 = require("./instruccioncontinue");
 var instruccionif = /** @class */ (function () {
     function instruccionif(exp, listai) {
         this.exp = exp;
@@ -25,17 +28,19 @@ var instruccionif = /** @class */ (function () {
                 var tsif = new entorno_1["default"]("if", ambito);
                 for (var i = 0; i < this.instrucciones.length; i++) {
                     //AQUI TENEMOS QUE IR RECIBIENDO EL "VALOR" DE LAS INSTRUCCIONES
-                    //QUE POR SER INSTRUCCIONES NO DEVUELVEN NADA, A EXCEPCION DE LOS BREAK O CONTINUE
+                    //QUE POR SER INSTRUCCIONES NO DEVUELVEN NADA
+                    //A EXCEPCION DEL BREAK, CONTINUE Y RETURN
                     var valori = this.instrucciones[i].ejecutar(tsif);
-                    if (valori && valori.valueOf() == tipo_1.tipo_instruccion.BREAK) {
+                    if (valori instanceof instruccionBreak_1.instruccionbreak || valori instanceof instruccioncontinue_1.instruccioncontinue || valori instanceof instruccionreturn_1.instruccionreturn) {
                         return valori;
                     }
-                    else if (valori && valori.valueOf() == tipo_1.tipo_instruccion.CONTINUE) {
+                    /*if(valori && valori.valueOf()==tipo_instruccion.BREAK){
                         return valori;
-                    }
-                    else if (valori != null) {
+                    }else if(valori && valori.valueOf()==tipo_instruccion.CONTINUE){
                         return valori;
-                    }
+                    }else if(valori!=null){
+                        return valori;
+                    }*/
                 }
             }
         }

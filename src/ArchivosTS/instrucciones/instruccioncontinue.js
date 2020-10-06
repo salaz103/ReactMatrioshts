@@ -5,7 +5,7 @@ var instruccioncontinue = /** @class */ (function () {
         this.tipo = t;
     }
     instruccioncontinue.prototype.ejecutar = function (ambito) {
-        return new Object(this.tipo);
+        return this;
     };
     return instruccioncontinue;
 }());

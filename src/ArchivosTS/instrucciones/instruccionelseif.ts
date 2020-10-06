@@ -4,6 +4,9 @@ import expresion from "../expresiones/expresion";
 import instruccion from "./instruccion";
 import {almacen} from '../../../src/app';
 import {errores} from '../../actions/ts.js';
+import { instruccionbreak } from "./instruccionBreak";
+import { instruccioncontinue } from "./instruccioncontinue";
+import { instruccionreturn } from "./instruccionreturn";
 
 export class instruccionelseif implements instruccion{
 
@@ -40,13 +43,16 @@ export class instruccionelseif implements instruccion{
                     for (let i = 0; i < this.listainstrucciones.length; i++) {
                         let valori= this.listainstrucciones[i].ejecutar(tselseif); 
                         
-                        if(valori && valori.valueOf()==tipo_instruccion.BREAK){
+                        if(valori instanceof instruccionbreak || valori instanceof instruccioncontinue || valori instanceof instruccionreturn){
+                            return valori;
+                        }
+                        /*if(valori && valori.valueOf()==tipo_instruccion.BREAK){
                             return valori;
                         }else if(valori && valori.valueOf()==tipo_instruccion.CONTINUE){
                             return valori;
                         }else if(valori!=null){
                             return valori;
-                        }
+                        }*/
                     }
                 }
 

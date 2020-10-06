@@ -3,6 +3,9 @@ import { tipo_instruccion } from "../entorno/tipo";
 import expresion from "../expresiones/expresion";
 import { caso } from "./caso";
 import instruccion from "./instruccion";
+import { instruccionbreak } from "./instruccionBreak";
+import { instruccioncontinue } from "./instruccioncontinue";
+import { instruccionreturn } from "./instruccionreturn";
 
 export class instruccionswitch implements instruccion{
 
@@ -50,11 +53,16 @@ export class instruccionswitch implements instruccion{
                         for (let a = 0; a < this.casos[i].listainstrucciones.length; a++) {
                             let valori= this.casos[i].listainstrucciones[a].ejecutar(ts_switch);
 
-                            if(valori && valori.valueOf()==tipo_instruccion.BREAK){
+                            if(valori instanceof(instruccionbreak)){
+                                return;
+                            }else if(valori instanceof instruccionreturn){
+                                return valori;
+                            }
+                            /*if(valori && valori.valueOf()==tipo_instruccion.BREAK){
                                 return;
                             }else if(valori!=null){
                                 return valori;
-                            }
+                            }*/
                             
                         }
                         //evaluarDefault=false;
@@ -82,11 +90,16 @@ export class instruccionswitch implements instruccion{
                    
                     let valori= casoDefault.listainstrucciones[i].ejecutar(ts_switch);
 
-                            if(valori && valori.valueOf()==tipo_instruccion.BREAK){
+                    if(valori instanceof(instruccionbreak)){
+                        return;
+                    }else if(valori instanceof instruccionreturn){
+                        return valori;
+                    }
+                            /*if(valori && valori.valueOf()==tipo_instruccion.BREAK){
                                 return valori;
                             }else if(valori!=null){
                                 return valori;
-                            }
+                            }*/
                 }
             }
 

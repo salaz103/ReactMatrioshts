@@ -12,16 +12,29 @@ var declaracionfuncion = /** @class */ (function () {
     declaracionfuncion.prototype.ejecutar = function (ambito) {
         //AQUI YA SE REALIZARON LAS VALIDACIONES Y EL AMBITO QUE ESTAMOS RECIBIENDO ES EL NUEVO
         for (var i = 0; i < this.listainstrucciones.length; i++) {
-            if (this.listainstrucciones[i] instanceof instruccionreturn_1.instruccionreturn) {
-                return this.listainstrucciones[i].ejecutar(ambito);
+            //AQUI ESTOY RECORRIENDO LAS INSTRUCCIONES DE LA FUNCION
+            var val = this.listainstrucciones[i].ejecutar(ambito);
+            //AQUI PREGUNTO SI ES UNA INSTRUCCION RETURN
+            if (val instanceof instruccionreturn_1.instruccionreturn) {
+                //SI ES UNA INSTRUCCION PUEDE QUE ESTA TRAIGA O NO UN VALOR
+                if (val.valor) {
+                    //SI EL VALOR EXISTE ES POR QUE ES UN RETURN CON EXPRESION, ENTONCES DEVUELVO ESE VALOR
+                    return val.valor;
+                }
+                else {
+                    //SI NO SOLO REGRESO LA INSTRUCCION RETURN
+                    return val;
+                }
             }
-            else {
-                var valor = this.listainstrucciones[i].ejecutar(ambito);
-                if (valor != null) {
+            /*if(this.listainstrucciones[i] instanceof instruccionreturn){
+                return this.listainstrucciones[i].ejecutar(ambito);
+            }else{
+                let valor=this.listainstrucciones[i].ejecutar(ambito);
+                if(valor!=null){
                     return valor;
                 }
                 //PREGUNTO SI ES CONTINUE O BREAK
-            }
+            }*/
         }
         return null;
     };

@@ -23,8 +23,23 @@ export class declaracionfuncion implements instruccion{
     ejecutar(ambito: entorno): object {
         //AQUI YA SE REALIZARON LAS VALIDACIONES Y EL AMBITO QUE ESTAMOS RECIBIENDO ES EL NUEVO
         for (let i = 0; i < this.listainstrucciones.length; i++) {
-            
-            if(this.listainstrucciones[i] instanceof instruccionreturn){
+            //AQUI ESTOY RECORRIENDO LAS INSTRUCCIONES DE LA FUNCION
+                let val= this.listainstrucciones[i].ejecutar(ambito);
+
+                //AQUI PREGUNTO SI ES UNA INSTRUCCION RETURN
+                if(val instanceof instruccionreturn){
+                    //SI ES UNA INSTRUCCION PUEDE QUE ESTA TRAIGA O NO UN VALOR
+                    if (val.valor){
+                        //SI EL VALOR EXISTE ES POR QUE ES UN RETURN CON EXPRESION, ENTONCES DEVUELVO ESE VALOR
+                        return val.valor
+                    }else{
+                        //SI NO SOLO REGRESO LA INSTRUCCION RETURN
+                        return val;
+                    }
+
+                }
+
+            /*if(this.listainstrucciones[i] instanceof instruccionreturn){
                 return this.listainstrucciones[i].ejecutar(ambito);
             }else{
                 let valor=this.listainstrucciones[i].ejecutar(ambito);
@@ -32,7 +47,7 @@ export class declaracionfuncion implements instruccion{
                     return valor;
                 }
                 //PREGUNTO SI ES CONTINUE O BREAK
-            }
+            }*/
         }
         
         return null;

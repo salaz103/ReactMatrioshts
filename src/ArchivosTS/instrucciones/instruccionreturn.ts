@@ -7,11 +7,13 @@ export class instruccionreturn implements instruccion{
 
     exp:expresion;
     tipo:tipo_instruccion;
+    valor:object;
 
     constructor(e:expresion){
         this.exp=e;
         this.tipo=tipo_instruccion.RETURN;
-    }
+        this.valor=null;
+    }   
 
 
 
@@ -24,8 +26,9 @@ export class instruccionreturn implements instruccion{
         }else{
             ///SIGNIFICA QUE ES UN RETURN CON EXPRESION
             //LO PRIMERO QUE TENGO QUE HACER ES EVALUAR ESA EXPRESION
-            let valor= this.exp.obtenerValor(ambito);
-            return valor;
+            let val= this.exp.obtenerValor(ambito);
+            this.valor=val;
+            return this;
         }
 
     }

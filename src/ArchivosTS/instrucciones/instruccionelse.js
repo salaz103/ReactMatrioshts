@@ -1,7 +1,9 @@
 "use strict";
 exports.__esModule = true;
 var entorno_1 = require("../entorno/entorno");
-var tipo_1 = require("../entorno/tipo");
+var instruccionBreak_1 = require("./instruccionBreak");
+var instruccioncontinue_1 = require("./instruccioncontinue");
+var instruccionreturn_1 = require("./instruccionreturn");
 var instruccionelse = /** @class */ (function () {
     function instruccionelse(lista) {
         this.listaelse = lista;
@@ -13,15 +15,16 @@ var instruccionelse = /** @class */ (function () {
         //ENTONCES AQUI SOLO EJECUTO LAS INSTRUCCIONES
         for (var i = 0; i < this.listaelse.length; i++) {
             var valori = this.listaelse[i].ejecutar(tselse);
-            if (valori && valori.valueOf() == tipo_1.tipo_instruccion.BREAK) {
+            if (valori instanceof instruccionBreak_1.instruccionbreak || valori instanceof instruccioncontinue_1.instruccioncontinue || valori instanceof instruccionreturn_1.instruccionreturn) {
                 return valori;
             }
-            else if (valori && valori.valueOf() == tipo_1.tipo_instruccion.CONTINUE) {
+            /*if(valori && valori.valueOf()==tipo_instruccion.BREAK){
                 return valori;
-            }
-            else if (valori != null) {
+            }else if(valori && valori.valueOf()==tipo_instruccion.CONTINUE){
                 return valori;
-            }
+            }else if(valori!=null){
+                return valori;
+            }*/
         }
         return null;
     };

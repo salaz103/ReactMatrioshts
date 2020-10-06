@@ -4,6 +4,9 @@ var entorno_1 = require("../entorno/entorno");
 var tipo_1 = require("../entorno/tipo");
 var app_1 = require("../../../src/app");
 var ts_js_1 = require("../../actions/ts.js");
+var instruccionBreak_1 = require("./instruccionBreak");
+var instruccioncontinue_1 = require("./instruccioncontinue");
+var instruccionreturn_1 = require("./instruccionreturn");
 var instruccionelseif = /** @class */ (function () {
     function instruccionelseif(cond, lista, instr) {
         this.condicion = cond;
@@ -29,15 +32,16 @@ var instruccionelseif = /** @class */ (function () {
                     var tselseif = new entorno_1["default"]("ELSE-IF", ambito);
                     for (var i = 0; i < this.listainstrucciones.length; i++) {
                         var valori = this.listainstrucciones[i].ejecutar(tselseif);
-                        if (valori && valori.valueOf() == tipo_1.tipo_instruccion.BREAK) {
+                        if (valori instanceof instruccionBreak_1.instruccionbreak || valori instanceof instruccioncontinue_1.instruccioncontinue || valori instanceof instruccionreturn_1.instruccionreturn) {
                             return valori;
                         }
-                        else if (valori && valori.valueOf() == tipo_1.tipo_instruccion.CONTINUE) {
+                        /*if(valori && valori.valueOf()==tipo_instruccion.BREAK){
                             return valori;
-                        }
-                        else if (valori != null) {
+                        }else if(valori && valori.valueOf()==tipo_instruccion.CONTINUE){
                             return valori;
-                        }
+                        }else if(valori!=null){
+                            return valori;
+                        }*/
                     }
                 }
             }

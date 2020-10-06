@@ -4,6 +4,9 @@ import expresion from "../expresiones/expresion";
 import instruccion from "./instruccion";
 import {almacen} from '../../../src/app';
 import {errores} from '../../actions/ts.js';
+import { instruccionbreak } from "./instruccionBreak";
+import { instruccionreturn } from "./instruccionreturn";
+import { instruccioncontinue } from "./instruccioncontinue";
 
 export class instrucciondowhile implements instruccion{
 
@@ -19,14 +22,16 @@ export class instrucciondowhile implements instruccion{
     ejecutar(ambito: entorno): object {
 
         //EL CICLO DO WHILE, NO IMPORTANDO LA CONDICION, SIEMPRE EJECUTA AL MENOS UNA VEZ SUS INSTRUCCIONES
-        const tsdowhile= new entorno("do",ambito);
-        /*console.log("INICIO DEL DO-WHILE");
-        console.log(tsdowhile);
-        console.log("LISTA DO-WHILE");
-        console.log(this.lista_do);*/
+        /*const tsdowhile= new entorno("do",ambito);
         for (let i = 0; i < this.lista_do.length; i++) {
-            this.lista_do[i].ejecutar(tsdowhile);
-        }
+            let valor= this.lista_do[i].ejecutar(tsdowhile);
+
+            if(valor instanceof(instruccionbreak) || valor instanceof(instruccionreturn)){
+                return valor;
+            }else if(valor instanceof instruccioncontinue){
+                break;
+            }
+        }*/
 
 
         //DESPUES HAY QUE VERIFICAR SI LA CONDICION ES BOOLEANA PARA PODER VOLVER A EJECUTAR LAS INSTRUCCIONES
@@ -40,13 +45,19 @@ export class instrucciondowhile implements instruccion{
                 for (let i = 0; i < this.lista_do.length; i++) {
                     let valor= this.lista_do[i].ejecutar(nuevats);
 
-                    if(valor && valor.valueOf()==tipo_instruccion.BREAK){
+                    if(valor instanceof(instruccionbreak) || valor instanceof(instruccionreturn)){
+                        return valor;
+                    }else if(valor instanceof instruccioncontinue){
+                        break;
+                    }
+
+                    /*if(valor && valor.valueOf()==tipo_instruccion.BREAK){
                         return;
                     }else if(valor && valor.valueOf()==tipo_instruccion.CONTINUE){
                         break;
                     }else if(valor!=null){
                         return valor;
-                    }
+                    }*/
                 }
                 
             } while (this.condicion.obtenerValor(ambito).valueOf());
