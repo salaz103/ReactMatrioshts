@@ -39,6 +39,9 @@ export class identificador implements expresion{
         }else if(sim.getTipo()==tipo_valor.BOOLEAN){
             this.tipo=tipo_valor.BOOLEAN;
             return sim.getValor();
+        }else if(sim.getTipo()==tipo_valor.ANY){
+            this.tipo=tipo_valor.ANY;
+            return sim.getValor();
         }
 
     }else{

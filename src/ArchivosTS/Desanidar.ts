@@ -1,3 +1,5 @@
+import { tipo_valor } from "./entorno/tipo";
+
 const nodobase= require('../arbolBase/nodobase').nodobase;
 
 
@@ -271,6 +273,15 @@ function desanidar(ast:typeof nodobase):string{
         let lista= desanidar(ast.hijos[9]);
 
         recolector= "for("+declaraciones+";"+expresion+";"+masmenos+"){\n       "+lista+"} \n   ";
+        return recolector;
+
+    }else if(ast.tipo=='FOR_OF'){
+        let recolector='';
+        let tipovariable= desanidar(ast.hijos[2]);
+        let lista = desanidar(ast.hijos[8]);
+        let iterador= ast.hijos[3];
+        let iterado= ast.hijos[5];
+        recolector= "for ("+ tipovariable+" "+ iterador+" of "+ iterado+ " ){\n"+lista+"} \n";
         return recolector;
 
     }else if(ast.tipo=='SWITCH'){

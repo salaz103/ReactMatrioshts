@@ -232,7 +232,7 @@ instruccionfor: RFOR RPARA declaraciones RPUNTOCOMA expresion RPUNTOCOMA masmeno
               | RFOR RPARA asignacion RPUNTOCOMA expresion RPUNTOCOMA masmenos RPARC RLLAVEA lista RLLAVEC
                 {$$= nodobase.nuevonodo('FOR',[$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11],yylineno);}
               | RFOR RPARA tipovariable IDENTIFICADOR ROF IDENTIFICADOR RPARC RLLAVEA lista RLLAVEC
-
+                {$$= nodobase.nuevonodo('FOR_OF',[$1,$2,$3,$4,$5,$6,$7,$8,$9,$10],yylineno);}
               | RFOR RPARA tipovariable IDENTIFICADOR RIN IDENTIFICADOR RPARC RLLAVEC lista RLLAVEC
               ;
 

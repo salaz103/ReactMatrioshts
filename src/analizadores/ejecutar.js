@@ -188,6 +188,9 @@ break;
 case 50: case 51:
 this.$= new instruccionfor.instruccionfor($$[$0-8],$$[$0-6],$$[$0-4],$$[$0-1]);
 break;
+case 52:
+this.$= new instruccionforof.instruccionforof($$[$0-7],$$[$0-6],$$[$0-4],$$[$0-1]);
+break;
 case 54:
 this.$= new instruccionwhile.instruccionwhile($$[$0-4],$$[$0-1]);
 break;
@@ -490,6 +493,7 @@ const declaracionfuncion= require('../ArchivosTS/instrucciones/declaracionfuncio
 const llamarfuncion= require('../ArchivosTS/instrucciones/llamarfuncion');
 const declaracionarreglo= require('../ArchivosTS/instrucciones/declaracionarreglo');
 const nativa= require('../ArchivosTS/instrucciones/nativa');
+const instruccionforof= require('../ArchivosTS/instrucciones/instruccionforof');
   //*****************************OTROS*********************************
 const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
 const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;

@@ -30,6 +30,10 @@ var identificador = /** @class */ (function () {
                 this.tipo = tipo_1.tipo_valor.BOOLEAN;
                 return sim.getValor();
             }
+            else if (sim.getTipo() == tipo_1.tipo_valor.ANY) {
+                this.tipo = tipo_1.tipo_valor.ANY;
+                return sim.getValor();
+            }
         }
         else {
             app_1.almacen.dispatch(ts_js_1.errores({

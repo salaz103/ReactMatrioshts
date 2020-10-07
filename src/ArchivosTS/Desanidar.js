@@ -264,6 +264,15 @@ function desanidar(ast) {
         recolector = "for(" + declaraciones + ";" + expresion + ";" + masmenos + "){\n       " + lista + "} \n   ";
         return recolector;
     }
+    else if (ast.tipo == 'FOR_OF') {
+        var recolector = '';
+        var tipovariable = desanidar(ast.hijos[2]);
+        var lista = desanidar(ast.hijos[8]);
+        var iterador = ast.hijos[3];
+        var iterado = ast.hijos[5];
+        recolector = "for (" + tipovariable + " " + iterador + " of " + iterado + " ){\n" + lista + "} \n";
+        return recolector;
+    }
     else if (ast.tipo == 'SWITCH') {
         var recolector = '';
         var expresion = desanidar(ast.hijos[2]);

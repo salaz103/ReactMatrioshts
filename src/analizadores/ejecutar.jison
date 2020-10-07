@@ -130,6 +130,7 @@ const declaracionfuncion= require('../ArchivosTS/instrucciones/declaracionfuncio
 const llamarfuncion= require('../ArchivosTS/instrucciones/llamarfuncion');
 const declaracionarreglo= require('../ArchivosTS/instrucciones/declaracionarreglo');
 const nativa= require('../ArchivosTS/instrucciones/nativa');
+const instruccionforof= require('../ArchivosTS/instrucciones/instruccionforof');
   //*****************************OTROS*********************************
 const tipo_valor= require('../ArchivosTS/entorno/tipo').tipo_valor;
 const tipo_variable= require('../ArchivosTS/entorno/tipo').tipo_variable;
@@ -280,6 +281,7 @@ instruccionfor: RFOR RPARA declaraciones RPUNTOCOMA expresion RPUNTOCOMA masmeno
                 {$$= new instruccionfor.instruccionfor($3,$5,$7,$10);}
                  
               | RFOR RPARA tipovariable IDENTIFICADOR ROF IDENTIFICADOR RPARC RLLAVEA lista RLLAVEC
+                {$$= new instruccionforof.instruccionforof($3,$4,$6,$9);}
 
               | RFOR RPARA tipovariable IDENTIFICADOR RIN IDENTIFICADOR RPARC RLLAVEC lista RLLAVEC
               ;
